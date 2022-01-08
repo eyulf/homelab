@@ -1,0 +1,13 @@
+---
+- name: packages | install common packages
+  ansible.builtin.package:
+    pkg: '{{ item }}'
+    state: present
+  loop: '{{ main_packages_list }}'
+
+- name: packages | enable additional repos
+  ansible.builtin.replace:
+    path: /etc/apt/sources.list
+    regexp: '{{ debian_version }} main$'
+    replace: '{{ debian_version }} main contrib non-free'
+  when: ansible_facts.os_family == 'Debian'

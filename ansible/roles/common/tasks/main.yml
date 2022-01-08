@@ -1,0 +1,47 @@
+---
+- name: main | set variables
+  include_vars: '{{ item }}'
+  with_first_found:
+    - '{{ ansible_facts.os_family }}.yml'
+    - default.yml
+
+# Network
+- import_tasks: network.yml
+  tags:
+    - network
+
+# Firewall
+- name: firewall
+  ansible.builtin.include_tasks:
+    file: firewall-{{ ansible_facts.os_family }}.yml
+    apply:
+      tags:
+        - firewall
+
+# NTP
+- import_tasks: ntp.yml
+  tags:
+    - ntp
+
+# Packages
+- import_tasks: packages.yml
+  tags:
+    - packages
+
+# Auto Updates
+- name: auto-updates
+  ansible.builtin.include_tasks:
+    file: auto-update-{{ ansible_facts.os_family }}.yml
+    apply:
+      tags:
+        - auto-updates
+
+# Users
+- import_tasks: users.yml
+  tags:
+    - users
+
+# Sudo
+- import_tasks: sudo.yml
+  tags:
+    - sudo

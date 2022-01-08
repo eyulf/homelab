@@ -1,0 +1,19 @@
+---
+- name: main | set variables
+  include_vars: '{{ item }}'
+  with_first_found:
+    - '{{ ansible_facts.os_family }}.yml'
+    - default.yml
+
+# Coretemp
+- name: main | enable coretemp
+  ansible.builtin.lineinfile:
+    path: /boot/loader.conf
+    regexp: '^coretemp_load='
+    line: coretemp_load="YES"
+  when: ansible_facts.os_family == "FreeBSD"
+
+# Packages
+- import_tasks: packages.yml
+  tags:
+    - packages

@@ -1,0 +1,22 @@
+---
+- name: network | install networking packages
+  ansible.builtin.package:
+    pkg: '{{ item }}'
+    state: present
+  loop: '{{ network_packages_list }}'
+
+- name: network | configure main interfaces file
+  ansible.builtin.copy:
+    src: files/etc/network/interfaces
+    dest: /etc/network/interfaces
+    owner: root
+    group: root
+    mode: '644'
+
+- name: network | configure 'br0' interface file
+  ansible.builtin.copy:
+    src: files/etc/network/interfaces.d/br0
+    dest: /etc/network/interfaces.d/br0
+    owner: root
+    group: root
+    mode: '644'

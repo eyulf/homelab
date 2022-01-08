@@ -1,0 +1,9 @@
+---
+main_root_group: wheel
+ntp_service_name: ntpd
+main_packages_list:
+  - atop
+  - lsof
+  - screen
+sudo_package_name: sudo
+sudo_sudoers_path: usr/local/etc/sudoers.d

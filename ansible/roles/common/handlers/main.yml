@@ -1,0 +1,17 @@
+---
+- name: ntp | restart ntp
+  ansible.builtin.service:
+    name: '{{ ntp_service_name }}'
+    state: restarted
+
+- name: auto-updates | restart yum-cron service
+  ansible.builtin.service:
+    name: yum-cron
+    state: restarted
+  listen: restart yum-cron
+
+- name: auto-updates | restart unattended-upgrades service
+  ansible.builtin.service:
+    name: unattended-upgrades
+    state: restarted
+  listen: restart unattended-upgrades

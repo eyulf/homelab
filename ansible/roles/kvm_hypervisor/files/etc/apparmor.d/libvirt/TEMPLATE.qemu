@@ -1,0 +1,11 @@
+#
+# This profile is for the domain whose UUID matches this file.
+#
+
+#include <tunables/global>
+
+profile LIBVIRT_TEMPLATE flags=(attach_disconnected) {
+  #include <abstractions/libvirt-qemu>
+  /var/lib/libvirt/images/**.qcow2 rwk,
+  /var/lib/libvirt/images/**.iso rwk,
+}

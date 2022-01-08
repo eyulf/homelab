@@ -1,0 +1,6 @@
+---
+- name: packages | install hardware packages
+  ansible.builtin.package:
+    pkg: '{{ item }}'
+    state: present
+  loop: '{{ main_packages_list }}'

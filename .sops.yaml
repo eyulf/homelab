@@ -1,0 +1,6 @@
+---
+# creation rules are evaluated sequentially, the first match wins
+creation_rules:
+  # Match ansible host and group vars
+  - path_regex: ansible\/(host|group)_vars\/.*\.ya?ml
+    age: 'age1ety65vhtrhlevgmm899eyvdmv4avfm0replxg5tz6a2jyq84n4us7ryfc6'

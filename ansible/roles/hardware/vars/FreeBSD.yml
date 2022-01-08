@@ -1,0 +1,5 @@
+---
+main_packages_list:
+  - sg3_utils
+  - smartmontools
+  - ssd_report-smartmontools

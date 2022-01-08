@@ -1,0 +1,27 @@
+---
+- name: firewall | install firewalld package
+  ansible.builtin.yum:
+    name: firewalld
+    state: present
+    update_cache: true
+
+- name: firewall | set default zone
+  ansible.posix.firewalld:
+    zone: block
+    interface: eth0
+    permanent: true
+    state: enabled
+
+- name: firewall | allow ssh inbound
+  ansible.posix.firewalld:
+    service: ssh
+    zone: block
+    permanent: true
+    state: enabled
+
+- name: firewall | allow dhcp inbound
+  ansible.posix.firewalld:
+    service: dhcpv6-client
+    zone: block
+    permanent: true
+    state: enabled

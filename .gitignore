@@ -1,0 +1,6 @@
+# Ignore unencrypted secrets
+/ansible/group_vars/*.yml
+/ansible/group_vars/*.yaml
+
+/ansible/host_vars/*.yml
+/ansible/host_vars/*.yaml

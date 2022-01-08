@@ -1,0 +1,18 @@
+---
+- name: main | set variables
+  include_vars: '{{ item }}'
+  with_first_found:
+    - '{{ ansible_facts.os_family }}.yml'
+    - default.yml
+
+# Network
+- import_tasks: network.yml
+  tags:
+    - network
+  when: ansible_facts.os_family == 'Debian'
+
+# KVM
+- import_tasks: kvm.yml
+  tags:
+    - kvm
+  when: ansible_facts.os_family == 'Debian'

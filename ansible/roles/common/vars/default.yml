@@ -1,0 +1,16 @@
+---
+main_root_group: root
+ntp_service_name: ntp
+main_packages_list:
+  - htop
+  - lsof
+  - net-tools
+  - screen
+  - strace
+  - telnet
+  - vim
+  - gpg
+  - rsync
+  - arping
+sudo_package_name: sudo
+sudo_sudoers_path: etc/sudoers.d

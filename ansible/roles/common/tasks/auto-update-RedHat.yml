@@ -1,0 +1,21 @@
+---
+- name: auto-updates | install yum-cron package
+  ansible.builtin.yum:
+    name: yum-cron
+    state: present
+    update_cache: true
+
+- name: auto-updates | configure yum-cron
+  ansible.builtin.template:
+    src: templates/etc/yum/yum-cron.conf.j2
+    dest: /etc/yum/yum-cron.conf
+    owner: root
+    group: root
+    mode: '644'
+  notify: restart yum-cron
+
+- name: auto-updates | start and enable yum-cron service
+  ansible.builtin.service:
+    name: yum-cron
+    state: started
+    enabled: true

@@ -1,0 +1,13 @@
+---
+- name: sudo | install sudo package
+  ansible.builtin.package:
+    name: '{{ sudo_package_name }}'
+    state: present
+
+- name: sudo | ensure admin users added to sudoers
+  ansible.builtin.template:
+    src: templates/{{ sudo_sudoers_path }}/20_admins_sudo.j2
+    dest: /{{ sudo_sudoers_path }}/20_admins_sudo
+    owner: root
+    group: '{{ main_root_group }}'
+    mode: '644'

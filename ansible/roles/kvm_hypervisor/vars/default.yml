@@ -1,0 +1,13 @@
+---
+network_packages_list:
+  - bridge-utils
+kvm_packages_list:
+  - qemu
+  - qemu-kvm
+  - qemu-system
+  - qemu-utils
+libvirt_packages_list:
+  - libvirt-clients
+  - libvirt-daemon-system
+  - virtinst
+libvirt_service_name: libvirtd

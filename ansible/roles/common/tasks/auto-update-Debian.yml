@@ -1,0 +1,32 @@
+---
+- name: auto-updates | install unattended-upgrades package
+  ansible.builtin.apt:
+    pkg:
+      - unattended-upgrades
+      - apt-listchanges
+    state: present
+    update_cache: true
+
+- name: auto-updates | configure 20auto-upgrades
+  ansible.builtin.copy:
+    src: files/etc/apt/apt.conf.d/20auto-upgrades
+    dest: /etc/apt/apt.conf.d/20auto-upgrades
+    owner: root
+    group: root
+    mode: '644'
+  notify: restart unattended-upgrades
+
+- name: auto-updates | configure 50unattended-upgrades
+  ansible.builtin.template:
+    src: templates/etc/apt/apt.conf.d/50unattended-upgrades.j2
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
+    owner: root
+    group: root
+    mode: '644'
+  notify: restart unattended-upgrades
+
+- name: auto-updates | enable unattended-upgrades service
+  service:
+    name: unattended-upgrades.service
+    state: started
+    enabled: true

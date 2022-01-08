@@ -1,0 +1,28 @@
+---
+- name: firewall | install ufw package
+  ansible.builtin.apt:
+    name: ufw
+    state: present
+    update_cache: true
+
+- name: firewall | allow ssh inbound from clients
+  community.general.ufw:
+    rule: allow
+    port: ssh
+    proto: tcp
+    direction: in
+    src: '{{ firewall_clients_subnet }}'
+
+- name: firewall | set outbound default
+  community.general.ufw:
+    default: allow
+    direction: outgoing
+
+- name: firewall | set inbound default
+  community.general.ufw:
+    default: deny
+    direction: incoming
+
+- name: firewall | enable firewall
+  community.general.ufw:
+    state: enabled

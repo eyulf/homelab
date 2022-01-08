@@ -1,0 +1,3 @@
+exclude_paths:
+  - ansible/group_vars/*.enc
+  - ansible/host_vars/*.enc

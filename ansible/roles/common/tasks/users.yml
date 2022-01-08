@@ -1,0 +1,6 @@
+---
+- name: users | create admin users
+  ansible.builtin.user:
+    name: '{{ item }}'
+    shell: /bin/bash
+  loop: '{{ admin_users }}'

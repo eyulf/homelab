@@ -1,0 +1,27 @@
+---
+- name: kvm | install KVM and QEMU packages
+  ansible.builtin.package:
+    pkg: '{{ item }}'
+    state: present
+  loop: '{{ kvm_packages_list }}'
+
+- name: kvm | install LibVirt packages
+  ansible.builtin.package:
+    pkg: '{{ item }}'
+    state: present
+  loop: '{{ libvirt_packages_list }}'
+
+- name: kvm | start service '{{ libvirt_service_name }}'
+  ansible.builtin.service:
+    name: '{{ libvirt_service_name }}'
+    enabled: true
+    state: started
+
+- name: kvm | configure AppArmour for 'qemu'
+  ansible.builtin.copy:
+    src: files/etc/apparmor.d/libvirt/TEMPLATE.qemu
+    dest: /etc/apparmor.d/libvirt/TEMPLATE.qemu
+    owner: root
+    group: root
+    mode: '644'
+  when: ansible_facts.os_family == 'Debian'
