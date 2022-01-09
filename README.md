@@ -1,8 +1,11 @@
-# HomeLab Infrastructure
+# Homelab Infrastructure
 
 ## Overview
 
-This repository contains everything used to set-up the infrastructure for my homelab using as much IaC as possible as part of my [homelab refresh](https://alexgardner.id.au/blog/home-lab-refresh/).
+This repository contains everything used to set-up the infrastructure for my homelab using as much IaC as possible as part of my [homelab refresh](https://alexgardner.id.au/blog/home-lab-refresh/). For more details, see the README of the following directories.
+
+- [ansible](ansible) roles for server configuration.
+- [terraform](terraform) configuration for provisioning VMs.
 
 ## SOPS
 
@@ -12,14 +15,6 @@ This repository contains everything used to set-up the infrastructure for my hom
 touch ansible/group_vars/all.yml
 sops -e ansible/group_vars/all.yml > ansible/group_vars/all.enc.yml
 git status -s | grep group_vars
-````
-
-I've made a quick and dirty [bash script](sops.sh) to encrypt all files that match `path_regex`s in the [.sops.yaml](.sops.yaml) configuration file.
-
-```bash
-touch ansible/host_vars/*.yml
-./sops.sh
-git status -s | grep host_vars
 ````
 
 ## Hardware

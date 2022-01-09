@@ -1,10 +1,10 @@
-## Ansible Playbooks
+# Ansible Playbooks
 
-### General Assumptions
+## General Assumptions
 
-It is assumed that all physical servers have already had your SSH key added to the ansible user, either through post installation scripts or manually using `ssh-copy-id`.
+- It is assumed that all physical servers have already had your SSH key added to the ansible user, either through post installation scripts or manually using `ssh-copy-id`.
 
-### KVM Hypervisors
+## KVM Hypervisors
 Configure KVM Hypervisors using QEMU and LibVirt.
 
 **Assumptions**

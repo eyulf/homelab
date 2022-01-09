@@ -4,3 +4,14 @@
 
 /ansible/host_vars/*.yml
 /ansible/host_vars/*.yaml
+
+**/terraform.tfvars
+
+### Terraform
+
+#  Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+**.tfstate
+**.tfstate.*
