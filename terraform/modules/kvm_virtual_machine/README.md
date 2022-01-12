@@ -39,7 +39,6 @@ module "example" {
     "admin" = "ssh-rsa AA[...]ZZ==",
   }
 }
-
 ```
 
 ---

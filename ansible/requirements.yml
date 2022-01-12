@@ -2,3 +2,5 @@
 collections:
   - name: community.general
     version: 4.2.0
+  - name: community.mysql
+    version: 2.3.2

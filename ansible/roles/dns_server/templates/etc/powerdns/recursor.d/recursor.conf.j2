@@ -1,0 +1,23 @@
+# allow-from=127.0.0.0/8, 10.0.0.0/8, 100.64.0.0/10, 169.254.0.0/16, 192.168.0.0/16, 172.16.0.0/12, ::1/128, fc00::/7, fe80::/10
+allow-from=127.0.0.0/8{% for subnet in network_subnets %},{{ subnet }}{% endfor %}
+
+
+# forward-zones=
+{% for zone in powerdns_foward_zones %}
+forward-zones{%- if not loop.first %}+{% endif %}={{ zone }}=127.0.0.1:5300
+{% endfor %}
+
+# forward-zones-recurse=
+forward-zones-recurse=.={{ powerdns_forward_recursors }}
+
+# local-address=127.0.0.1
+local-address=0.0.0.0, ::
+
+# max-cache-ttl=86400
+max-cache-ttl=3600
+
+# max-negative-ttl=3600
+max-negative-ttl=300
+
+# version-string=PowerDNS Recursor 4.1.11
+version-string=PowerDNS Recursor

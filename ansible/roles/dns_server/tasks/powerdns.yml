@@ -1,0 +1,110 @@
+---
+- name: powerdns | install powerdns key
+  ansible.builtin.copy:
+    src: etc/apt/trusted.gpg.d/pdns.gpg
+    dest: /etc/apt/trusted.gpg.d/pdns.gpg
+    owner: root
+    group: root
+    mode: '644'
+
+- name: powerdns | add powerdns repo
+  ansible.builtin.apt_repository:
+    repo: deb [arch=amd64] http://repo.powerdns.com/debian {{ debian_version }}-auth-{{ powerdns_version }} main
+    state: present
+    filename: pdns
+
+- name: powerdns | manage powerdns APT pinning
+  ansible.builtin.copy:
+    src: etc/apt/preferences.d/pdns
+    dest: /etc/apt/preferences.d/pdns
+    owner: root
+    group: root
+    mode: '644'
+
+- name: powerdns | install powerdns packages
+  ansible.builtin.package:
+    pkg: '{{ item }}'
+    state: present
+  loop: '{{ powerdns_packages_list }}'
+
+- name: powerdns | remove unrequired powerdns packages
+  ansible.builtin.package:
+    pkg: '{{ item }}'
+    state: absent
+  loop: '{{ powerdns_packages_remove_list }}'
+
+- name: powerdns | remove /etc/powerdns/pdns.d/bind.conf
+  ansible.builtin.file:
+    path: /etc/powerdns/pdns.d/bind.conf
+    state: absent
+
+- name: powerdns | ensure database created
+  community.mysql.mysql_db:
+    login_unix_socket: '{{ mariadb_login_unix_socket }}'
+    name: '{{ powerdns_mysql_database_name }}'
+    state: present
+  when: ( ansible_facts.hostname == mariadb_galera_bootstrap_host)
+  notify:
+    - import database schema
+    - restart powerdns
+
+- name: powerdns | ensure database user created
+  community.mysql.mysql_user:
+    login_unix_socket: '{{ mariadb_login_unix_socket }}'
+    name: '{{ powerdns_mysql_database_name }}'
+    host: localhost
+    password: '{{ powerdns_mysql_password }}'
+    priv: '{{ powerdns_mysql_database_name }}.*:ALL,GRANT'
+    state: present
+  when: ( ansible_facts.hostname == mariadb_galera_bootstrap_host)
+
+- name: powerdns | configure /etc/powerdns/pdns.d/mysql.conf
+  ansible.builtin.template:
+    src: etc/powerdns/pdns.d/mysql.conf.j2
+    dest: /etc/powerdns/pdns.d/mysql.conf
+    owner: root
+    group: root
+    mode: '644'
+  notify:
+    - restart powerdns
+
+- name: powerdns | configure /etc/powerdns/pdns.d/pdns.conf
+  ansible.builtin.template:
+    src: etc/powerdns/pdns.d/pdns.conf.j2
+    dest: /etc/powerdns/pdns.d/pdns.conf
+    owner: root
+    group: root
+    mode: '644'
+  notify:
+    - restart powerdns
+
+- name: powerdns | enable and start powerdns service
+  ansible.builtin.service:
+    name: '{{ powerdns_service_name }}'
+    enabled: true
+    state: started
+
+- name: powerdns | configure /etc/powerdns/recursor.d/recursor.conf
+  ansible.builtin.template:
+    src: etc/powerdns/recursor.d/recursor.conf.j2
+    dest: /etc/powerdns/recursor.d/recursor.conf
+    owner: root
+    group: root
+    mode: '644'
+  notify:
+    - restart powerdns-recursor
+
+- name: powerdns | enable and start powerdns recursor service
+  ansible.builtin.service:
+    name: '{{ powerdns_recursor_service_name }}'
+    enabled: true
+    state: started
+
+- name: powerdns | allow powerdns inbound from servers and clients
+  community.general.ufw:
+    rule: allow
+    port: '53'
+    proto: any
+    direction: in
+    src: '{{ item }}'
+  loop: '{{ network_subnets }}'

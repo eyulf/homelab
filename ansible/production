@@ -2,3 +2,8 @@
 kvm1
 kvm2
 kvm3
+
+[dns_servers]
+dns1
+dns2
+dns3

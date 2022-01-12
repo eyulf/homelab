@@ -1,0 +1,44 @@
+#
+# * Galera-related settings
+#
+# See the examples of server wsrep.cnf files in /usr/share/mysql
+# and read more at https://mariadb.com/kb/en/galera-cluster/
+
+[galera]
+# Mandatory settings
+wsrep_on                 = ON
+wsrep_cluster_name       = "MariaDB Galera Cluster"
+wsrep_cluster_address    = gcomm://{% for host in mariadb_galera_hosts_list %}
+{{ host }}
+{%- if not loop.last %},{% endif %}
+{% endfor %}
+
+binlog_format            = row
+default_storage_engine   = InnoDB
+innodb_autoinc_lock_mode = 2
+innodb_doublewrite       = 1
+
+# Allow server to accept connections on all interfaces.
+bind-address = 0.0.0.0
+
+# Server Settings
+wsrep_provider     = /usr/lib/galera/libgalera_smm.so
+wsrep_node_name    = {{ ansible_facts.hostname }}
+wsrep_node_address = {{ ansible_facts.default_ipv4.address }}
+wsrep_sst_method   = mariabackup
+wsrep_sst_auth     = {{ mariadb_galera_auth_user }}:{{ mariadb_galera_auth_password }}
+
+# Optional settings
+skip-name-resolve
+wsrep_slave_threads = 1
+#innodb_flush_log_at_trx_commit = 0
+# wsrep_certify_nonPK=1
+# wsrep_max_ws_rows=131072
+# wsrep_max_ws_size=1073741824
+# wsrep_debug=0
+# wsrep_convert_LOCK_to_trx=0
+# wsrep_retry_autocommit=1
+# wsrep_auto_increment_control=1
+# wsrep_drupal_282555_workaround=0
+# wsrep_causal_reads=0
+# wsrep_notify_cmd=

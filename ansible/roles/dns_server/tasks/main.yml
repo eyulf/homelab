@@ -1,0 +1,16 @@
+---
+- name: main | set variables
+  include_vars: '{{ item }}'
+  tags:
+    - dns-server
+    - power-dns
+  with_first_found:
+    - '{{ ansible_facts.os_family }}.yml'
+    - default.yml
+
+# PowerDNS
+- import_tasks: powerdns.yml
+  tags:
+    - dns-server
+    - power-dns
+  when: ansible_facts.os_family == 'Debian'

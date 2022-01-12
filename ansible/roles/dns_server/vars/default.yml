@@ -1,0 +1,14 @@
+---
+powerdns_version: '45'
+powerdns_packages_list:
+  - pdns-server
+  - pdns-recursor
+  - pdns-backend-mysql
+powerdns_packages_remove_list:
+  - pdns-backend-bind
+powerdns_service_name: pdns
+powerdns_recursor_service_name: pdns-recursor
+powerdns_mysql_database_name: powerdns
+powerdns_mysql_schema_path: /usr/share/pdns-backend-mysql/schema/schema.mysql.sql
+
+mariadb_login_unix_socket: /run/mysqld/mysqld.sock

@@ -1,0 +1,36 @@
+---
+# This emulates running the 'mysql_secure_installation' command as much as possible
+
+- name: database-secure | change the root password
+  community.mysql.mysql_user:
+    login_unix_socket: '{{ mariadb_login_unix_socket }}'
+    name: root
+    host: localhost
+    password: '{{ mariadb_root_password }}'
+    priv: '*.*:ALL,GRANT'
+    state: present
+  when: ( ansible_facts.hostname == mariadb_galera_bootstrap_host)
+
+- name: database-secure | write root password to /root/.my.cnf
+  ansible.builtin.template:
+    src: root/.my.cnf.j2
+    dest: /root/.my.cnf
+    owner: root
+    group: root
+    mode: '600'
+
+- name: database-secure | remove anonymous users
+  community.mysql.mysql_user:
+    login_unix_socket: '{{ mariadb_login_unix_socket }}'
+    name: ''
+    host_all: true
+    state: absent
+  when: ( ansible_facts.hostname == mariadb_galera_bootstrap_host)
+
+- name: database-secure | remove test database
+  community.mysql.mysql_db:
+    login_unix_socket: '{{ mariadb_login_unix_socket }}'
+    name:
+      - test
+    state: absent
+  when: ( ansible_facts.hostname == mariadb_galera_bootstrap_host)

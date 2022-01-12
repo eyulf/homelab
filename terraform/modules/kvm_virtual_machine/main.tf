@@ -10,7 +10,7 @@ resource "libvirt_cloudinit_disk" "cloudinit" {
       hostname      = var.hostname
       fqdn          = local.fqdn
       admin_users   = var.host_admin_users
-      admin_groups  = var.hostname
+      admin_groups  = var.host_admin_groups
       root_password = var.host_root_password
     })
 

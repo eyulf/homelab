@@ -1,1 +1,2 @@
 - import_playbook: kvm-hypervisors.yml
+- import_playbook: dns-servers.yml

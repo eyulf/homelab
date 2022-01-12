@@ -1,0 +1,24 @@
+---
+- name: database | set variables
+  include_vars: '{{ item }}'
+  tags:
+    - database
+    - mariadb
+    - mariadb-secure
+  with_first_found:
+    - '{{ ansible_facts.os_family }}.yml'
+    - default.yml
+
+# MariaDB Configuration
+- import_tasks: mariadb.yml
+  tags:
+    - database
+    - mariadb
+  when: ansible_facts.os_family == 'Debian'
+
+# MariaDB Secure Installation
+- import_tasks: mariadb-secure.yml
+  tags:
+    - database
+    - mariadb-secure
+  when: ansible_facts.os_family == 'Debian'

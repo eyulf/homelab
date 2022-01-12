@@ -1,0 +1,21 @@
+---
+- name: powerdns | import database schema
+  community.mysql.mysql_db:
+    state: import
+    name: '{{ powerdns_mysql_database_name }}'
+    encoding: latin1
+    target: '{{ powerdns_mysql_schema_path }}'
+  listen: import database schema
+  when: ( ansible_facts.hostname == mariadb_galera_bootstrap_host)
+
+- name: powerdns | restart powerdns
+  ansible.builtin.service:
+    name: '{{ powerdns_service_name }}'
+    state: restarted
+  listen: restart powerdns
+
+- name: powerdns | restart powerdns-recursor
+  ansible.builtin.service:
+    name: '{{ powerdns_recursor_service_name }}'
+    state: restarted
+  listen: restart powerdns-recursor

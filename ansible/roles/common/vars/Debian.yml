@@ -12,6 +12,7 @@ main_packages_list:
   - gpg
   - rsync
   - arping
+  - dnsutils
 debian_version: buster
 sudo_package_name: sudo
 sudo_sudoers_path: etc/sudoers.d

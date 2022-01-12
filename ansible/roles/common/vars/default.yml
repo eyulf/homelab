@@ -12,5 +12,6 @@ main_packages_list:
   - gpg
   - rsync
   - arping
+  - dnsutils
 sudo_package_name: sudo
 sudo_sudoers_path: etc/sudoers.d

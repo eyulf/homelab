@@ -3,6 +3,7 @@
   ansible.builtin.service:
     name: '{{ ntp_service_name }}'
     state: restarted
+  listen: restart ntp
 
 - name: auto-updates | restart yum-cron service
   ansible.builtin.service:
