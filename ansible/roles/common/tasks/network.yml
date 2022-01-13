@@ -4,17 +4,17 @@
     name: '{{ inventory_hostname }}'
   when: ansible_facts.hostname != inventory_hostname
 
-- name: network | update /etc/resolv.conf
+- name: network | configure /etc/resolv.conf
   ansible.builtin.template:
-    src: templates/etc/resolv.conf.j2
+    src: etc/resolv.conf.j2
     dest: /etc/resolv.conf
     owner: root
     group: root
     mode: '644'
 
-- name: network | update /etc/hosts
+- name: network | configure /etc/hosts
   ansible.builtin.template:
-    src: templates/etc/hosts.j2
+    src: etc/hosts.j2
     dest: /etc/hosts
     owner: root
     group: root

@@ -7,26 +7,26 @@
     state: present
     update_cache: true
 
-- name: auto-updates | configure 20auto-upgrades
+- name: auto-updates | configure /etc/apt/apt.conf.d/20auto-upgrades
   ansible.builtin.copy:
-    src: files/etc/apt/apt.conf.d/20auto-upgrades
+    src: etc/apt/apt.conf.d/20auto-upgrades
     dest: /etc/apt/apt.conf.d/20auto-upgrades
     owner: root
     group: root
     mode: '644'
   notify: restart unattended-upgrades
 
-- name: auto-updates | configure 50unattended-upgrades
+- name: auto-updates | configure /etc/apt/apt.conf.d/50unattended-upgrades
   ansible.builtin.template:
-    src: templates/etc/apt/apt.conf.d/50unattended-upgrades.j2
+    src: etc/apt/apt.conf.d/50unattended-upgrades.j2
     dest: /etc/apt/apt.conf.d/50unattended-upgrades
     owner: root
     group: root
     mode: '644'
   notify: restart unattended-upgrades
 
-- name: auto-updates | enable unattended-upgrades service
-  service:
-    name: unattended-upgrades.service
+- name: auto-updates | start and enable unattended-upgrades service
+  ansible.builtin.service:
+    name: unattended-upgrades
     state: started
     enabled: true

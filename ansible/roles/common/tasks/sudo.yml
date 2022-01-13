@@ -4,9 +4,9 @@
     name: '{{ sudo_package_name }}'
     state: present
 
-- name: sudo | ensure admin users added to sudoers
+- name: sudo | configure {{ sudo_sudoers_path }}/20_admins_sudo
   ansible.builtin.template:
-    src: templates/{{ sudo_sudoers_path }}/20_admins_sudo.j2
+    src: '{{ sudo_sudoers_path }}/20_admins_sudo.j2'
     dest: /{{ sudo_sudoers_path }}/20_admins_sudo
     owner: root
     group: '{{ main_root_group }}'

@@ -13,7 +13,7 @@
     state: present
     filename: pdns
 
-- name: powerdns | manage powerdns APT pinning
+- name: powerdns | configure /etc/apt/preferences.d/pdns
   ansible.builtin.copy:
     src: etc/apt/preferences.d/pdns
     dest: /etc/apt/preferences.d/pdns
@@ -78,7 +78,7 @@
   notify:
     - restart powerdns
 
-- name: powerdns | enable and start powerdns service
+- name: powerdns | start and enable powerdns service
   ansible.builtin.service:
     name: '{{ powerdns_service_name }}'
     enabled: true
@@ -94,7 +94,7 @@
   notify:
     - restart powerdns-recursor
 
-- name: powerdns | enable and start powerdns recursor service
+- name: powerdns | start and enable powerdns recursor service
   ansible.builtin.service:
     name: '{{ powerdns_recursor_service_name }}'
     enabled: true

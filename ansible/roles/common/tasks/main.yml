@@ -1,6 +1,15 @@
 ---
 - name: main | set variables
   include_vars: '{{ item }}'
+  tags:
+    - common
+    - network
+    - firewall
+    - ntp
+    - packages
+    - auto-updates
+    - users
+    - sudo
   with_first_found:
     - '{{ ansible_facts.os_family }}.yml'
     - default.yml
@@ -8,6 +17,7 @@
 # Network
 - import_tasks: network.yml
   tags:
+    - common
     - network
 
 # Firewall
@@ -16,16 +26,19 @@
     file: firewall-{{ ansible_facts.os_family }}.yml
     apply:
       tags:
+        - common
         - firewall
 
 # NTP
 - import_tasks: ntp.yml
   tags:
+    - common
     - ntp
 
 # Packages
 - import_tasks: packages.yml
   tags:
+    - common
     - packages
 
 # Auto Updates
@@ -34,14 +47,17 @@
     file: auto-update-{{ ansible_facts.os_family }}.yml
     apply:
       tags:
+        - common
         - auto-updates
 
 # Users
 - import_tasks: users.yml
   tags:
+    - common
     - users
 
 # Sudo
 - import_tasks: sudo.yml
   tags:
+    - common
     - sudo

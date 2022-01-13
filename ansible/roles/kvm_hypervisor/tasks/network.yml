@@ -5,7 +5,7 @@
     state: present
   loop: '{{ network_packages_list }}'
 
-- name: network | configure main interfaces file
+- name: network | configure /etc/network/interfaces
   ansible.builtin.copy:
     src: files/etc/network/interfaces
     dest: /etc/network/interfaces
@@ -13,7 +13,7 @@
     group: root
     mode: '644'
 
-- name: network | configure 'br0' interface file
+- name: network | configure /etc/interfaces.d/br0
   ansible.builtin.copy:
     src: files/etc/network/interfaces.d/br0
     dest: /etc/network/interfaces.d/br0

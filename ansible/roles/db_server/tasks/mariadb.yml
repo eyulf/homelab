@@ -46,7 +46,7 @@
   notify:
     - restart mariadb
 
-- name: database | enable and start mariadb service
+- name: database | start and enable {{ mariadb_service_name }} service
   ansible.builtin.service:
     name: '{{ mariadb_service_name }}'
     enabled: true

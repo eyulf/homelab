@@ -5,9 +5,9 @@
     state: present
     update_cache: true
 
-- name: auto-updates | configure yum-cron
+- name: auto-updates | configure /etc/yum/yum-cron.conf
   ansible.builtin.template:
-    src: templates/etc/yum/yum-cron.conf.j2
+    src: etc/yum/yum-cron.conf.j2
     dest: /etc/yum/yum-cron.conf
     owner: root
     group: root

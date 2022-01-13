@@ -11,7 +11,7 @@
     state: present
   when: ( ansible_facts.hostname == mariadb_galera_bootstrap_host)
 
-- name: database-secure | write root password to /root/.my.cnf
+- name: database-secure | configure /root/.my.cnf
   ansible.builtin.template:
     src: root/.my.cnf.j2
     dest: /root/.my.cnf

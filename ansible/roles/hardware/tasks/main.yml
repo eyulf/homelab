@@ -1,9 +1,18 @@
 ---
 - name: main | set variables
   include_vars: '{{ item }}'
+  tags:
+    - hardware
+    - packages
   with_first_found:
     - '{{ ansible_facts.os_family }}.yml'
     - default.yml
+
+# Packages
+- import_tasks: packages.yml
+  tags:
+    - hardware
+    - packages
 
 # Coretemp
 - name: main | enable coretemp
@@ -12,8 +21,3 @@
     regexp: '^coretemp_load='
     line: coretemp_load="YES"
   when: ansible_facts.os_family == "FreeBSD"
-
-# Packages
-- import_tasks: packages.yml
-  tags:
-    - packages

@@ -1,6 +1,10 @@
 ---
 - name: main | set variables
   include_vars: '{{ item }}'
+  tags:
+    - kvm-hypervisor
+    - network
+    - kvm
   with_first_found:
     - '{{ ansible_facts.os_family }}.yml'
     - default.yml
@@ -8,11 +12,13 @@
 # Network
 - import_tasks: network.yml
   tags:
+    - kvm-hypervisor
     - network
   when: ansible_facts.os_family == 'Debian'
 
 # KVM
 - import_tasks: kvm.yml
   tags:
+    - kvm-hypervisor
     - kvm
   when: ansible_facts.os_family == 'Debian'
