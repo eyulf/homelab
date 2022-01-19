@@ -13,6 +13,11 @@ main_packages_list:
   - rsync
   - arping
   - dnsutils
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg
+  - lsb-release
 debian_version: buster
 sudo_package_name: sudo
 sudo_sudoers_path: etc/sudoers.d

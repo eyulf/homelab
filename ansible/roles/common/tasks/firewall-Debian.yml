@@ -4,6 +4,10 @@
     name: ufw
     state: present
     update_cache: true
+  tags:
+    - common
+    - firewall
+  when: ansible_facts.os_family == 'Debian'
 
 - name: firewall | allow ssh inbound from clients
   community.general.ufw:
@@ -12,17 +16,33 @@
     proto: tcp
     direction: in
     src: '{{ firewall_clients_subnet }}'
+  tags:
+    - common
+    - firewall
+  when: ansible_facts.os_family == 'Debian'
 
 - name: firewall | set outbound default
   community.general.ufw:
     default: allow
     direction: outgoing
+  tags:
+    - common
+    - firewall
+  when: ansible_facts.os_family == 'Debian'
 
 - name: firewall | set inbound default
   community.general.ufw:
     default: deny
     direction: incoming
+  tags:
+    - common
+    - firewall
+  when: ansible_facts.os_family == 'Debian'
 
 - name: firewall | enable firewall
   community.general.ufw:
     state: enabled
+  tags:
+    - common
+    - firewall
+  when: ansible_facts.os_family == 'Debian'

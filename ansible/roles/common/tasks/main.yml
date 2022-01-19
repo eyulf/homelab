@@ -1,5 +1,5 @@
 ---
-- name: main | set variables
+- name: common | set variables
   include_vars: '{{ item }}'
   tags:
     - common
@@ -9,13 +9,13 @@
     - packages
     - auto-updates
     - users
-    - sudo
   with_first_found:
     - '{{ ansible_facts.os_family }}.yml'
     - default.yml
 
 # Network
-- import_tasks: network.yml
+- name: network
+  ansible.builtin.import_tasks: network.yml
   tags:
     - common
     - network
@@ -30,13 +30,15 @@
         - firewall
 
 # NTP
-- import_tasks: ntp.yml
+- name: ntp
+  ansible.builtin.import_tasks: ntp.yml
   tags:
     - common
     - ntp
 
 # Packages
-- import_tasks: packages.yml
+- name: packages
+  ansible.builtin.import_tasks: packages.yml
   tags:
     - common
     - packages
@@ -51,13 +53,14 @@
         - auto-updates
 
 # Users
-- import_tasks: users.yml
+- name: users
+  ansible.builtin.import_tasks: users.yml
   tags:
     - common
     - users
 
-# Sudo
-- import_tasks: sudo.yml
+# Flush Handlers
+- name: common | flush handlers
+  ansible.builtin.meta: flush_handlers
   tags:
     - common
-    - sudo

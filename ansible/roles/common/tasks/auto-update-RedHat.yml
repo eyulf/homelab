@@ -4,6 +4,10 @@
     name: yum-cron
     state: present
     update_cache: true
+  tags:
+    - common
+    - auto-updates
+  when: ansible_facts.os_family == 'RedHat'
 
 - name: auto-updates | configure /etc/yum/yum-cron.conf
   ansible.builtin.template:
@@ -13,9 +17,17 @@
     group: root
     mode: '644'
   notify: restart yum-cron
+  tags:
+    - common
+    - auto-updates
+  when: ansible_facts.os_family == 'RedHat'
 
 - name: auto-updates | start and enable yum-cron service
   ansible.builtin.service:
     name: yum-cron
     state: started
     enabled: true
+  tags:
+    - common
+    - auto-updates
+  when: ansible_facts.os_family == 'RedHat'

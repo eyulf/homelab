@@ -6,16 +6,29 @@
     encoding: latin1
     target: '{{ powerdns_mysql_schema_path }}'
   listen: import database schema
-  when: ( ansible_facts.hostname == mariadb_galera_bootstrap_host)
+  tags:
+    - dns-server
+    - powerdns
+  when:
+    - ansible_facts.os_family == 'Debian'
+    - ansible_facts.hostname == mariadb_galera_bootstrap_host
 
 - name: powerdns | restart powerdns
   ansible.builtin.service:
     name: '{{ powerdns_service_name }}'
     state: restarted
   listen: restart powerdns
+  tags:
+    - dns-server
+    - powerdns
+  when: ansible_facts.os_family == 'Debian'
 
 - name: powerdns | restart powerdns-recursor
   ansible.builtin.service:
     name: '{{ powerdns_recursor_service_name }}'
     state: restarted
   listen: restart powerdns-recursor
+  tags:
+    - dns-server
+    - powerdns
+  when: ansible_facts.os_family == 'Debian'

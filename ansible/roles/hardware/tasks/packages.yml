@@ -4,3 +4,6 @@
     pkg: '{{ item }}'
     state: present
   loop: '{{ main_packages_list }}'
+  tags:
+    - hardware
+    - packages

@@ -1,7 +1,12 @@
 ---
-- name: database | restart mariadb
+- name: mariadb | restart mariadb
   ansible.builtin.service:
     name: '{{ mariadb_service_name }}'
     state: restarted
   listen: restart mariadb
-  when: ( ansible_facts.hostname != mariadb_galera_bootstrap_host)
+  tags:
+    - database
+    - mariadb
+  when:
+    - ansible_facts.os_family == 'Debian'
+    - ansible_facts.hostname != mariadb_galera_bootstrap_host

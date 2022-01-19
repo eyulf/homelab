@@ -4,10 +4,16 @@
     pkg: '{{ item }}'
     state: present
   loop: '{{ main_packages_list }}'
+  tags:
+    - common
+    - packages
 
 - name: packages | enable additional repos
   ansible.builtin.replace:
     path: /etc/apt/sources.list
     regexp: '{{ debian_version }} main$'
     replace: '{{ debian_version }} main contrib non-free'
+  tags:
+    - common
+    - packages
   when: ansible_facts.os_family == 'Debian'

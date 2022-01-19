@@ -2,11 +2,17 @@
 - name: ntp | update timezone
   community.general.timezone:
     name: '{{ timezone }}'
+  tags:
+    - common
+    - ntp
 
-- name: ntp | intall ntp package
+- name: ntp | install ntp package
   ansible.builtin.package:
     name: ntp
     state: present
+  tags:
+    - common
+    - ntp
   when: ansible_facts.os_family != 'FreeBSD'
 
 - name: ntp | configure /etc/ntp.conf
@@ -18,9 +24,15 @@
     mode: '644'
   notify:
     - restart ntp
+  tags:
+    - common
+    - ntp
 
 - name: ntp | start and enable {{ ntp_service_name }} service
   ansible.builtin.service:
     name: '{{ ntp_service_name }}'
     state: started
     enabled: true
+  tags:
+    - common
+    - ntp

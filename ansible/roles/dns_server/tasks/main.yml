@@ -1,5 +1,5 @@
 ---
-- name: main | set variables
+- name: dns | set variables
   include_vars: '{{ item }}'
   tags:
     - dns-server
@@ -9,8 +9,15 @@
     - default.yml
 
 # PowerDNS
-- import_tasks: powerdns.yml
+- name: powerdns
+  ansible.builtin.import_tasks: powerdns.yml
   tags:
     - dns-server
-    - power-dns
+    - powerdns
   when: ansible_facts.os_family == 'Debian'
+
+# Flush Handlers
+- name: dns | flush handlers
+  ansible.builtin.meta: flush_handlers
+  tags:
+    - dns-server

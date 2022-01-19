@@ -4,18 +4,30 @@
     pkg: '{{ item }}'
     state: present
   loop: '{{ kvm_packages_list }}'
+  tags:
+    - kvm-hypervisor
+    - kvm
+  when: ansible_facts.os_family == 'Debian'
 
 - name: kvm | install libvirt packages
   ansible.builtin.package:
     pkg: '{{ item }}'
     state: present
   loop: '{{ libvirt_packages_list }}'
+  tags:
+    - kvm-hypervisor
+    - kvm
+  when: ansible_facts.os_family == 'Debian'
 
 - name: kvm | start and enable {{ libvirt_service_name }} service
   ansible.builtin.service:
     name: '{{ libvirt_service_name }}'
     enabled: true
     state: started
+  tags:
+    - kvm-hypervisor
+    - kvm
+  when: ansible_facts.os_family == 'Debian'
 
 - name: kvm | configure /etc/apparmor.d/libvirt/TEMPLATE.qemu
   ansible.builtin.copy:
@@ -24,3 +36,7 @@
     owner: root
     group: root
     mode: '644'
+  tags:
+    - kvm-hypervisor
+    - kvm
+  when: ansible_facts.os_family == 'Debian'

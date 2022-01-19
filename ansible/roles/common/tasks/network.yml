@@ -2,6 +2,9 @@
 - name: network | update hostname
   ansible.builtin.hostname:
     name: '{{ inventory_hostname }}'
+  tags:
+    - common
+    - network
   when: ansible_facts.hostname != inventory_hostname
 
 - name: network | configure /etc/resolv.conf
@@ -11,6 +14,9 @@
     owner: root
     group: root
     mode: '644'
+  tags:
+    - common
+    - network
 
 - name: network | configure /etc/hosts
   ansible.builtin.template:
@@ -19,3 +25,6 @@
     owner: root
     group: root
     mode: '644'
+  tags:
+    - common
+    - network

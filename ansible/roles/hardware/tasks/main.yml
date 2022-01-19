@@ -1,5 +1,5 @@
 ---
-- name: main | set variables
+- name: hardware | set variables
   include_vars: '{{ item }}'
   tags:
     - hardware
@@ -9,15 +9,19 @@
     - default.yml
 
 # Packages
-- import_tasks: packages.yml
+- name: packages
+  ansible.builtin.import_tasks: packages.yml
   tags:
     - hardware
     - packages
 
 # Coretemp
-- name: main | enable coretemp
+- name: coretemp | enable coretemp
   ansible.builtin.lineinfile:
     path: /boot/loader.conf
     regexp: '^coretemp_load='
     line: coretemp_load="YES"
-  when: ansible_facts.os_family == "FreeBSD"
+  tags:
+    - hardware
+    - coretemp
+  when: ansible_facts.os_family == 'FreeBSD'

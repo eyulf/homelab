@@ -9,7 +9,12 @@
     password: '{{ mariadb_root_password }}'
     priv: '*.*:ALL,GRANT'
     state: present
-  when: ( ansible_facts.hostname == mariadb_galera_bootstrap_host)
+  tags:
+    - database
+    - mariadb-secure
+  when:
+    - ansible_facts.os_family == 'Debian'
+    - ansible_facts.hostname == mariadb_galera_bootstrap_host
 
 - name: database-secure | configure /root/.my.cnf
   ansible.builtin.template:
@@ -18,6 +23,10 @@
     owner: root
     group: root
     mode: '600'
+  tags:
+    - database
+    - mariadb-secure
+  when: ansible_facts.os_family == 'Debian'
 
 - name: database-secure | remove anonymous users
   community.mysql.mysql_user:
@@ -25,7 +34,12 @@
     name: ''
     host_all: true
     state: absent
-  when: ( ansible_facts.hostname == mariadb_galera_bootstrap_host)
+  tags:
+    - database
+    - mariadb-secure
+  when:
+    - ansible_facts.os_family == 'Debian'
+    - ansible_facts.hostname == mariadb_galera_bootstrap_host
 
 - name: database-secure | remove test database
   community.mysql.mysql_db:
@@ -33,4 +47,9 @@
     name:
       - test
     state: absent
-  when: ( ansible_facts.hostname == mariadb_galera_bootstrap_host)
+  tags:
+    - database
+    - mariadb-secure
+  when:
+    - ansible_facts.os_family == 'Debian'
+    - ansible_facts.hostname == mariadb_galera_bootstrap_host

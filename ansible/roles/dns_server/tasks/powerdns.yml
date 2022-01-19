@@ -6,12 +6,20 @@
     owner: root
     group: root
     mode: '644'
+  tags:
+    - dns-server
+    - powerdns
+  when: ansible_facts.os_family == 'Debian'
 
 - name: powerdns | add powerdns repo
   ansible.builtin.apt_repository:
     repo: deb [arch=amd64] http://repo.powerdns.com/debian {{ debian_version }}-auth-{{ powerdns_version }} main
     state: present
     filename: pdns
+  tags:
+    - dns-server
+    - powerdns
+  when: ansible_facts.os_family == 'Debian'
 
 - name: powerdns | configure /etc/apt/preferences.d/pdns
   ansible.builtin.copy:
@@ -20,33 +28,54 @@
     owner: root
     group: root
     mode: '644'
+  tags:
+    - dns-server
+    - powerdns
+  when: ansible_facts.os_family == 'Debian'
 
 - name: powerdns | install powerdns packages
   ansible.builtin.package:
     pkg: '{{ item }}'
     state: present
   loop: '{{ powerdns_packages_list }}'
+  tags:
+    - dns-server
+    - powerdns
+  when: ansible_facts.os_family == 'Debian'
 
 - name: powerdns | remove unrequired powerdns packages
   ansible.builtin.package:
     pkg: '{{ item }}'
     state: absent
   loop: '{{ powerdns_packages_remove_list }}'
+  tags:
+    - dns-server
+    - powerdns
+  when: ansible_facts.os_family == 'Debian'
 
 - name: powerdns | remove /etc/powerdns/pdns.d/bind.conf
   ansible.builtin.file:
     path: /etc/powerdns/pdns.d/bind.conf
     state: absent
+  tags:
+    - dns-server
+    - powerdns
+  when: ansible_facts.os_family == 'Debian'
 
 - name: powerdns | ensure database created
   community.mysql.mysql_db:
     login_unix_socket: '{{ mariadb_login_unix_socket }}'
     name: '{{ powerdns_mysql_database_name }}'
     state: present
-  when: ( ansible_facts.hostname == mariadb_galera_bootstrap_host)
   notify:
     - import database schema
     - restart powerdns
+  tags:
+    - dns-server
+    - powerdns
+  when:
+    - ansible_facts.os_family == 'Debian'
+    - ansible_facts.hostname == mariadb_galera_bootstrap_host
 
 - name: powerdns | ensure database user created
   community.mysql.mysql_user:
@@ -56,7 +85,12 @@
     password: '{{ powerdns_mysql_password }}'
     priv: '{{ powerdns_mysql_database_name }}.*:ALL,GRANT'
     state: present
-  when: ( ansible_facts.hostname == mariadb_galera_bootstrap_host)
+  tags:
+    - dns-server
+    - powerdns
+  when:
+    - ansible_facts.os_family == 'Debian'
+    - ansible_facts.hostname == mariadb_galera_bootstrap_host
 
 - name: powerdns | configure /etc/powerdns/pdns.d/mysql.conf
   ansible.builtin.template:
@@ -67,6 +101,10 @@
     mode: '644'
   notify:
     - restart powerdns
+  tags:
+    - dns-server
+    - powerdns
+  when: ansible_facts.os_family == 'Debian'
 
 - name: powerdns | configure /etc/powerdns/pdns.d/pdns.conf
   ansible.builtin.template:
@@ -77,12 +115,20 @@
     mode: '644'
   notify:
     - restart powerdns
+  tags:
+    - dns-server
+    - powerdns
+  when: ansible_facts.os_family == 'Debian'
 
 - name: powerdns | start and enable powerdns service
   ansible.builtin.service:
     name: '{{ powerdns_service_name }}'
     enabled: true
     state: started
+  tags:
+    - dns-server
+    - powerdns
+  when: ansible_facts.os_family == 'Debian'
 
 - name: powerdns | configure /etc/powerdns/recursor.d/recursor.conf
   ansible.builtin.template:
@@ -93,12 +139,20 @@
     mode: '644'
   notify:
     - restart powerdns-recursor
+  tags:
+    - dns-server
+    - powerdns
+  when: ansible_facts.os_family == 'Debian'
 
 - name: powerdns | start and enable powerdns recursor service
   ansible.builtin.service:
     name: '{{ powerdns_recursor_service_name }}'
     enabled: true
     state: started
+  tags:
+    - dns-server
+    - powerdns
+  when: ansible_facts.os_family == 'Debian'
 
 - name: powerdns | allow powerdns inbound from servers and clients
   community.general.ufw:
@@ -108,3 +162,7 @@
     direction: in
     src: '{{ item }}'
   loop: '{{ network_subnets }}'
+  tags:
+    - dns-server
+    - powerdns
+  when: ansible_facts.os_family == 'Debian'

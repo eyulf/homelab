@@ -15,3 +15,15 @@ Configure KVM Hypervisors using QEMU and LibVirt.
 ```bash
 ansible-playbook kvm-hypervisors.yml -i production
 ```
+
+## DNS Servers
+Configure PowerDNS backed by a MariaDB Galera cluster.
+
+**Assumptions**
+- Debian 10.x installed with only the following software selected:
+  - SSH server
+  - standard system utilities
+
+```bash
+ansible-playbook dns-servers -i production
+```

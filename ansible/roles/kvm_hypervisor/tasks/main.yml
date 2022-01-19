@@ -1,5 +1,5 @@
 ---
-- name: main | set variables
+- name: kvm-hypervisor | set variables
   include_vars: '{{ item }}'
   tags:
     - kvm-hypervisor
@@ -10,15 +10,23 @@
     - default.yml
 
 # Network
-- import_tasks: network.yml
+- name: network
+  ansible.builtin.import_tasks: network.yml
   tags:
     - kvm-hypervisor
     - network
   when: ansible_facts.os_family == 'Debian'
 
 # KVM
-- import_tasks: kvm.yml
+- name: kvm
+  ansible.builtin.import_tasks: kvm.yml
   tags:
     - kvm-hypervisor
     - kvm
   when: ansible_facts.os_family == 'Debian'
+
+# Flush Handlers
+- name: kvm-hypervisor | flush handlers
+  ansible.builtin.meta: flush_handlers
+  tags:
+    - kvm-hypervisor

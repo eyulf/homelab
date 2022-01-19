@@ -1,6 +1,28 @@
 ---
+- name: users | install sudo package
+  ansible.builtin.package:
+    name: '{{ sudo_package_name }}'
+    state: present
+  tags:
+    - common
+    - users
+
 - name: users | create admin users
   ansible.builtin.user:
     name: '{{ item }}'
     shell: /bin/bash
   loop: '{{ admin_users }}'
+  tags:
+    - common
+    - users
+
+- name: users | configure {{ sudo_sudoers_path }}/20_admins_sudo
+  ansible.builtin.template:
+    src: '{{ sudo_sudoers_path }}/20_admins_sudo.j2'
+    dest: /{{ sudo_sudoers_path }}/20_admins_sudo
+    owner: root
+    group: '{{ main_root_group }}'
+    mode: '644'
+  tags:
+    - common
+    - users

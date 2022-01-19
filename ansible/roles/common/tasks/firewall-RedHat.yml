@@ -4,6 +4,10 @@
     name: firewalld
     state: present
     update_cache: true
+  tags:
+    - common
+    - firewall
+  when: ansible_facts.os_family == 'RedHat'
 
 - name: firewall | set default zone
   ansible.posix.firewalld:
@@ -11,6 +15,10 @@
     interface: eth0
     permanent: true
     state: enabled
+  tags:
+    - common
+    - firewall
+  when: ansible_facts.os_family == 'RedHat'
 
 - name: firewall | allow ssh inbound
   ansible.posix.firewalld:
@@ -18,6 +26,10 @@
     zone: block
     permanent: true
     state: enabled
+  tags:
+    - common
+    - firewall
+  when: ansible_facts.os_family == 'RedHat'
 
 - name: firewall | allow dhcp inbound
   ansible.posix.firewalld:
@@ -25,3 +37,7 @@
     zone: block
     permanent: true
     state: enabled
+  tags:
+    - common
+    - firewall
+  when: ansible_facts.os_family == 'RedHat'

@@ -1,33 +1,52 @@
 ---
-- name: database | install mariadb key
+- name: mariadb | install mariadb key
   ansible.builtin.apt_key:
     keyserver: keyserver.ubuntu.com
     id: '0xF1656F24C74CD1D8'
+  tags:
+    - database
+    - mariadb
+  when:
+    - ansible_facts.os_family == 'Debian'
 
-- name: database | add mariadb repo
+- name: mariadb | add mariadb repo
   ansible.builtin.apt_repository:
     repo: deb http://downloads.mariadb.com/MariaDB/{{ mariadb_version }}/repo/debian {{ debian_version }} main
     state: present
     filename: mariadb
+  tags:
+    - database
+    - mariadb
+  when:
+    - ansible_facts.os_family == 'Debian'
 
-- name: database | install mariadb packages
+- name: mariadb | install mariadb packages
   ansible.builtin.package:
     pkg: '{{ item }}'
     state: present
   loop: '{{ mariadb_packages_list }}'
+  tags:
+    - database
+    - mariadb
+  when:
+    - ansible_facts.os_family == 'Debian'
 
-- name: database | allow mariadb inbound from network
+- name: mariadb | allow mariadb inbound from network
   community.general.ufw:
     rule: allow
     port: mysql
     proto: tcp
     direction: in
     src: '{{ firewall_servers_subnet }}'
+  tags:
+    - database
+    - mariadb
   when:
+    - ansible_facts.os_family == 'Debian'
     - mariadb_visibility is defined
     - mariadb_visibility == 'network'
 
-- name: database | allow galera inbound from mariadb servers
+- name: mariadb | allow galera inbound from mariadb servers
   community.general.ufw:
     rule: allow
     port: '{{ item[0] }}'
@@ -35,8 +54,12 @@
     direction: in
     src: '{{ item[1] }}'
   loop: "{{ query('nested', mariadb_galera_ports_list, mariadb_galera_hosts_list) }}"
+  tags:
+    - database
+    - mariadb
+  when: ansible_facts.os_family == 'Debian'
 
-- name: database | configure /etc/mysql/mariadb.conf.d/60-galera.cnf
+- name: mariadb | configure /etc/mysql/mariadb.conf.d/60-galera.cnf
   ansible.builtin.template:
     src: etc/mysql/mariadb.conf.d/60-galera.cnf.j2
     dest: /etc/mysql/mariadb.conf.d/60-galera.cnf
@@ -45,14 +68,22 @@
     mode: '0644'
   notify:
     - restart mariadb
+  tags:
+    - database
+    - mariadb
+  when: ansible_facts.os_family == 'Debian'
 
-- name: database | start and enable {{ mariadb_service_name }} service
+- name: mariadb | start and enable {{ mariadb_service_name }} service
   ansible.builtin.service:
     name: '{{ mariadb_service_name }}'
     enabled: true
     state: started
+  tags:
+    - database
+    - mariadb
+  when: ansible_facts.os_family == 'Debian'
 
-- name: database | create replication user
+- name: mariadb | create replication user
   community.mysql.mysql_user:
     login_unix_socket: '{{ mariadb_login_unix_socket }}'
     name: '{{ mariadb_galera_auth_user }}'
@@ -60,6 +91,11 @@
     password: '{{ mariadb_galera_auth_password }}'
     priv: '*.*:RELOAD,PROCESS,LOCK TABLES,BINLOG MONITOR'
     state: present
-  when: ( ansible_facts.hostname == mariadb_galera_bootstrap_host)
   notify:
     - restart mariadb
+  tags:
+    - database
+    - mariadb
+  when:
+    - ansible_facts.os_family == 'Debian'
+    - ansible_facts.hostname == mariadb_galera_bootstrap_host
