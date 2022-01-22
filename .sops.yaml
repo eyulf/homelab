@@ -2,8 +2,20 @@
 # creation rules are evaluated sequentially, the first match wins
 creation_rules:
   # Match ansible host and group vars
-  - path_regex: ansible\/(host|group)_vars\/.*\.ya?ml
+  - path_regex: ansible/(host|group)_vars/.*\.ya?ml
     age: 'age1ety65vhtrhlevgmm899eyvdmv4avfm0replxg5tz6a2jyq84n4us7ryfc6'
+
   # Match terraform tfvar files
-  - path_regex: terraform\/.*\/terraform.tfvars
+  - path_regex: terraform/.*/terraform.tfvars
+    age: 'age1ety65vhtrhlevgmm899eyvdmv4avfm0replxg5tz6a2jyq84n4us7ryfc6'
+
+  # Match corosync authkey
+  - path_regex: ansible/roles/.*/files/etc/corosync/authkey
+
+  # Match kubernetes ssl certificates
+  - path_regex: ansible/roles/.*/files/etc/kubernetes/.*.conf
+    age: 'age1ety65vhtrhlevgmm899eyvdmv4avfm0replxg5tz6a2jyq84n4us7ryfc6'
+  - path_regex: ansible/roles/.*/files/etc/kubernetes/pki/.*.(crt|key|pub)
+    age: 'age1ety65vhtrhlevgmm899eyvdmv4avfm0replxg5tz6a2jyq84n4us7ryfc6'
+  - path_regex: ansible/roles/.*/files/etc/kubernetes/pki/etcd/.*.(crt|key)
     age: 'age1ety65vhtrhlevgmm899eyvdmv4avfm0replxg5tz6a2jyq84n4us7ryfc6'

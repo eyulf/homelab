@@ -1,0 +1,23 @@
+- name: k8s_all
+  hosts: k8s_all
+  gather_facts: true
+  become: true
+  roles:
+    - common
+    - docker
+    - kubernetes_common
+
+- name: k8s_controllers
+  hosts: k8s_controllers
+  gather_facts: true
+  become: true
+  roles:
+    - pacemaker
+    - kubernetes_controller
+
+- name: k8s_workers
+  hosts: k8s_workers
+  gather_facts: true
+  become: true
+  roles:
+    - kubernetes_worker

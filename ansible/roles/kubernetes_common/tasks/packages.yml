@@ -1,0 +1,46 @@
+---
+- name: packages | install kubernetes key
+  ansible.builtin.copy:
+    src: usr/share/keyrings/kubernetes-archive-keyring.gpg
+    dest: /usr/share/keyrings/kubernetes-archive-keyring.gpg
+    owner: root
+    group: root
+    mode: '644'
+  tags:
+    - kubernetes
+    - kubernetes-common
+    - packages
+  when: ansible_os_family == 'Debian'
+
+- name: packages | add kubernetes repo
+  ansible.builtin.apt_repository:
+    repo: deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+    filename: docker
+  tags:
+    - kubernetes
+    - kubernetes-common
+    - packages
+  when: ansible_os_family == 'Debian'
+
+- name: packages | install kubernetes packages
+  ansible.builtin.package:
+    pkg: '{{ item }}'
+    state: present
+  loop: '{{ kubernetes_packages_list }}'
+  tags:
+    - kubernetes
+    - kubernetes-common
+    - packages
+  when: ansible_os_family == 'Debian'
+
+- name: packages | prevent kubernetes from being upgraded
+  ansible.builtin.dpkg_selections:
+    name: '{{ item }}'
+    selection: hold
+  loop: '{{ kubernetes_packages_list }}'
+  tags:
+    - kubernetes
+    - kubernetes-common
+    - packages
+  when: ansible_os_family == 'Debian'

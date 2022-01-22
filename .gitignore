@@ -1,11 +1,30 @@
-# Ignore unencrypted secrets
+### Unencrypted secrets
+
+# Ansible
 /ansible/group_vars/*.yml
 /ansible/group_vars/*.yaml
 
 /ansible/host_vars/*.yml
 /ansible/host_vars/*.yaml
 
+/ansible/roles/*/files/etc/corosync/authkey
+
+/ansible/roles/*/files/etc/kubernetes/*.conf
+/ansible/roles/*/files/etc/kubernetes/pki/*.crt
+/ansible/roles/*/files/etc/kubernetes/pki/*.key
+/ansible/roles/*/files/etc/kubernetes/pki/*.pub
+/ansible/roles/*/files/etc/kubernetes/pki/etcd/*.crt
+/ansible/roles/*/files/etc/kubernetes/pki/etcd/*.key
+
+# Terraform
 **/terraform.tfvars
+
+# K8s pki
+/k8s-pki/*.pem
+/k8s-pki/*.csr
+/k8s-pki/*.kubeconfig
+/k8s-pki/*.key
+/k8s-pki/*.pub
 
 ### Terraform
 

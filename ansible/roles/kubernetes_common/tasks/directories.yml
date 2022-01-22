@@ -1,0 +1,16 @@
+---
+- name: directories | manage kubernetes directories
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: directory
+    owner: root
+    group: root
+    mode: '755'
+  loop:
+    - /etc/kubernetes/
+    - /etc/kubernetes/pki/
+  tags:
+    - kubernetes
+    - kubernetes-common
+    - directories
+  when: ansible_os_family == 'Debian'

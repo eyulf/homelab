@@ -13,6 +13,11 @@
     - '{{ ansible_facts.os_family }}.yml'
     - default.yml
 
+- name: common | populate service facts
+  ansible.builtin.service_facts:
+  tags:
+    - common
+
 # Network
 - name: network
   ansible.builtin.import_tasks: network.yml

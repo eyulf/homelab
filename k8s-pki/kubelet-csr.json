@@ -1,0 +1,15 @@
+{
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "AU",
+      "ST": "NSW",
+      "L": "Sydney",
+      "O": "system:nodes",
+      "OU": "Kubernetes Homelab"
+    }
+  ]
+}

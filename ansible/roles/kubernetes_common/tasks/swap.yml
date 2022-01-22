@@ -1,0 +1,25 @@
+---
+- name: swap | disable swap
+  ansible.builtin.command:
+    cmd: swapoff -a
+  tags:
+    - kubernetes
+    - kubernetes-common
+    - swap
+  when:
+    - ansible_os_family == 'Debian'
+    - ansible_facts['swaptotal_mb'] > 0
+
+- name: swap | disable swap on system start
+  ansible.posix.mount:
+    name: "{{ item }}"
+    fstype: swap
+    state: absent
+  loop:
+    - swap
+    - none
+  tags:
+    - kubernetes
+    - kubernetes-common
+    - swap
+  when: ansible_os_family == 'Debian'

@@ -1,0 +1,15 @@
+---
+- name: services | start and enable services
+  ansible.builtin.service:
+    name: '{{ item }}'
+    state: started
+    enabled: true
+  loop:
+    - '{{ pacemaker_service_name }}'
+    - '{{ corosync_service_name }}'
+    - '{{ pcsd_service_name }}'
+  tags:
+    - pacemaker
+    - services
+  when:
+    - ansible_os_family == 'Debian'

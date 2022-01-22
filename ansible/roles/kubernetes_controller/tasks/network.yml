@@ -1,0 +1,48 @@
+---
+- name: network | allow kubernetes ports inbound from kubernetes controllers
+  community.general.ufw:
+    rule: allow
+    port: '{{ item[0] }}'
+    proto: tcp
+    direction: in
+    src: '{{ item[1] }}'
+  loop: "{{ query('nested', kubernetes_controller_ports_list, kubernetes_controller_hosts_list) }}"
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - network
+  when:
+    - ansible_os_family == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+- name: network | allow kubernetes api inbound from kubernetes servers
+  community.general.ufw:
+    rule: allow
+    port: '{{ kubernetes_api_port }}'
+    proto: tcp
+    direction: in
+    src: '{{ item }}'
+  loop: '{{ kubernetes_all_hosts_list }}'
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - network
+  when:
+    - ansible_os_family == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+- name: network | allow kubernetes api inbound from permitted clients
+  community.general.ufw:
+    rule: allow
+    port: '{{ kubernetes_api_port }}'
+    proto: tcp
+    direction: in
+    src: '{{ item }}'
+  loop: '{{ kubernetes_clients_hosts_list }}'
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - network
+  when:
+    - ansible_os_family == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']

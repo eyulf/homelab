@@ -1,0 +1,15 @@
+---
+- name: encryption | configure /var/lib/kubernetes/encryption-config.yaml
+  ansible.builtin.template:
+    src: var/lib/kubernetes/encryption-config.yaml.j2
+    dest: /var/lib/kubernetes/encryption-config.yaml
+    owner: root
+    group: root
+    mode: '0644'
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - encryption
+  when:
+    - ansible_os_family == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']

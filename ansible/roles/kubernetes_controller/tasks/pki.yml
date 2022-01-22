@@ -1,0 +1,145 @@
+---
+- name: pki | configure /root/.kube/config
+  ansible.builtin.copy:
+    src: etc/kubernetes/admin-{{ inventory_hostname }}.conf
+    dest: /root/.kube/config
+    owner: root
+    group: root
+    mode: '0644'
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - pki
+  when:
+    - ansible_os_family == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+- name: pki | configure /etc/kubernetes/{{ item }}.conf
+  ansible.builtin.copy:
+    src: etc/kubernetes/{{ item }}-{{ inventory_hostname }}.conf
+    dest: /etc/kubernetes/{{ item }}.conf
+    owner: root
+    group: root
+    mode: '0644'
+  loop: '{{ kubernetes_controllers_conf_host_files }}'
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - pki
+  when:
+    - ansible_os_family == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+- name: pki | configure /etc/kubernetes/pki/{{ item }}.crt
+  ansible.builtin.copy:
+    src: etc/kubernetes/pki/{{ item }}.crt
+    dest: /etc/kubernetes/pki/{{ item }}.crt
+    owner: root
+    group: root
+    mode: '0644'
+  loop: '{{ kubernetes_controllers_pki_crt_files }}'
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - pki
+  when:
+    - ansible_os_family == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+- name: pki | configure /etc/kubernetes/pki/{{ item }}.key
+  ansible.builtin.copy:
+    src: etc/kubernetes/pki/{{ item }}.key
+    dest: /etc/kubernetes/pki/{{ item }}.key
+    owner: root
+    group: root
+    mode: '0600'
+  loop: '{{ kubernetes_controllers_pki_key_files }}'
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - pki
+  when:
+    - ansible_os_family == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+- name: pki | configure /etc/kubernetes/pki/etcd/{{ item }}.crt
+  ansible.builtin.copy:
+    src: etc/kubernetes/pki/etcd/{{ item }}.crt
+    dest: /etc/kubernetes/pki/etcd/{{ item }}.crt
+    owner: root
+    group: root
+    mode: '0600'
+  loop: '{{ kubernetes_controllers_etcd_pki_crt_files }}'
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - pki
+  when:
+    - ansible_os_family == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+- name: pki | configure /etc/kubernetes/pki/etcd/{{ item }}.key
+  ansible.builtin.copy:
+    src: etc/kubernetes/pki/etcd/{{ item }}.key
+    dest: /etc/kubernetes/pki/etcd/{{ item }}.key
+    owner: root
+    group: root
+    mode: '0600'
+  loop: '{{ kubernetes_controllers_etcd_pki_key_files }}'
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - pki
+  when:
+    - ansible_os_family == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+- name: pki | configure /etc/kubernetes/pki/etcd/{{ item }}.crt
+  ansible.builtin.copy:
+    src: etc/kubernetes/pki/etcd/{{ item }}-{{ inventory_hostname }}.crt
+    dest: /etc/kubernetes/pki/etcd/{{ item }}.crt
+    owner: root
+    group: root
+    mode: '0644'
+  loop: '{{ kubernetes_controllers_etcd_pki_crt_host_files }}'
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - pki
+  when:
+    - ansible_os_family == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+- name: pki | configure /etc/kubernetes/pki/etcd/{{ item }}.key
+  ansible.builtin.copy:
+    src: etc/kubernetes/pki/etcd/{{ item }}-{{ inventory_hostname }}.key
+    dest: /etc/kubernetes/pki/etcd/{{ item }}.key
+    owner: root
+    group: root
+    mode: '0600'
+  loop: '{{ kubernetes_controllers_etcd_pki_key_host_files }}'
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - pki
+  when:
+    - ansible_os_family == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+- name: pki | configure /etc/kubernetes/pki/sa.{{ item }}
+  ansible.builtin.copy:
+    src: etc/kubernetes/pki/sa.{{ item }}
+    dest: /etc/kubernetes/pki/sa.{{ item }}
+    owner: root
+    group: root
+    mode: '0600'
+  loop:
+    - key
+    - pub
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - pki
+  when:
+    - ansible_os_family == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']

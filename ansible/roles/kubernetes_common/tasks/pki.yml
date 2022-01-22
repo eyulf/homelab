@@ -1,0 +1,28 @@
+---
+- name: pki | configure /etc/kubernetes/kubelet.conf
+  ansible.builtin.copy:
+    src: etc/kubernetes/kubelet-{{ inventory_hostname }}.conf
+    dest: /etc/kubernetes/kubelet.conf
+    owner: root
+    group: root
+    mode: '0644'
+  tags:
+    - kubernetes
+    - kubernetes-common
+    - pki
+  when:
+    - ansible_os_family == 'Debian'
+
+- name: pki | configure /etc/kubernetes/pki/ca.crt
+  ansible.builtin.copy:
+    src: etc/kubernetes/pki/ca.crt
+    dest: /etc/kubernetes/pki/ca.crt
+    owner: root
+    group: root
+    mode: '0644'
+  tags:
+    - kubernetes
+    - kubernetes-common
+    - pki
+  when:
+    - ansible_os_family == 'Debian'

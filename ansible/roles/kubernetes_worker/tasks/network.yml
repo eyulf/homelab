@@ -1,0 +1,32 @@
+---
+- name: network | allow kubelet api inbound from kubernetes controllers
+  community.general.ufw:
+    rule: allow
+    port: '{{ kubernetes_kublet_port }}'
+    proto: tcp
+    direction: in
+    src: '{{ item }}'
+  loop: '{{ kubernetes_controller_hosts_list }}'
+  tags:
+    - kubernetes
+    - kubernetes-worker
+    - network
+  when:
+    - ansible_os_family == 'Debian'
+    - inventory_hostname in groups['k8s_workers']
+
+- name: network | allow nodeport services inbound from kubernetes servers
+  community.general.ufw:
+    rule: allow
+    port: '{{ kubernetes_nodeport_port_range }}'
+    proto: tcp
+    direction: in
+    src: '{{ item }}'
+  loop: '{{ kubernetes_all_hosts_list }}'
+  tags:
+    - kubernetes
+    - kubernetes-worker
+    - network
+  when:
+    - ansible_os_family == 'Debian'
+    - inventory_hostname in groups['k8s_workers']

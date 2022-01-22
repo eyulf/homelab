@@ -1,0 +1,58 @@
+---
+- name: pacemaker | capture configured resources
+  ansible.builtin.command:
+    cmd: pcs resource config
+  run_once: true
+  register: pcs_resource_config
+  changed_when: false
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - pacemaker
+  when:
+    - ansible_os_family == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+- name: pacemaker | create kubernetes-ip resource
+  ansible.builtin.command:
+    cmd: >
+      pcs resource create {{ item['resource_id'] }}
+      {{ item['provider'] }} {{ item['options']|join(' ') }}
+      {% if item['op'] is defined %}op {{ item['op'] }}{% endif %}
+      {% if item['op_options'] is defined %}{{ item['op_options']|join(' ') }}{% endif %}
+  run_once: true
+  with_items: '{{ pacemaker_cluster_resources }}'
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - pacemaker
+  when:
+    - ansible_os_family == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+    - item['options'] is defined
+    - item['resource_id'] not in pcs_resource_config['stdout']
+    - item['options']|join(' ') not in pcs_resource_config['stdout']
+    - item['action']|lower == 'create'
+
+- name: pacemaker | pause to allow floating ip address to come online
+  ansible.builtin.pause:
+    seconds: 30
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - pacemaker
+  when:
+    - ansible_os_family == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+- name: pacemaker | refresh ip address facts
+  ansible.builtin.setup:
+    gather_subset:
+      - 'network'
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - pacemaker
+  when:
+    - ansible_os_family == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']

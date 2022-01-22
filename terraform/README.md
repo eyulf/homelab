@@ -24,6 +24,26 @@ terraform init
 terraform apply
 ```
 
+### Core Services
+
+The configuration contained within the [infrastructure/core_services](infrastructure/core_services) state creates KVM VMs for usage as DNS servers. These are deployed to the KVM hypervisors configured in [infrastructure/hypervisors](infrastructure/hypervisors).
+
+```bash
+cd infrastructure/core_services
+terraform init
+terraform apply
+```
+
+### Kubernetes
+
+The configuration contained within the [infrastructure/kubernetes](infrastructure/kubernetes) state creates KVM VMs for usage as Kubernetes servers. These are deployed to the KVM hypervisors configured in [infrastructure/hypervisors](infrastructure/hypervisors).
+
+```bash
+cd infrastructure/kubernetes
+terraform init
+terraform apply
+```
+
 ## Modules
 
 The [modules](modules) directory contains all custom Terraform modules used by this repository that do not yet warrant their own seperately maintained respository.

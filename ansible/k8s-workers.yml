@@ -1,0 +1,9 @@
+- name: k8s_workers
+  hosts: k8s_workers
+  gather_facts: true
+  become: true
+  roles:
+    - common
+    - docker
+    - kubernetes_common
+    - kubernetes_worker

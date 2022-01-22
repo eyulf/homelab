@@ -1,0 +1,10 @@
+- name: k8s_controllers
+  hosts: k8s_controllers
+  gather_facts: true
+  become: true
+  roles:
+    - common
+    - docker
+    - kubernetes_common
+    - pacemaker
+    - kubernetes_controller

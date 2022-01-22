@@ -5,6 +5,7 @@
 This repository contains everything used to set-up the infrastructure for my homelab using as much IaC as possible as part of my [homelab refresh](https://alexgardner.id.au/blog/home-lab-refresh/). For more details, see the README of the following directories.
 
 - [ansible](ansible) roles for server configuration.
+- [k8s-pki](k8s-pki) script to pre-generate PKI certificates for Kubernetes.
 - [terraform](terraform) configuration for provisioning VMs.
 
 ## SOPS

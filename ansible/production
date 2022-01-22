@@ -7,3 +7,17 @@ kvm3
 dns1
 dns2
 dns3
+
+[k8s_controllers]
+k8s-controller-01
+k8s-controller-02
+k8s-controller-03
+
+[k8s_workers]
+k8s-worker-01
+k8s-worker-02
+k8s-worker-03
+
+[k8s_all:children]
+k8s_controllers
+k8s_workers

@@ -1,0 +1,80 @@
+---
+- name: kubernetes-controller | set variables
+  ansible.builtin.include_vars: '{{ item }}'
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - network
+    - pacemaker
+    - pki
+    - encryption
+    - kubeadm
+  with_first_found:
+    - '{{ ansible_facts.os_family }}.yml'
+    - default.yml
+
+# Network
+- name: network
+  ansible.builtin.import_tasks: network.yml
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - network
+  when:
+    - ansible_os_family == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+# Pacemaker
+- name: pacemaker
+  ansible.builtin.import_tasks: pacemaker.yml
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - pacemaker
+  when:
+    - ansible_os_family == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+# Directories
+- name: directories
+  ansible.builtin.import_tasks: directories.yml
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - directories
+  when:
+    - ansible_os_family == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+# PKI
+- name: kubernetes-pki
+  ansible.builtin.import_tasks: pki.yml
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - pki
+  when:
+    - ansible_os_family == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+# Encryption
+- name: encryption
+  ansible.builtin.import_tasks: encryption.yml
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - encryption
+  when:
+    - ansible_os_family == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+# Kubeadm
+- name: kubeadm
+  ansible.builtin.import_tasks: kubeadm.yml
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - kubeadm
+  when:
+    - ansible_os_family == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']

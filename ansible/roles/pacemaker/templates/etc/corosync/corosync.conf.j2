@@ -1,0 +1,42 @@
+# Please read the corosync.conf.5 manual page
+totem {
+  version: 2
+  cluster_name: {{ pacemaker_cluster_name }}
+  crypto_cipher: aes256
+  crypto_hash: sha1
+
+  interface {
+    bindnetaddr: {{ firewall_servers_subnet.split('/')[0] }}
+    mcastaddr: 239.255.1.1
+    mcastport: 5405
+    ttl: 1
+  }
+}
+
+logging {
+  fileline: off
+  to_stderr: yes
+  to_logfile: yes
+  logfile: /var/log/corosync/corosync.log
+  to_syslog: yes
+  debug: off
+  timestamp: on
+  logger_subsys {
+    subsys: QUORUM
+    debug: off
+  }
+}
+
+quorum {
+  provider: corosync_votequorum
+}
+
+nodelist {
+{% for host in pacemaker_hosts %}
+  node {
+    name: {{ host }}
+    nodeid: {{ loop.index }}
+    ring0_addr: {{ hostvars[host].ansible_host }}
+  }
+{% endfor %}
+}

@@ -1,0 +1,7 @@
+kubernetes_controller_hosts_list: "{{ groups['k8s_controllers'] | map('extract',hostvars,'ansible_host') | list }}"
+kubernetes_all_hosts_list: "{{ groups['k8s_all'] | map('extract',hostvars,'ansible_host') | list }}"
+
+kubernetes_kublet_port: '10250'
+kubernetes_nodeport_port_range: '30000:32767'
+
+kubernetes_kubeadm_ignore: 'FileAvailable--etc-kubernetes-kubelet.conf,FileAvailable--etc-kubernetes-pki-ca.crt'

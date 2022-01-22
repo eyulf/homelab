@@ -27,3 +27,17 @@ Configure PowerDNS backed by a MariaDB Galera cluster.
 ```bash
 ansible-playbook dns-servers -i production
 ```
+
+## Kubernetes
+Configure and create a Kubernetes cluster, including both controller and worker nodes.
+
+**Assumptions**
+- Debian 10.x installed with only the following software selected:
+  - SSH server
+  - standard system utilities
+
+```bash
+ansible-playbook k8s-all.yml -i production
+ansible-playbook k8s-controllers.yml -i production
+ansible-playbook k8s-workers.yml -i production
+```

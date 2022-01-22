@@ -1,0 +1,16 @@
+{
+  "CN": "kubernetes-front-proxy-ca",
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names":[
+    {
+      "C": "AU",
+      "ST": "NSW",
+      "L": "Sydney",
+      "O": "Kubernetes",
+      "OU": "CA"
+    }
+  ]
+}

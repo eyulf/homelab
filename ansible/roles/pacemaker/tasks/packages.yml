@@ -1,0 +1,11 @@
+---
+- name: packages | install pacemaker packages
+  ansible.builtin.package:
+    pkg: '{{ item }}'
+    state: present
+  loop: '{{ pacemaker_packages }}'
+  tags:
+    - pacemaker
+    - packages
+  when:
+    - ansible_os_family == 'Debian'

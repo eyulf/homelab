@@ -1,0 +1,19 @@
+---
+- name: directories | manage kubernetes directories
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: directory
+    owner: root
+    group: root
+    mode: '755'
+  loop:
+    - /etc/kubernetes/pki/etcd/
+    - /var/lib/kubernetes/
+    - /root/.kube/
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - directories
+  when:
+    - ansible_os_family == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
