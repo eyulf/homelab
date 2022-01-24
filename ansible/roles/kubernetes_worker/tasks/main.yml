@@ -10,6 +10,12 @@
     - '{{ ansible_facts.os_family }}.yml'
     - default.yml
 
+- name: kubernetes-worker | populate service facts
+  ansible.builtin.service_facts:
+  tags:
+    - kubernetes
+    - kubernetes-worker
+
 # Network
 - name: network
   ansible.builtin.import_tasks: network.yml
@@ -18,7 +24,7 @@
     - kubernetes-worker
     - network
   when:
-    - ansible_facts.os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_workers']
 
 # Kubeadm
@@ -29,5 +35,5 @@
     - kubernetes-worker
     - kubeadm
   when:
-    - ansible_facts.os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_workers']

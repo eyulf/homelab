@@ -12,7 +12,7 @@
     - kubernetes-controller
     - kubeadm
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
     - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']
 
@@ -31,7 +31,7 @@
     - kubernetes-controller
     - kubeadm
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
     - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']
 
@@ -44,7 +44,7 @@
     - kubernetes-controller
     - kubeadm
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
     - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']
 
@@ -57,6 +57,6 @@
     - kubernetes-controller
     - kubeadm
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
     - pacemaker_cluster_ip not in ansible_facts['all_ipv4_addresses']

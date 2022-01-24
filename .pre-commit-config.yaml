@@ -10,6 +10,9 @@ repos:
       - id: terraform_providers_lock
       - id: terraform_tflint
       - id: terraform_docs
+  - repo: git://github.com/bridgecrewio/checkov
+    rev: '2.0.744'
+    hooks:
       - id: checkov
         args: [
           "--quiet",

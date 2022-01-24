@@ -34,6 +34,7 @@ DOMAIN=$(cd ${ANSIBLE_DIR} && ${ANSIBLE_INVENTORY} --graph k8s_controllers | gre
 CLUSTER_NAME=$(cd ${ANSIBLE_DIR} && ${ANSIBLE_INVENTORY} --graph k8s_controllers | grep '|' | cut -d '-' -f3-6 | head -n 1 | xargs ${ANSIBLE_INVENTORY} -y --host | grep 'kubernetes_cluster_name'| head -n 1 | awk '{print $2}')
 CLUSTER_IP=$(cd ${ANSIBLE_DIR} && ${ANSIBLE_INVENTORY} --graph k8s_controllers | grep '|' | cut -d '-' -f3-6 | head -n 1 | xargs ${ANSIBLE_INVENTORY} -y --host | grep 'pacemaker_cluster_ip'| head -n 1 | awk '{print $2}')
 CLUSTER_FQDN=$(cd ${ANSIBLE_DIR} && ${ANSIBLE_INVENTORY} --graph k8s_controllers | grep '|' | cut -d '-' -f3-6 | head -n 1 | xargs ${ANSIBLE_INVENTORY} -y --host | grep 'kubernetes_cluster_fqdn'| head -n 1 | awk '{print $2}' | cut -d '.' -f1).${DOMAIN}
+CALICO_POD_IP="10.96.0.1"
 
 ############################################################
 ## Validation
@@ -153,7 +154,7 @@ function ssl_crt_etcd {
 
 function ssl_crt_kube_apiserver {
 	filename=apiserver
-	${K8S_CA_GENCERT} --hostname=${CLUSTER_FQDN},${KUBERNETES_HOSTNAMES},${CLUSTER_IP},${KUBERNETES_CONTROLLER_IPS::-1},127.0.0.1 ${filename}-csr.json | cfssljson -bare ${filename}
+	${K8S_CA_GENCERT} --hostname=${CLUSTER_FQDN},${KUBERNETES_HOSTNAMES},${CLUSTER_IP},${KUBERNETES_CONTROLLER_IPS::-1},${CALICO_POD_IP},127.0.0.1 ${filename}-csr.json | cfssljson -bare ${filename}
 	cp ${filename}.pem ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt
 	sops -e ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt.enc
 	cp ${filename}-key.pem ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key

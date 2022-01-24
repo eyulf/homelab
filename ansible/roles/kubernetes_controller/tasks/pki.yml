@@ -11,7 +11,7 @@
     - kubernetes-controller
     - pki
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
 - name: pki | configure /etc/kubernetes/{{ item }}.conf
@@ -27,7 +27,7 @@
     - kubernetes-controller
     - pki
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
 - name: pki | configure /etc/kubernetes/pki/{{ item }}.crt
@@ -43,7 +43,7 @@
     - kubernetes-controller
     - pki
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
 - name: pki | configure /etc/kubernetes/pki/{{ item }}.key
@@ -59,7 +59,7 @@
     - kubernetes-controller
     - pki
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
 - name: pki | configure /etc/kubernetes/pki/etcd/{{ item }}.crt
@@ -75,7 +75,7 @@
     - kubernetes-controller
     - pki
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
 - name: pki | configure /etc/kubernetes/pki/etcd/{{ item }}.key
@@ -91,7 +91,7 @@
     - kubernetes-controller
     - pki
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
 - name: pki | configure /etc/kubernetes/pki/etcd/{{ item }}.crt
@@ -107,7 +107,7 @@
     - kubernetes-controller
     - pki
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
 - name: pki | configure /etc/kubernetes/pki/etcd/{{ item }}.key
@@ -123,7 +123,7 @@
     - kubernetes-controller
     - pki
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
 - name: pki | configure /etc/kubernetes/pki/sa.{{ item }}
@@ -141,5 +141,5 @@
     - kubernetes-controller
     - pki
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']

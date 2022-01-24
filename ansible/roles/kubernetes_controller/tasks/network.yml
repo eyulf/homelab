@@ -12,7 +12,7 @@
     - kubernetes-controller
     - network
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
 - name: network | allow kubernetes api inbound from kubernetes servers
@@ -28,7 +28,7 @@
     - kubernetes-controller
     - network
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
 - name: network | allow kubernetes api inbound from permitted clients
@@ -44,5 +44,5 @@
     - kubernetes-controller
     - network
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']

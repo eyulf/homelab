@@ -8,7 +8,9 @@
     - pacemaker
     - pki
     - encryption
+    - helm
     - kubeadm
+    - calico
   with_first_found:
     - '{{ ansible_facts.os_family }}.yml'
     - default.yml
@@ -21,7 +23,7 @@
     - kubernetes-controller
     - network
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
 # Pacemaker
@@ -32,7 +34,7 @@
     - kubernetes-controller
     - pacemaker
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
 # Directories
@@ -43,7 +45,7 @@
     - kubernetes-controller
     - directories
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
 # PKI
@@ -54,7 +56,7 @@
     - kubernetes-controller
     - pki
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
 # Encryption
@@ -65,7 +67,18 @@
     - kubernetes-controller
     - encryption
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+# Helm
+- name: helm
+  ansible.builtin.import_tasks: helm.yml
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - helm
+  when:
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
 # Kubeadm
@@ -76,5 +89,16 @@
     - kubernetes-controller
     - kubeadm
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+# Calico
+- name: calico
+  ansible.builtin.import_tasks: calico.yml
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - calico
+  when:
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']

@@ -3,21 +3,12 @@ kubernetes_workers_hosts_list: "{{ groups['k8s_workers'] | map('extract',hostvar
 kubernetes_all_hosts_list: "{{ groups['k8s_all'] | map('extract',hostvars,'ansible_host') | list }}"
 corosync_hosts_list: "{{ groups['k8s_controllers'] | map('extract',hostvars,'ansible_host') | list }}"
 
-kubernetes_api_port: '6443'
-kubernetes_kublet_port: '10250'
-kubernetes_nodeport_port_range: '30000:32767'
-kubernetes_controller_ports_list:
-  - '2379'   # etcd server client API
-  - '2380'   # etcd server client API
-  - '10250'  # kubelet API
-  - '10251'  # kube-scheduler
-  - '10252'  # kube-controller-manager
-corosync_tcp_ports:
-  - '2224'
-  - '3121'
-  - '21064'
-corosync_udp_ports:
-  - '5405'
+kubernetes_common_tcp_ports_list:
+  - '179'   # calico - bgp
+  - '5473'  # calico - typha
+  - '9099'  # calico - felix
+kubernetes_common_udp_ports_list:
+  - '4789'  # calico - vxlan
 
 kubernetes_packages_list:
   - kubelet
@@ -33,7 +24,6 @@ kubernetes_controllers_conf_host_files:
   - 'admin'
   - 'controller-manager'
   - 'scheduler'
-
 kubernetes_controllers_pki_crt_files:
   - 'ca'
   - 'front-proxy-ca'

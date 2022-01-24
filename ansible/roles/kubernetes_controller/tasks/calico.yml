@@ -1,0 +1,25 @@
+---
+- name: calico | add calico repo to helm
+  ansible.builtin.command:
+    cmd: helm repo add projectcalico https://docs.projectcalico.org/charts
+    creates: /root/.cache/helm/repository/projectcalico-charts.txt
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - calico
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+- name: calico | install calico
+  ansible.builtin.command:
+    cmd: helm install calico projectcalico/tigera-operator --version {{ calico_version }}
+    creates: /opt/cni/bin/install
+  run_once: true
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - calico
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']

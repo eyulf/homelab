@@ -20,7 +20,7 @@
     - kubernetes
     - kubernetes-common
     - swap
-  when: ansible_os_family == 'Debian'
+  when: ansible_facts['os_family'] == 'Debian'
 
 # Network
 - name: network
@@ -29,7 +29,7 @@
     - kubernetes
     - kubernetes-common
     - network
-  when: ansible_facts.os_family == 'Debian'
+  when: ansible_facts['os_family'] == 'Debian'
 
 # Packages
 - name: packages
@@ -38,7 +38,7 @@
     - kubernetes
     - kubernetes-common
     - packages
-  when: ansible_os_family == 'Debian'
+  when: ansible_facts['os_family'] == 'Debian'
 
 # Directories
 - name: directories
@@ -47,7 +47,7 @@
     - kubernetes
     - kubernetes-common
     - directories
-  when: ansible_facts.os_family == 'Debian'
+  when: ansible_facts['os_family'] == 'Debian'
 
 # PKI
 - name: pki
@@ -56,4 +56,4 @@
     - kubernetes
     - kubernetes-common
     - pki
-  when: ansible_os_family == 'Debian'
+  when: ansible_facts['os_family'] == 'Debian'

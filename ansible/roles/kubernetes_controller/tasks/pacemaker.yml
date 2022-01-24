@@ -10,7 +10,7 @@
     - kubernetes-controller
     - pacemaker
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
 - name: pacemaker | create kubernetes-ip resource
@@ -27,7 +27,7 @@
     - kubernetes-controller
     - pacemaker
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
     - item['options'] is defined
     - item['resource_id'] not in pcs_resource_config['stdout']
@@ -42,7 +42,7 @@
     - kubernetes-controller
     - pacemaker
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
 - name: pacemaker | refresh ip address facts
@@ -54,5 +54,5 @@
     - kubernetes-controller
     - pacemaker
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
