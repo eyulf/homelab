@@ -20,11 +20,11 @@
 **/terraform.tfvars
 
 # K8s pki
-/k8s-pki/*.pem
-/k8s-pki/*.csr
-/k8s-pki/*.kubeconfig
-/k8s-pki/*.key
-/k8s-pki/*.pub
+/pki/*.pem
+/pki/*.csr
+/pki/*.kubeconfig
+/pki/*.key
+/pki/*.pub
 
 ### Terraform
 

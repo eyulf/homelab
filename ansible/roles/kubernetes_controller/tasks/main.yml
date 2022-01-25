@@ -11,6 +11,7 @@
     - helm
     - kubeadm
     - calico
+    - flux
   with_first_found:
     - '{{ ansible_facts.os_family }}.yml'
     - default.yml
@@ -99,6 +100,17 @@
     - kubernetes
     - kubernetes-controller
     - calico
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+# Flux
+- name: flux
+  ansible.builtin.import_tasks: flux.yml
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - flux
   when:
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
