@@ -1,0 +1,24 @@
+---
+- name: pacemaker | pause to allow floating ip address to come online
+  ansible.builtin.pause:
+    seconds: 30
+  listen: pause for pacemaker
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - pacemaker
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+- name: encryption | pause to allow kube-apiserver to redeploy
+  ansible.builtin.pause:
+    seconds: 60
+  listen: pause for apiserver
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - encryption
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']

@@ -22,6 +22,8 @@
       {% if item['op_options'] is defined %}{{ item['op_options']|join(' ') }}{% endif %}
   run_once: true
   with_items: '{{ pacemaker_cluster_resources }}'
+  notify:
+    - pause for pacemaker
   tags:
     - kubernetes
     - kubernetes-controller
@@ -34,16 +36,12 @@
     - item['options']|join(' ') not in pcs_resource_config['stdout']
     - item['action']|lower == 'create'
 
-- name: pacemaker | pause to allow floating ip address to come online
-  ansible.builtin.pause:
-    seconds: 30
+- name: pacemaker | flush handlers
+  ansible.builtin.meta: flush_handlers
   tags:
     - kubernetes
     - kubernetes-controller
     - pacemaker
-  when:
-    - ansible_facts['os_family'] == 'Debian'
-    - inventory_hostname in groups['k8s_controllers']
 
 - name: pacemaker | refresh ip address facts
   ansible.builtin.setup:

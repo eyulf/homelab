@@ -8,7 +8,7 @@
     mode: '755'
   loop:
     - /etc/kubernetes/pki/etcd/
-    - /var/lib/kubernetes/
+    - /etc/kubernetes/secrets/
     - /root/.kube/
   tags:
     - kubernetes

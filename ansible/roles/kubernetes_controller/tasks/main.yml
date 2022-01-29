@@ -60,6 +60,17 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
+# Kubeadm
+- name: kubeadm
+  ansible.builtin.import_tasks: kubeadm.yml
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - kubeadm
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
 # Encryption
 - name: encryption
   ansible.builtin.import_tasks: encryption.yml
@@ -82,17 +93,6 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-# Kubeadm
-- name: kubeadm
-  ansible.builtin.import_tasks: kubeadm.yml
-  tags:
-    - kubernetes
-    - kubernetes-controller
-    - kubeadm
-  when:
-    - ansible_facts['os_family'] == 'Debian'
-    - inventory_hostname in groups['k8s_controllers']
-
 # Calico
 - name: calico
   ansible.builtin.import_tasks: calico.yml
@@ -111,6 +111,17 @@
     - kubernetes
     - kubernetes-controller
     - flux
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+# KubeSeal
+- name: kubeseal
+  ansible.builtin.import_tasks: kubeseal.yml
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - kubeseal
   when:
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']

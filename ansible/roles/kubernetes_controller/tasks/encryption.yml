@@ -1,8 +1,8 @@
 ---
-- name: encryption | configure /var/lib/kubernetes/encryption-config.yaml
+- name: encryption | configure /etc/kubernetes/secrets/encryption-config.yaml
   ansible.builtin.template:
-    src: var/lib/kubernetes/encryption-config.yaml.j2
-    dest: /var/lib/kubernetes/encryption-config.yaml
+    src: etc/kubernetes/secrets/encryption-config.yaml.j2
+    dest: /etc/kubernetes/secrets/encryption-config.yaml
     owner: root
     group: root
     mode: '0644'
@@ -13,3 +13,27 @@
   when:
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
+
+- name: encryption | configure /etc/kubernetes/manifests/kube-apiserver.yaml
+  ansible.builtin.template:
+    src: etc/kubernetes/manifests/kube-apiserver.yaml.j2
+    dest: /etc/kubernetes/manifests/kube-apiserver.yaml
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - pause for apiserver
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - encryption
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+- name: encryption | flush handlers
+  ansible.builtin.meta: flush_handlers
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - encryption

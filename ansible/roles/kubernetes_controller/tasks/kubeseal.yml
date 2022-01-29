@@ -1,0 +1,38 @@
+---
+- name: kubeseal | download archived kubeseal binary
+  ansible.builtin.get_url:
+    url: https://github.com/bitnami-labs/sealed-secrets/releases/download/v{{ kubeseal_version }}/kubeseal-{{ kubeseal_version }}-linux-amd64.tar.gz
+    dest: /etc/kubernetes/kubeseal-{{ kubeseal_version }}-linux-amd64.tar.gz
+    checksum: '{{ kubeseal_binary_checksum }}'
+    timeout: 30
+    owner: root
+    group: root
+    mode: '644'
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - kubeseal
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - ansible_facts['architecture'] == 'x86_64'
+    - inventory_hostname in groups['k8s_controllers']
+
+- name: kubeseal | extract kubeseal binary
+  ansible.builtin.unarchive:
+    src: /etc/kubernetes/kubeseal-{{ kubeseal_version }}-linux-amd64.tar.gz
+    dest: /usr/local/bin/
+    remote_src: true
+    exclude:
+      - LICENSE
+      - README.md
+    owner: root
+    group: root
+    mode: '755'
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - kubeseal
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - ansible_facts['architecture'] == 'x86_64'
+    - inventory_hostname in groups['k8s_controllers']
