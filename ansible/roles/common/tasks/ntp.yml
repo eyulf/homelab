@@ -13,11 +13,11 @@
   tags:
     - common
     - ntp
-  when: ansible_facts.os_family != 'FreeBSD'
+  when: ansible_facts['os_family'] != 'FreeBSD'
 
 - name: ntp | configure /etc/ntp.conf
   ansible.builtin.copy:
-    src: etc/ntp-{{ ansible_facts.os_family }}.conf
+    src: etc/ntp-{{ ansible_facts['os_family'] }}.conf
     dest: /etc/ntp.conf
     owner: root
     group: '{{ main_root_group }}'

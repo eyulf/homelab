@@ -6,7 +6,7 @@
   listen: restart docker
   tags:
     - docker
-  when: ansible_os_family == 'Debian'
+  when: ansible_facts['os_family'] == 'Debian'
 
 - name: docker | restart containerd
   ansible.builtin.service:
@@ -15,4 +15,4 @@
   listen: restart containerd
   tags:
     - docker
-  when: ansible_os_family == 'Debian'
+  when: ansible_facts['os_family'] == 'Debian'

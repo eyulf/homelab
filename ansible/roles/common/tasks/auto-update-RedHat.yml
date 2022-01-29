@@ -7,7 +7,7 @@
   tags:
     - common
     - auto-updates
-  when: ansible_facts.os_family == 'RedHat'
+  when: ansible_facts['os_family'] == 'RedHat'
 
 - name: auto-updates | configure /etc/yum/yum-cron.conf
   ansible.builtin.template:
@@ -20,7 +20,7 @@
   tags:
     - common
     - auto-updates
-  when: ansible_facts.os_family == 'RedHat'
+  when: ansible_facts['os_family'] == 'RedHat'
 
 - name: auto-updates | start and enable yum-cron service
   ansible.builtin.service:
@@ -30,4 +30,4 @@
   tags:
     - common
     - auto-updates
-  when: ansible_facts.os_family == 'RedHat'
+  when: ansible_facts['os_family'] == 'RedHat'

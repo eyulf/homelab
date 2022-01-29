@@ -11,7 +11,7 @@
     - pacemaker
     - corosync
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
 
 - name: corosync | configure /etc/corosync/corosync.conf
   ansible.builtin.template:
@@ -26,7 +26,7 @@
     - pacemaker
     - corosync
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
 
 # Flush Handlers
 - name: corosync | flush handlers

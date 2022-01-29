@@ -10,7 +10,7 @@
     - auto-updates
     - users
   with_first_found:
-    - '{{ ansible_facts.os_family }}.yml'
+    - "{{ ansible_facts['os_family'] }}.yml"
     - default.yml
 
 - name: common | populate service facts
@@ -28,7 +28,7 @@
 # Firewall
 - name: firewall
   ansible.builtin.include_tasks:
-    file: firewall-{{ ansible_facts.os_family }}.yml
+    file: firewall-{{ ansible_facts['os_family'] }}.yml
     apply:
       tags:
         - common
@@ -51,7 +51,7 @@
 # Auto Updates
 - name: auto-updates
   ansible.builtin.include_tasks:
-    file: auto-update-{{ ansible_facts.os_family }}.yml
+    file: auto-update-{{ ansible_facts['os_family'] }}.yml
     apply:
       tags:
         - common

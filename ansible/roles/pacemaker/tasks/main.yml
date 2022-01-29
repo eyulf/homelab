@@ -9,7 +9,7 @@
     - corosync
     - settings
   with_first_found:
-    - '{{ ansible_facts.os_family }}.yml'
+    - "{{ ansible_facts['os_family'] }}.yml"
     - default.yml
 
 # Network
@@ -18,7 +18,7 @@
   tags:
     - pacemaker
     - network
-  when: ansible_facts.os_family == 'Debian'
+  when: ansible_facts['os_family'] == 'Debian'
 
 # Packages
 - name: packages
@@ -27,7 +27,7 @@
     - pacemaker
     - packages
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
 
 # Services
 - name: services
@@ -36,7 +36,7 @@
     - pacemaker
     - services
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
 
 # Corosync
 - name: corosync
@@ -45,7 +45,7 @@
     - pacemaker
     - corosync
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
 
 # Settings
 - name: settings
@@ -54,4 +54,4 @@
     - pacemaker
     - settings
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'

@@ -5,7 +5,7 @@
     - hardware
     - packages
   with_first_found:
-    - '{{ ansible_facts.os_family }}.yml'
+    - "{{ ansible_facts['os_family'] }}.yml"
     - default.yml
 
 # Packages
@@ -24,4 +24,4 @@
   tags:
     - hardware
     - coretemp
-  when: ansible_facts.os_family == 'FreeBSD'
+  when: ansible_facts['os_family'] == 'FreeBSD'

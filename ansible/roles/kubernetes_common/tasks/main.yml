@@ -10,7 +10,7 @@
     - directories
     - pki
   with_first_found:
-    - '{{ ansible_facts.os_family }}.yml'
+    - "{{ ansible_facts['os_family'] }}.yml"
     - default.yml
 
 # Swap

@@ -6,7 +6,7 @@
     - network
     - kvm
   with_first_found:
-    - '{{ ansible_facts.os_family }}.yml'
+    - "{{ ansible_facts['os_family'] }}.yml"
     - default.yml
 
 # Network
@@ -15,7 +15,7 @@
   tags:
     - kvm-hypervisor
     - network
-  when: ansible_facts.os_family == 'Debian'
+  when: ansible_facts['os_family'] == 'Debian'
 
 # KVM
 - name: kvm
@@ -23,7 +23,7 @@
   tags:
     - kvm-hypervisor
     - kvm
-  when: ansible_facts.os_family == 'Debian'
+  when: ansible_facts['os_family'] == 'Debian'
 
 # Flush Handlers
 - name: kvm-hypervisor | flush handlers

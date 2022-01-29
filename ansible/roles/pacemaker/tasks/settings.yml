@@ -17,5 +17,5 @@
     - pacemaker
     - settings
   when:
-    - ansible_os_family == 'Debian'
+    - ansible_facts['os_family'] == 'Debian'
     - "'stonith-enabled: false' not in pcs_property_show['stdout']"

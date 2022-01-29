@@ -18,6 +18,7 @@ main_packages_list:
   - curl
   - gnupg
   - lsb-release
+  - tree
 debian_version: buster
 sudo_package_name: sudo
 sudo_sudoers_path: etc/sudoers.d
