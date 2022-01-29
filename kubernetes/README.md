@@ -17,7 +17,9 @@ The following NameSpaces are used for Flux itself, core infrastructure, and apps
 ### Core Infrastructure
 
 - **[kube-system](infrastructure/homelab/kube-system)**
-  - [sealed-secrets](https://github.com/bitnami-labs/sealed-secrets) - Encrypted secrets safe to store in git
+  - [sealed-secrets](https://github.com/bitnami-labs/sealed-secrets) - Encrypted secrets that are safe to store in git
+- **[metallb-system](infrastructure/homelab/metallb-system)**
+  - [metallb](https://metallb.universe.tf/) - Load Balancer for bare metal Kubernetes clusters
 
 ### Apps
 

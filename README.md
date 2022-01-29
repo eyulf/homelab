@@ -46,7 +46,7 @@ My Homelab uses the following software, this list is non-exhaustive.
     <th>Description</th>
   </tr>
   <tr>
-    <td></td>
+    <td><img width="32" src="https://avatars.githubusercontent.com/u/131524?s=200&v=4"></td>
     <td><a href="https://github.com/mozilla/sops">sops</a></td>
     <td>Encrypted secrets in Git</td>
   </tr>
@@ -86,9 +86,19 @@ My Homelab uses the following software, this list is non-exhaustive.
     <td>Package manager for Kubernetes</td>
   </tr>
   <tr>
-    <td></td>
+    <td><img width="32" src="https://avatars.githubusercontent.com/u/52158677?s=200&v=4"></td>
     <td><a href="https://fluxcd.io">Flux2</a></td>
     <td>GitOps solution for Kubernetes</td>
+  </tr>
+  <tr>
+    <td><img width="32" src="https://avatars.githubusercontent.com/u/34656521?s=200&v=4"></td>
+    <td><a href="https://github.com/bitnami-labs/sealed-secrets">Sealed Secrets</a></td>
+    <td>Encrypted Kubernetes secrets that are safe to store in git</td>
+  </tr>
+  <tr>
+    <td><img width="32" src="https://avatars.githubusercontent.com/u/60239468?s=200&v=4"></td>
+    <td><a href="https://metallb.universe.tf">MetalLB</a></td>
+    <td>Load Balancer for bare metal Kubernetes clusters</td>
   </tr>
 </table>
 
