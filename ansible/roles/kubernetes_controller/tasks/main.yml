@@ -10,7 +10,9 @@
     - encryption
     - helm
     - kubeadm
+    - argocd
     - calico
+    - kubeseal
   with_first_found:
     - "{{ ansible_facts['os_family'] }}.yml"
     - default.yml
@@ -88,6 +90,17 @@
     - kubernetes
     - kubernetes-controller
     - helm
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+# ArgoCD
+- name: argocd
+  ansible.builtin.import_tasks: argocd.yml
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - argocd
   when:
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']

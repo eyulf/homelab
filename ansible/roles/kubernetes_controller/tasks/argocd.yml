@@ -1,0 +1,18 @@
+---
+- name: argocd | download argocd binary
+  ansible.builtin.get_url:
+    url: https://github.com/argoproj/argo-cd/releases/download/{{ argocd_version }}/argocd-linux-amd64
+    dest: /usr/local/bin/argocd
+    #  checksum: '{{ argocd_binary_checksum }}' https://github.com/argoproj/argo-cd/issues/2323
+    timeout: 120
+    owner: root
+    group: root
+    mode: '755'
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - argocd
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - ansible_facts['architecture'] == 'x86_64'
+    - inventory_hostname in groups['k8s_controllers']
