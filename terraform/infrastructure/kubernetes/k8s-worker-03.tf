@@ -10,7 +10,7 @@ module "k8s-worker-03" {
   }
 
   vcpus  = 2
-  memory = "12288" # 12GB
+  #memory = "12288" # 12GB
 
   hostname = "k8s-worker-03"
   domain   = var.domain

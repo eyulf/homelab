@@ -7,7 +7,7 @@ My Homelab utilizes [Infrastructure as Code](https://en.wikipedia.org/wiki/Infra
 This section provides a high level overview of my homelab. For more details, see the README of the following directories.
 
 - [ansible](ansible) roles for server configuration.
-- [kubernetes](kubernetes) configuration deployed using Flux2.
+- [kubernetes](kubernetes) configuration deployed using .
 - [pki](pki) script to pre-generate PKI certificates for Kubernetes.
 - [terraform](terraform) configuration for provisioning VMs.
 
@@ -84,11 +84,6 @@ My Homelab uses the following software, this list is non-exhaustive.
     <td><img width="32" src="https://simpleicons.org/icons/helm.svg"></td>
     <td><a href="https://helm.sh">Helm</a></td>
     <td>Package manager for Kubernetes</td>
-  </tr>
-  <tr>
-    <td><img width="32" src="https://avatars.githubusercontent.com/u/52158677?s=200&v=4"></td>
-    <td><a href="https://fluxcd.io">Flux2</a></td>
-    <td>GitOps solution for Kubernetes</td>
   </tr>
   <tr>
     <td><img width="32" src="https://avatars.githubusercontent.com/u/34656521?s=200&v=4"></td>

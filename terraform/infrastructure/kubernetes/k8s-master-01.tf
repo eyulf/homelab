@@ -6,7 +6,7 @@ resource "random_password" "k8s-controller-01" {
 module "k8s-controller-01" {
   source    = "../../modules/kvm_virtual_machine"
   providers = {
-    libvirt = libvirt.kvm3
+    libvirt = libvirt.kvm1
   }
 
   vcpus = 2
@@ -14,8 +14,8 @@ module "k8s-controller-01" {
   hostname = "k8s-controller-01"
   domain   = var.domain
 
-  cloudinit_pool_name = data.terraform_remote_state.hypervisors.outputs.kvm3_pool_name
-  disk_base_volume_id = data.terraform_remote_state.hypervisors.outputs.kvm3_os_images[var.virtual_machines.k8s-controller-01.os]
+  cloudinit_pool_name = data.terraform_remote_state.hypervisors.outputs.kvm1_pool_name
+  disk_base_volume_id = data.terraform_remote_state.hypervisors.outputs.kvm1_os_images[var.virtual_machines.k8s-controller-01.os]
 
   network_ip_address     = var.virtual_machines.k8s-controller-01.ip
   network_gateway_ip     = var.network_gateway_ip
