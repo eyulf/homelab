@@ -1,0 +1,5 @@
+---
+apiVersion: v2
+name: applications
+version: 1.0.0
+type: application
