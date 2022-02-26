@@ -10,18 +10,26 @@ This assumes that the Kubernetes cluster has first been deployed using Ansible a
 
 The following NameSpaces are used for ArgoCD itself, other core infrastructure, general infrastructure, and apps.
 
-### ArgoCD
-
-- **[argocd-system](core/argocd-system)**
-
 ### Core Infrastructure
 
-- 
+The [core](core) directory contains the minimum services that are required for the Kubernetes cluster to function and deploy other services and apps.
+
+- **argocd-system**
+  - [argocd](core/argocd) [\[website\]]((https://argoproj.github.io/cd/)) - GitOps continuous delivery tool for Kubernetes.
+- **calico-system**
+  - [calico](core/calico) [\[website\]](https://projectcalico.docs.tigera.io/about/about-calico) - Kubernetes cluster networking provider.
+- **kube-system**
+  - [sealed-secrets](core/sealed-secrets) [\[website\]](https://projectcalico.docs.tigera.io/about/about-calico) - Kubernetes cluster networking provider.
 
 ### General Infrastructure
 
-- 
+The [infrastructure](infrastructure) directory contains the services that are used by the Kubernetes cluster to run the apps.
+
+- **metallb-system**
+  - [metallb](infrastructure/metallb) [\[website\]](https://metallb.universe.tf/) - Load Balancer for bare metal Kubernetes clusters.
 
 ### Apps
+
+The [apps](apps) directory contains the apps that are deployed onto the Kubernetes cluster.
 
 - 
