@@ -67,3 +67,28 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
     - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']
+
+- name: argocd | install infrastructure-apps app
+  ansible.builtin.shell:
+    cmd: >
+      kubectl config set-context
+      --current
+      --namespace=argocd-system &&
+      argocd app create infrastructure-apps
+      --dest-namespace argocd-system
+      --dest-server https://kubernetes.default.svc
+      --repo {{ git_repo_url }}
+      --revision {{ git_branch }}
+      --path kubernetes/infrastructure/apps
+      --sync-policy auto
+      --core > /etc/kubernetes/argocd/infrastructure-apps
+    creates: /etc/kubernetes/argocd/infrastructure-apps
+  run_once: true
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - argocd
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+    - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']
