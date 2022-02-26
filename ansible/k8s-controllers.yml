@@ -8,3 +8,4 @@
     - kubernetes_common
     - pacemaker
     - kubernetes_controller
+    - kubernetes_bootstrap

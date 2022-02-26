@@ -21,3 +21,10 @@
   become: true
   roles:
     - kubernetes_worker
+
+- name: k8s_bootstrap
+  hosts: k8s_controllers
+  gather_facts: true
+  become: true
+  roles:
+    - kubernetes_bootstrap

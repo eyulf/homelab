@@ -11,8 +11,9 @@
     - helm
     - kubeadm
     - argocd
-    - calico
     - kubeseal
+    - git-repo
+    - calico
   with_first_found:
     - "{{ ansible_facts['os_family'] }}.yml"
     - default.yml
@@ -94,24 +95,13 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-# ArgoCD
+# ArgoCD CLI
 - name: argocd
   ansible.builtin.import_tasks: argocd.yml
   tags:
     - kubernetes
     - kubernetes-controller
     - argocd
-  when:
-    - ansible_facts['os_family'] == 'Debian'
-    - inventory_hostname in groups['k8s_controllers']
-
-# Calico
-- name: calico
-  ansible.builtin.import_tasks: calico.yml
-  tags:
-    - kubernetes
-    - kubernetes-controller
-    - calico
   when:
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
@@ -123,6 +113,28 @@
     - kubernetes
     - kubernetes-controller
     - kubeseal
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+# Gitrepo
+- name: git-repo
+  ansible.builtin.import_tasks: gitrepo.yml
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - git-repo
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+# Calico
+- name: calico
+  ansible.builtin.import_tasks: calico.yml
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - calico
   when:
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']

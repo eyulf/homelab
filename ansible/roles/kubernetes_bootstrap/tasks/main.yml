@@ -1,0 +1,31 @@
+---
+- name: kubernetes-bootstrap | set variables
+  ansible.builtin.include_vars: '{{ item }}'
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - argocd
+  with_first_found:
+    - "{{ ansible_facts['os_family'] }}.yml"
+    - default.yml
+
+- name: kubernetes-bootstrap | pause to allow cluster to fully come online
+  ansible.builtin.pause:
+    seconds: 120
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+# ArgoCD
+- name: argocd
+  ansible.builtin.import_tasks: argocd.yml
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - argocd
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']

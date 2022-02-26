@@ -1,0 +1,13 @@
+---
+- name: git-repo | checkout git-repo
+  ansible.builtin.git:
+    repo: '{{ git_repo_url }}'
+    dest: /opt/homelab
+    version: '{{ git_branch }}'
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - git-repo
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
