@@ -11,7 +11,7 @@
 
 - name: kubernetes-bootstrap | pause to allow cluster to fully come online
   ansible.builtin.pause:
-    seconds: 120
+    seconds: 150
   tags:
     - kubernetes
     - kubernetes-bootstrap

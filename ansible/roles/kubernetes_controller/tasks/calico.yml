@@ -1,13 +1,15 @@
 ---
 - name: calico | install calico
   ansible.builtin.shell:
-    chdir: /opt/homelab/kubernetes/core/calico-system
+    chdir: /opt/homelab/kubernetes/core/calico
     cmd: |
       helm dependencies update &&
       kubectl create namespace calico-system &&
       helm install -n calico-system calico-system . -f values.yaml
     creates: /opt/cni/bin/install
   run_once: true
+  notify:
+    - pause for calico
   tags:
     - kubernetes
     - kubernetes-controller

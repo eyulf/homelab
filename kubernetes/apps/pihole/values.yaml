@@ -1,0 +1,13 @@
+---
+pihole:
+  image:
+    tag: '2022.01.1'
+  serviceWeb:
+    type: LoadBalancer
+  serviceDns:
+    mixedService: false
+    type: LoadBalancer
+  serviceDhcp:
+    enabled: false
+  DNS1: 1.1.1.1
+  DNS2: 1.0.0.1

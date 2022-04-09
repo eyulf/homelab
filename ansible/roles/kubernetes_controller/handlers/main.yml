@@ -22,3 +22,15 @@
   when:
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
+
+- name: calico | pause to allow calico to fully deploy
+  ansible.builtin.pause:
+    seconds: 150
+  listen: pause for calico
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - calico
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']

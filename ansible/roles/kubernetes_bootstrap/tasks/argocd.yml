@@ -16,13 +16,15 @@
 
 - name: argocd | install argocd
   ansible.builtin.shell:
-    chdir: /opt/homelab/kubernetes/core/argocd-system
+    chdir: /opt/homelab/kubernetes/core/argocd
     cmd: |
       helm dependencies update &&
       kubectl create namespace argocd-system &&
       helm install -n argocd-system argocd . -f values.yaml > /etc/kubernetes/argocd/argocd
     creates: /etc/kubernetes/argocd/argocd
   run_once: true
+  notify:
+    - pause for argocd
   tags:
     - kubernetes
     - kubernetes-bootstrap
@@ -32,16 +34,13 @@
     - inventory_hostname in groups['k8s_controllers']
     - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']
 
-- name: argocd | pause to allow argocd to fully deploy
-  ansible.builtin.pause:
-    seconds: 120
+# Flush Handlers
+- name: argocd | flush handlers
+  ansible.builtin.meta: flush_handlers
   tags:
     - kubernetes
     - kubernetes-bootstrap
     - argocd
-  when:
-    - ansible_facts['os_family'] == 'Debian'
-    - inventory_hostname in groups['k8s_controllers']
 
 - name: argocd | install core-apps app
   ansible.builtin.shell:
@@ -59,6 +58,8 @@
       --core > /etc/kubernetes/argocd/core-apps
     creates: /etc/kubernetes/argocd/core-apps
   run_once: true
+  notify:
+    - pause for core-apps app
   tags:
     - kubernetes
     - kubernetes-bootstrap
@@ -67,6 +68,14 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
     - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']
+
+# Flush Handlers
+- name: argocd | flush handlers
+  ansible.builtin.meta: flush_handlers
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - argocd
 
 - name: argocd | install infrastructure-apps app
   ansible.builtin.shell:
@@ -84,6 +93,43 @@
       --core > /etc/kubernetes/argocd/infrastructure-apps
     creates: /etc/kubernetes/argocd/infrastructure-apps
   run_once: true
+  notify:
+    - pause for infrastructure-apps app
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - argocd
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+    - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']
+
+# Flush Handlers
+- name: argocd | flush handlers
+  ansible.builtin.meta: flush_handlers
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - argocd
+
+- name: argocd | install apps-apps app
+  ansible.builtin.shell:
+    cmd: >
+      kubectl config set-context
+      --current
+      --namespace=argocd-system &&
+      argocd app create apps-apps
+      --dest-namespace argocd-system
+      --dest-server https://kubernetes.default.svc
+      --repo {{ git_repo_url }}
+      --revision {{ git_branch }}
+      --path kubernetes/apps/apps
+      --sync-policy auto
+      --core > /etc/kubernetes/argocd/apps-apps
+    creates: /etc/kubernetes/argocd/apps-apps
+  run_once: true
+  notify:
+    - pause for apps-apps app
   tags:
     - kubernetes
     - kubernetes-bootstrap

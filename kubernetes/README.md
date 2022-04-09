@@ -32,4 +32,6 @@ The [infrastructure](infrastructure) directory contains the services that are us
 
 The [apps](apps) directory contains the apps that are deployed onto the Kubernetes cluster.
 
-- 
+- **pihole**
+  - [pihole](apps/pihole) [\[website\]](https://pi-hole.net/) - Network-wide Ad Blocking.
+

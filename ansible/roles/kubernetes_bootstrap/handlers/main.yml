@@ -1,0 +1,48 @@
+---
+- name: argocd | pause to allow argocd to fully deploy
+  ansible.builtin.pause:
+    seconds: 150
+  listen: pause for argocd
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - argocd
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+- name: argocd | pause to allow core-apps app to fully deploy
+  ansible.builtin.pause:
+    seconds: 150
+  listen: pause for core-apps app
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - argocd
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+- name: argocd | pause to allow infrastructure-apps app to fully deploy
+  ansible.builtin.pause:
+    seconds: 150
+  listen: pause for infrastructure-apps app
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - argocd
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+- name: argocd | pause to allow apps-apps app to fully deploy
+  ansible.builtin.pause:
+    seconds: 150
+  listen: pause for apps-apps app
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - argocd
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
