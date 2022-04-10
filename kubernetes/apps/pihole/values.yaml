@@ -1,13 +1,24 @@
 ---
 pihole:
   image:
-    tag: '2022.01.1'
+    tag: '2022.02.1'
   serviceWeb:
+    loadBalancerIP: 10.1.1.70
+    annotations:
+      metallb.universe.tf/allow-shared-ip: pihole-svc
     type: LoadBalancer
   serviceDns:
-    mixedService: false
+    loadBalancerIP: 10.1.1.70
+    annotations:
+      metallb.universe.tf/allow-shared-ip: pihole-svc
     type: LoadBalancer
   serviceDhcp:
     enabled: false
+  podDnsConfig:
+    enabled: true
+    policy: "None"
+    nameservers:
+    - 127.0.0.1
+    - 1.1.1.1
   DNS1: 1.1.1.1
   DNS2: 1.0.0.1
