@@ -34,3 +34,23 @@
   when:
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
+
+- name: kubeseal | apply sealed-secrets label to custom-sealed-secrets-key secret
+  ansible.builtin.command:
+    argv:
+      - kubectl
+      - label
+      - secret
+      - 'custom-sealed-secrets-key'
+      - sealedsecrets.bitnami.com/sealed-secrets-key=active
+      - -n
+      - 'kube-system'
+  listen: kubeseal label secret
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - kubeseal
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+    - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']

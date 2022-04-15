@@ -15,7 +15,7 @@
 /ansible/roles/*/files/etc/kubernetes/pki/*.pub
 /ansible/roles/*/files/etc/kubernetes/pki/etcd/*.crt
 /ansible/roles/*/files/etc/kubernetes/pki/etcd/*.key
-/ansible/roles/*/files/etc/kubernetes/secrets/*.key
+/ansible/roles/*/files/etc/kubernetes/secrets/*.yaml
 
 # Terraform
 **/terraform.tfvars

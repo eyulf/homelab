@@ -37,25 +37,10 @@
     - ansible_facts['architecture'] == 'x86_64'
     - inventory_hostname in groups['k8s_controllers']
 
-- name: kubeseal | configure /etc/kubernetes/secrets/sealed-secrets.pem
+- name: kubeseal | configure /etc/kubernetes/secrets/sealed-secrets.yaml
   ansible.builtin.copy:
-    src: etc/kubernetes/secrets/sealed-secrets.pem
-    dest: /etc/kubernetes/secrets/sealed-secrets.pem
-    owner: root
-    group: root
-    mode: '0644'
-  tags:
-    - kubernetes
-    - kubernetes-controller
-    - kubeseal
-  when:
-    - ansible_facts['os_family'] == 'Debian'
-    - inventory_hostname in groups['k8s_controllers']
-
-- name: kubeseal | configure /etc/kubernetes/secrets/sealed-secrets.key
-  ansible.builtin.copy:
-    src: etc/kubernetes/secrets/sealed-secrets.key
-    dest: /etc/kubernetes/secrets/sealed-secrets.key
+    src: etc/kubernetes/secrets/sealed-secrets.yaml
+    dest: /etc/kubernetes/secrets/sealed-secrets.yaml
     owner: root
     group: root
     mode: '0600'
@@ -66,3 +51,20 @@
   when:
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
+
+- name: kubeseal | apply /etc/kubernetes/secrets/sealed-secrets.yaml
+  ansible.builtin.shell:
+    cmd: |
+      kubectl create -f /etc/kubernetes/secrets/sealed-secrets.yaml > /etc/kubernetes/secrets/sealed-secrets-flag
+    creates: /etc/kubernetes/secrets/sealed-secrets-flag
+  run_once: true
+  notify:
+    - kubeseal label secret
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - kubeseal
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+    - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']

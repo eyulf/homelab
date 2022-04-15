@@ -299,8 +299,8 @@ function sealed_secrets {
 	filename="sealed-secrets"
 	openssl req -x509 -nodes -newkey rsa:4096 -keyout "${filename}.key" -out "${filename}.pem" -subj "/CN=sealed-secret/O=sealed-secret"
 	cp ${filename}.pem ${ANSIBLE_CONTROLLER_K8S_DIR}/secrets/${filename}.pem
-	cp ${filename}.key ${ANSIBLE_CONTROLLER_K8S_DIR}/secrets/${filename}.key
-	sops -e ${ANSIBLE_CONTROLLER_K8S_DIR}/secrets/${filename}.key > ${ANSIBLE_CONTROLLER_K8S_DIR}/secrets/${filename}.key.enc
+	kubectl create secret tls custom-sealed-secrets-key --cert="${filename}.pem" --key="${filename}.key" -n "kube-system" --dry-run=client -o yaml > ${ANSIBLE_CONTROLLER_K8S_DIR}/secrets/${filename}.yaml
+	sops -e ${ANSIBLE_CONTROLLER_K8S_DIR}/secrets/${filename}.yaml > ${ANSIBLE_CONTROLLER_K8S_DIR}/secrets/${filename}.yaml.enc
 }
 
 ############################################################
