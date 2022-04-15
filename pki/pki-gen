@@ -298,11 +298,7 @@ function proxy {
 function sealed_secrets {
 	filename="sealed-secrets"
 	openssl req -x509 -nodes -newkey rsa:4096 -keyout "${filename}.key" -out "${filename}.pem" -subj "/CN=sealed-secret/O=sealed-secret"
-<<<<<<< HEAD
 	cp ${filename}.pem ${ANSIBLE_CONTROLLER_K8S_DIR}/secrets/${filename}.pem
-=======
-	cp ${filename}.pub ${ANSIBLE_CONTROLLER_K8S_DIR}/secrets/${filename}.pem
->>>>>>> 1fb506e3e44adbfa2555a36a79c45ccbb55e1ad3
 	cp ${filename}.key ${ANSIBLE_CONTROLLER_K8S_DIR}/secrets/${filename}.key
 	sops -e ${ANSIBLE_CONTROLLER_K8S_DIR}/secrets/${filename}.key > ${ANSIBLE_CONTROLLER_K8S_DIR}/secrets/${filename}.key.enc
 }
