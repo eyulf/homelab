@@ -61,12 +61,14 @@ allowed_functions=(
 "etcd"
 "kubernetes"
 "proxy"
+"sealed_secrets"
 "clean"
 "clean_ca"
 "clean_crts"
 "clean_etcd"
 "clean_kubernetes"
 "clean_proxy"
+"clean_sealed_secrets"
 )
 
 function help_text {
@@ -293,6 +295,14 @@ function proxy {
 	ssl_crt_proxy front-proxy-client
 }
 
+function sealed_secrets {
+	filename="sealed-secrets"
+	openssl req -x509 -nodes -newkey rsa:4096 -keyout "${filename}.key" -out "${filename}.pem" -subj "/CN=sealed-secret/O=sealed-secret"
+	cp ${filename}.pem ${ANSIBLE_CONTROLLER_K8S_DIR}/secrets/${filename}.pem
+	cp ${filename}.key ${ANSIBLE_CONTROLLER_K8S_DIR}/secrets/${filename}.key
+	sops -e ${ANSIBLE_CONTROLLER_K8S_DIR}/secrets/${filename}.key > ${ANSIBLE_CONTROLLER_K8S_DIR}/secrets/${filename}.key.enc
+}
+
 ############################################################
 ### Clean Functions
 
@@ -362,6 +372,10 @@ function clean_kubernetes {
 function clean_front_proxy {
 	clean_crt_single front-proxy-ca
 	clean_crt_single front-proxy-client
+}
+
+function clean_sealed_secrets {
+	rm sealed-secrets{.pem,.key}
 }
 
 ############################################################
