@@ -3,14 +3,14 @@ repos:
     rev: v5.4.0
     hooks:
       - id: ansible-lint
-  - repo: git://github.com/antonbabenko/pre-commit-terraform
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
     rev: v1.64.0
     hooks:
       - id: terraform_fmt
       - id: terraform_providers_lock
       - id: terraform_tflint
       - id: terraform_docs
-  - repo: git://github.com/bridgecrewio/checkov
+  - repo: https://github.com/bridgecrewio/checkov
     rev: '2.0.894'
     hooks:
       - id: checkov

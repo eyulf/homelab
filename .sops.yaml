@@ -19,3 +19,5 @@ creation_rules:
     age: 'age1ety65vhtrhlevgmm899eyvdmv4avfm0replxg5tz6a2jyq84n4us7ryfc6'
   - path_regex: ansible/roles/.*/files/etc/kubernetes/pki/etcd/.*.(crt|key)
     age: 'age1ety65vhtrhlevgmm899eyvdmv4avfm0replxg5tz6a2jyq84n4us7ryfc6'
+  - path_regex: ansible/roles/.*/files/etc/kubernetes/secrets/.*.(key)
+    age: 'age1ety65vhtrhlevgmm899eyvdmv4avfm0replxg5tz6a2jyq84n4us7ryfc6'

@@ -36,3 +36,33 @@
     - ansible_facts['os_family'] == 'Debian'
     - ansible_facts['architecture'] == 'x86_64'
     - inventory_hostname in groups['k8s_controllers']
+
+- name: kubeseal | configure /etc/kubernetes/secrets/sealed-secrets.pem
+  ansible.builtin.copy:
+    src: etc/kubernetes/secrets/sealed-secrets.pem
+    dest: /etc/kubernetes/secrets/sealed-secrets.pem
+    owner: root
+    group: root
+    mode: '0644'
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - kubeseal
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+- name: kubeseal | configure /etc/kubernetes/secrets/sealed-secrets.key
+  ansible.builtin.copy:
+    src: etc/kubernetes/secrets/sealed-secrets.key
+    dest: /etc/kubernetes/secrets/sealed-secrets.key
+    owner: root
+    group: root
+    mode: '0600'
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - kubeseal
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
