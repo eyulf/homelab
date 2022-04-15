@@ -16,6 +16,29 @@ spec:
     repoURL: {{ .Values.spec.source.repoURL }}
     targetRevision: {{ .Values.spec.source.targetRevision }}
   syncPolicy:
-    automated: {}
+    automated:
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pihole-secrets
+  namespace: argocd-system
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: pihole
+    server: {{ .Values.spec.destination.server }}
+  project: default
+  source:
+    path: kubernetes/apps/pihole/secrets
+    repoURL: {{ .Values.spec.source.repoURL }}
+    targetRevision: {{ .Values.spec.source.targetRevision }}
+  syncPolicy:
+    automated:
+      prune: true
     syncOptions:
       - CreateNamespace=true
