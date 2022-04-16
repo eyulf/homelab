@@ -63,7 +63,7 @@ My homelab uses the following software, this list is non-exhaustive.
     <td>Container runtime</td>
   </tr>
   <tr>
-    <td><img width="32" src="hhttps://www.vectorlogo.zone/logos/helmsh/helmsh-icon.svg"></td>
+    <td><img width="32" src="https://www.vectorlogo.zone/logos/helmsh/helmsh-icon.svg"></td>
     <td><a href="https://helm.sh">Helm</a></td>
     <td>Package manager for Kubernetes</td>
   </tr>
