@@ -1,5 +1,13 @@
 repos:
-  - repo: https://github.com/ansible-community/ansible-lint
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.2.0
+    hooks:
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: detect-private-key
+      - id: mixed-line-ending
+      - id: trailing-whitespace
+  - repo: https://github.com/ansible/ansible-lint
     rev: v6.0.2
     hooks:
       - id: ansible-lint
