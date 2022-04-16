@@ -37,6 +37,11 @@ I've also documented this on my [website](https://alexgardner.id.au/homelab/), b
   - 6x 3TB WD Red HDD (RAID-Z3)
   - 120GB SSD (OS)
 
+## :robot:&nbsp; Automation
+
+ - [Renovate](https://github.com/renovatebot/renovate) - Periodically scans the repo and opens pull requests when it detects updates for various "package managers", including Ansible, Kubernetes, Helm, and Terraform.
+
+
 ## :wrench:&nbsp; Tech stack
 
 My homelab uses the following software, this list is non-exhaustive.
@@ -86,6 +91,11 @@ My homelab uses the following software, this list is non-exhaustive.
     <td><img width="32" src="https://avatars.githubusercontent.com/u/60239468?s=200&v=4"></td>
     <td><a href="https://metallb.universe.tf">MetalLB</a></td>
     <td>Load Balancer for bare metal Kubernetes clusters</td>
+  </tr>
+  <tr>
+    <td><img width="32" src="https://avatars.githubusercontent.com/u/38656520?s=200&v=4"></td>
+    <td><a href="https://github.com/renovatebot/renovate">Renovate</a></td>
+    <td>Detects and corrects out-of-date dependencies</td>
   </tr>
   <tr>
     <td><img width="32" src="https://avatars.githubusercontent.com/u/34656521?s=200&v=4"></td>
