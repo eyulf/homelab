@@ -166,3 +166,17 @@
     - dns-server
     - powerdns
   when: ansible_facts.os_family == 'Debian'
+
+- name: powerdns-zones | configure /etc/powerdns/zones.sql
+  ansible.builtin.template:
+    src: etc/powerdns/zones.sql.j2
+    dest: /etc/powerdns/zones.sql
+    owner: root
+    group: root
+    mode: '644'
+  notify:
+    - import zone sql
+  tags:
+    - dns-server
+    - powerdns-zones
+  when: ansible_facts.os_family == 'Debian'

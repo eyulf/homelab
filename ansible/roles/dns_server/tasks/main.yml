@@ -3,7 +3,7 @@
   include_vars: '{{ item }}'
   tags:
     - dns-server
-    - power-dns
+    - powerdns
   with_first_found:
     - '{{ ansible_facts.os_family }}.yml'
     - default.yml

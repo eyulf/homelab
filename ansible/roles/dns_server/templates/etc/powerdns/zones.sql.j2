@@ -1,0 +1,81 @@
+TRUNCATE TABLE `domains`;
+
+LOCK TABLES `domains` WRITE;
+/*!40000 ALTER TABLE `domains` DISABLE KEYS */;
+
+REPLACE INTO `domains` VALUES (1,'{{ domain }}','',NULL,'NATIVE',NULL,'');
+REPLACE INTO `domains` VALUES (2,'{{ firewall_servers_subnet | ansible.netcommon.ipaddr('revdns') | replace("0.", "", 1) | trim('.') }}','',NULL,'NATIVE',NULL,'');
+
+/*!40000 ALTER TABLE `domains` ENABLE KEYS */;
+UNLOCK TABLES;
+
+TRUNCATE TABLE `records`;
+
+LOCK TABLES `records` WRITE;
+/*!40000 ALTER TABLE `records` DISABLE KEYS */;
+
+REPLACE INTO `records` VALUES (1,1,'{{ domain }}','SOA','dns1.{{ domain }} admin.{{ domain }} 12345 72000 3600 86400 3600',14400,0,0,NULL,1);
+REPLACE INTO `records` VALUES (2,2,'{{ firewall_servers_subnet | ansible.netcommon.ipaddr('revdns') | replace("0.", "", 1) | trim('.') }}','SOA','dns1.{{ domain }} admin.{{ domain }} 12345 72000 3600 86400 3600',14400,0,0,NULL,1);
+
+# Automated Records
+
+{% for host in groups['dns_servers'] %}
+REPLACE INTO `records` VALUES ({{ loop.index }}0,1,'{{ domain }}','NS','{{ host }}.{{ domain }}',14400,0,0,NULL,1);
+REPLACE INTO `records` VALUES ({{ loop.index }}1,2,'{{ firewall_servers_subnet | ansible.netcommon.ipaddr('revdns') | replace("0.", "", 1) | trim('.') }}','NS','{{ host }}.{{ domain }}',14400,0,0,NULL,1);
+{% endfor %}
+
+{% for ip in range(1, 255) %}
+REPLACE INTO `records` VALUES (1{{ '%03d' | format(loop.index) }},2,'{{ firewall_servers_subnet | ansible.netcommon.ipmath(ip) | ansible.netcommon.ipaddr('revdns') | trim('.') }}','PTR','{{ firewall_servers_subnet | ansible.netcommon.ipmath(ip) }}.{{ domain }}',3600,0,0,NULL,1);
+{% endfor %}
+
+{% for host in groups['kvm_hypervisors'] %}
+REPLACE INTO `records` VALUES (2{{ loop.index }}0,1,'{{ host }}.{{ domain }}','A','{{ hostvars[host].ansible_host }}',3600,0,0,NULL,1);
+DELETE FROM `records` WHERE `domain_id` = 2 AND `name` = '{{ hostvars[host].ansible_host | ansible.netcommon.ipaddr('revdns') | trim('.') }}' AND `type` = 'PTR' AND `content` = '{{ hostvars[host].ansible_host }}.{{ domain }}';
+REPLACE INTO `records` VALUES (2{{ loop.index }}1,2,'{{ hostvars[host].ansible_host | ansible.netcommon.ipaddr('revdns') | trim('.') }}','PTR','{{ host }}.{{ domain }}',3600,0,0,NULL,1);
+{% endfor %}
+
+{% for host in groups['dns_servers'] %}
+REPLACE INTO `records` VALUES (3{{ loop.index }}0,1,'{{ host }}.{{ domain }}','A','{{ hostvars[host].ansible_host }}',3600,0,0,NULL,1);
+DELETE FROM `records` WHERE `domain_id` = 2 AND `name` = '{{ hostvars[host].ansible_host | ansible.netcommon.ipaddr('revdns') | trim('.') }}' AND `type` = 'PTR' AND `content` = '{{ hostvars[host].ansible_host }}.{{ domain }}';
+REPLACE INTO `records` VALUES (3{{ loop.index }}1,2,'{{ hostvars[host].ansible_host | ansible.netcommon.ipaddr('revdns') | trim('.') }}','PTR','{{ host }}.{{ domain }}',3600,0,0,NULL,1);
+{% endfor %}
+
+{% for host in groups['k8s_controllers'] %}
+REPLACE INTO `records` VALUES (4{{ loop.index }}0,1,'{{ host }}.{{ domain }}','A','{{ hostvars[host].ansible_host }}',3600,0,0,NULL,1);
+DELETE FROM `records` WHERE `domain_id` = 2 AND `name` = '{{ hostvars[host].ansible_host | ansible.netcommon.ipaddr('revdns') | trim('.') }}' AND `type` = 'PTR' AND `content` = '{{ hostvars[host].ansible_host }}.{{ domain }}';
+REPLACE INTO `records` VALUES (4{{ loop.index }}1,2,'{{ hostvars[host].ansible_host | ansible.netcommon.ipaddr('revdns') | trim('.') }}','PTR','{{ host }}.{{ domain }}',3600,0,0,NULL,1);
+{% endfor %}
+
+{% for host in groups['k8s_workers'] %}
+REPLACE INTO `records` VALUES (5{{ loop.index }}0,1,'{{ host }}.{{ domain }}','A','{{ hostvars[host].ansible_host }}',3600,0,0,NULL,1);
+DELETE FROM `records` WHERE `domain_id` = 2 AND `name` = '{{ hostvars[host].ansible_host | ansible.netcommon.ipaddr('revdns') | trim('.') }}' AND `type` = 'PTR' AND `content` = '{{ hostvars[host].ansible_host }}.{{ domain }}';
+REPLACE INTO `records` VALUES (5{{ loop.index }}1,2,'{{ hostvars[host].ansible_host | ansible.netcommon.ipaddr('revdns') | trim('.') }}','PTR','{{ host }}.{{ domain }}',3600,0,0,NULL,1);
+{% endfor %}
+
+# Static Records
+
+REPLACE INTO `records` VALUES (610,1,'router.{{ domain }}','A','10.1.1.1',3600,0,0,NULL,1);
+DELETE FROM `records` WHERE `domain_id` = 2 AND `name` = '{{ "10.1.1.1" | ansible.netcommon.ipaddr('revdns') | trim('.') }}' AND `type` = 'PTR' AND `content` = '10.1.1.1.{{ domain }}';
+REPLACE INTO `records` VALUES (611,2,'{{ "10.1.1.1" | ansible.netcommon.ipaddr('revdns') | trim('.') }}','PTR','router.{{ domain }}',3600,0,0,NULL,1);
+
+REPLACE INTO `records` VALUES (620,1,'storage.{{ domain }}','A','10.1.1.10',3600,0,0,NULL,1);
+DELETE FROM `records` WHERE `domain_id` = 2 AND `name` = '{{ "10.1.1.10" | ansible.netcommon.ipaddr('revdns') | trim('.') }}' AND `type` = 'PTR' AND `content` = '10.1.1.10.{{ domain }}';
+REPLACE INTO `records` VALUES (621,2,'{{ "10.1.1.10" | ansible.netcommon.ipaddr('revdns') | trim('.') }}','PTR','storage.{{ domain }}',3600,0,0,NULL,1);
+
+REPLACE INTO `records` VALUES (630,1,'pwr1.{{ domain }}','A','10.1.1.115',3600,0,0,NULL,1);
+DELETE FROM `records` WHERE `domain_id` = 2 AND `name` = '{{ "10.1.1.115" | ansible.netcommon.ipaddr('revdns') | trim('.') }}' AND `type` = 'PTR' AND `content` = '10.1.1.115.{{ domain }}';
+REPLACE INTO `records` VALUES (631,2,'{{ "10.1.1.115" | ansible.netcommon.ipaddr('revdns') | trim('.') }}','PTR','pwr1.{{ domain }}',3600,0,0,NULL,1);
+
+REPLACE INTO `records` VALUES (640,1,'k8s-controller.{{ domain }}','A','10.1.1.40',3600,0,0,NULL,1);
+DELETE FROM `records` WHERE `domain_id` = 2 AND `name` = '{{ "10.1.1.40" | ansible.netcommon.ipaddr('revdns') | trim('.') }}' AND `type` = 'PTR' AND `content` = '10.1.1.40.{{ domain }}';
+REPLACE INTO `records` VALUES (641,2,'{{ "10.1.1.40" | ansible.netcommon.ipaddr('revdns') | trim('.') }}','PTR','k8s-controller.{{ domain }}',3600,0,0,NULL,1);
+
+/*!40000 ALTER TABLE `records` ENABLE KEYS */;
+
+# Ensure Auto Increment ID is higher then 1300
+
+DELETE FROM `records` WHERE `id` = 1300;
+INSERT INTO `records` VALUES (1300,1,'temp.{{ domain }}','A','127.0.0.1',3600,0,0,NULL,1);
+DELETE FROM `records` WHERE `id` = 1300;
+
+UNLOCK TABLES;

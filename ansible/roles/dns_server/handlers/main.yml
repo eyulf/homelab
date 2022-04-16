@@ -32,3 +32,14 @@
     - dns-server
     - powerdns
   when: ansible_facts.os_family == 'Debian'
+
+- name: powerdns | import zone sql
+  ansible.builtin.shell:
+    cmd: mysql {{ powerdns_mysql_database_name }} < /etc/powerdns/zones.sql
+  run_once: true
+  listen: import zone sql
+  tags:
+    - dns-server
+    - powerdns
+  when:
+    - ansible_facts['os_family'] == 'Debian'
