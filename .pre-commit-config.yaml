@@ -1,17 +1,21 @@
 repos:
   - repo: https://github.com/ansible-community/ansible-lint
-    rev: v5.4.0
+    rev: v6.0.2
     hooks:
       - id: ansible-lint
+        args: [
+          "--project-dir",
+          "ansible"
+        ]
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.64.0
+    rev: v1.67.0
     hooks:
       - id: terraform_fmt
       - id: terraform_providers_lock
       - id: terraform_tflint
       - id: terraform_docs
   - repo: https://github.com/bridgecrewio/checkov
-    rev: '2.0.894'
+    rev: '2.0.1065'
     hooks:
       - id: checkov
         args: [

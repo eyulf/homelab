@@ -1,6 +1,6 @@
 ---
 - name: kvm-hypervisor | set variables
-  include_vars: '{{ item }}'
+  ansible.builtin.include_vars: '{{ item }}'
   tags:
     - kvm-hypervisor
     - network

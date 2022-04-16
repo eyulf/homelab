@@ -22,6 +22,7 @@ pihole:
     - 1.1.1.1
   admin:
     existingSecret: "admin-password"
+    #checkov:skip=CKV_SECRET_6:Checkov thinks this is actually a password
     passwordKey: "password"
   DNS1: 1.1.1.1
   DNS2: 1.0.0.1

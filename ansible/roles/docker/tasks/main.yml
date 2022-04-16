@@ -1,6 +1,6 @@
 ---
 - name: docker | set variables
-  include_vars: '{{ item }}'
+  ansible.builtin.include_vars: '{{ item }}'
   tags:
     - docker
   with_first_found:

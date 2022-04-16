@@ -1,6 +1,6 @@
 ---
 - name: common | set variables
-  include_vars: '{{ item }}'
+  ansible.builtin.include_vars: '{{ item }}'
   tags:
     - common
     - network

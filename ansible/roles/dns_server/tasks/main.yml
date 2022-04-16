@@ -1,6 +1,6 @@
 ---
 - name: dns | set variables
-  include_vars: '{{ item }}'
+  ansible.builtin.include_vars: '{{ item }}'
   tags:
     - dns-server
     - powerdns
