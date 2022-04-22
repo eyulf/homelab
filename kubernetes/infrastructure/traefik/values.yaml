@@ -14,7 +14,7 @@ traefik:
     - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
     - "--certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
     - "--certificatesresolvers.letsencrypt.acme.dnschallenge=true"
-    - "--certificatesresolvers.letsencrypt.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53"
+    - "--certificatesresolvers.letsencrypt.acme.dnschallenge.resolvers=1.1.1.1:53,1.0.0.1:53"
     - "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=cloudflare"
     - "--api.insecure=true"
     - "--accesslog=true"
@@ -25,3 +25,5 @@ traefik:
         secretKeyRef:
           name: cloudflare
           key: dns-token
+    - name: CLOUDFLARE_PROPAGATION_TIMEOUT
+      value: 300
