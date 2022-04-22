@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: pihole-secrets
+  name: pihole-objects
   namespace: argocd-system
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -12,7 +12,7 @@ spec:
     server: {{ .Values.spec.destination.server }}
   project: default
   source:
-    path: kubernetes/apps/pihole/secrets
+    path: kubernetes/apps/pihole/objects
     repoURL: {{ .Values.spec.source.repoURL }}
     targetRevision: {{ .Values.spec.source.targetRevision }}
   syncPolicy:

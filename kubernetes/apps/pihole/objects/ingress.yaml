@@ -1,0 +1,18 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  creationTimestamp: null
+  name: admin-ingress
+  namespace: pihole
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - match: Host('pihole.lab.alexgardner.id.au')
+    kind: Rule
+    services:
+    - name: pihole-web
+      port: 80
+  tls:
+    certResolver: letsencrypt
