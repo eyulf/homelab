@@ -27,6 +27,8 @@ The [infrastructure](infrastructure) directory contains the services that are us
 
 - **metallb-system**
   - [metallb](infrastructure/metallb) [\[website\]](https://metallb.universe.tf/) - Load Balancer for bare metal Kubernetes clusters.
+- **traefik-infra**
+  - [traefik](infrastructure/traefik) [\[website\]](https://doc.traefik.io/traefik/) - Reverse Proxy that natively supports Let's Encrypt for SSL.
 
 ### Apps
 
@@ -34,4 +36,3 @@ The [apps](apps) directory contains the apps that are deployed onto the Kubernet
 
 - **pihole**
   - [pihole](apps/pihole) [\[website\]](https://pi-hole.net/) - Network-wide Ad Blocking.
-

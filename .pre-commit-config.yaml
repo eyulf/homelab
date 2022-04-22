@@ -3,7 +3,6 @@ repos:
     rev: v4.2.0
     hooks:
       - id: check-merge-conflict
-      - id: check-yaml
       - id: detect-private-key
       - id: mixed-line-ending
       - id: trailing-whitespace
