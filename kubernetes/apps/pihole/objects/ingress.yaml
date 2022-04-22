@@ -9,7 +9,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-  - match: Host('pihole.lab.alexgardner.id.au')
+  - match: Host(`pihole.lab.alexgardner.id.au`)
     kind: Rule
     services:
     - name: pihole-web
