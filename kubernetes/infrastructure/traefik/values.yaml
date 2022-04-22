@@ -1,5 +1,8 @@
 ---
 traefik:
+  logs:
+    general:
+      level: DEBUG
   additionalArguments:
     - "--entrypoints.web.address=:80"
     - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
