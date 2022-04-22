@@ -26,4 +26,4 @@ traefik:
           name: cloudflare
           key: dns-token
     - name: CLOUDFLARE_PROPAGATION_TIMEOUT
-      value: 300
+      value: "300"
