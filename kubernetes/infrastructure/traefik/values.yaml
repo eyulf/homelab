@@ -3,9 +3,6 @@ traefik:
   logs:
     general:
       level: DEBUG
-  service:
-    externalIPs:
-      - 10.1.1.71
   additionalArguments:
     - "--entrypoints.web.address=:80"
     - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
