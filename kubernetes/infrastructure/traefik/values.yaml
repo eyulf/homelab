@@ -5,7 +5,7 @@ traefik:
       level: DEBUG
     access:
       enabled: true
-  port:
+  ports:
     web:
       redirectTo: websecure
     websecure:
