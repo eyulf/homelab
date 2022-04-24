@@ -3,22 +3,22 @@ traefik:
   logs:
     general:
       level: DEBUG
+    access:
+      enabled: true
+  port:
+    web:
+      redirectTo: websecure
+    websecure:
+      tls:
+        enabled: true
+        certResolver: "letsencrypt"
   additionalArguments:
-    - "--entrypoints.web.address=:80"
-    - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
-    - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
-    - "--entrypoints.websecure.address=:443"
-    - "--entrypoints.websecure.http.tls=true"
-    - "--entrypoints.websecure.http.tls.certResolver=letsencrypt"
     - "--certificatesresolvers.letsencrypt.acme.email=alex+letsencrypt@alexgardner.id.au"
     - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
     - "--certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
     - "--certificatesresolvers.letsencrypt.acme.dnschallenge=true"
     - "--certificatesresolvers.letsencrypt.acme.dnschallenge.resolvers=1.1.1.1:53,1.0.0.1:53"
     - "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=cloudflare"
-    - "--api.insecure=true"
-    - "--accesslog=true"
-    - "--log.level=INFO"
   env:
     - name: CF_DNS_API_TOKEN
       valueFrom:
