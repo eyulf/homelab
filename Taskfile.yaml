@@ -1,0 +1,58 @@
+## Make sure you have `pyenv` and `pyenv-virtualenv` installed beforehand
+##
+## https://github.com/pyenv/pyenv
+## https://github.com/pyenv/pyenv-virtualenv
+##
+## Configure your shell with $ eval "$(pyenv virtualenv-init -)"
+
+version: '3'
+
+vars:
+  PYTHON_VERSION: '3.8.5'
+  PYTHON_VENV_NAME:
+    sh: basename "{{.PWD}}"
+  PYTHON_VENV_ROOT:
+    sh: pyenv root
+  PYTHON_VENV_PYTHON: '{{.PYTHON_VENV_ROOT}}/versions/{{.PYTHON_VENV_NAME}}/bin/python'
+
+tasks:
+  setup:
+    desc: Setup the Python environment
+    deps:
+      - setup-python-version
+      - setup-virtualenv
+    cmds:
+      - echo "{{.PYTHON_VENV_NAME}}" > .python-version
+      - '{{.PYTHON_VENV_PYTHON}} -m pip install --upgrade pip'
+      - '{{.PYTHON_VENV_PYTHON}} -m pip install -r {{.PWD}}/requirements.txt'
+      - pyenv rehash
+
+  setup-python-version:
+    cmds:
+      - pyenv install {{.PYTHON_VERSION}}
+    status:
+      - test -d {{.PYTHON_VENV_ROOT}}/versions/{{.PYTHON_VERSION}}
+
+  setup-virtualenv:
+    cmds:
+      - pyenv virtualenv {{.PYTHON_VERSION}} {{.PYTHON_VENV_NAME}}
+    status:
+      - test -f {{.PYTHON_VENV_PYTHON}}
+
+  clean:
+    desc: Cleanup the Python environment
+    deps:
+      - task clean-virtualenv
+      - task clean-python-version
+
+  clean-virtualenv:
+    cmds:
+      - pyenv virtualenv-delete --force {{.PYTHON_VENV_NAME}}
+    status:
+      - test ! -f {{.PYTHON_VENV_PYTHON}}
+
+  clean-python-version:
+    cmds:
+      - rm {{.PWD}}/.python-version
+    status:
+      - test ! -f {{.PWD}}/.python-version

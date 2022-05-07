@@ -1,0 +1,35 @@
+version: '3'
+
+vars:
+  ANSIBLE_PROD: ansible-playbook -i production
+
+tasks:
+  setup:
+    desc: Install Ansible Galexy collections
+    cmds:
+      - ansible-galaxy collection install -r {{.PWD}}/requirements.yml
+
+  dns:
+    desc: Run Ansible playbooks on dns servers
+    cmds:
+      - '{{.ANSIBLE_PROD}} dns-servers.yml'
+
+  k8s-all:
+    desc: Run Ansible playbooks on all k8s hosts
+    cmds:
+      - '{{.ANSIBLE_PROD}} k8s-all.yml'
+
+  k8s-controllers:
+    desc: Run Ansible playbooks on k8s controllers
+    cmds:
+      - '{{.ANSIBLE_PROD}} k8s-controllers.yml'
+
+  k8s-workers:
+    desc: Run Ansible playbooks on k8s workers
+    cmds:
+      - '{{.ANSIBLE_PROD}} k8s-workers.yml'
+
+  kvm-hvs:
+    desc: Run Ansible playbooks on kvm hypervisors
+    cmds:
+      - '{{.ANSIBLE_PROD}} kvm-hypervisors.yml'

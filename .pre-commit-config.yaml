@@ -6,6 +6,7 @@ repos:
       - id: detect-private-key
       - id: mixed-line-ending
       - id: trailing-whitespace
+
   - repo: https://github.com/ansible/ansible-lint
     rev: v6.0.2
     hooks:
@@ -14,6 +15,7 @@ repos:
           "--project-dir",
           "ansible"
         ]
+
   - repo: https://github.com/antonbabenko/pre-commit-terraform
     rev: v1.67.0
     hooks:
@@ -21,6 +23,7 @@ repos:
       - id: terraform_providers_lock
       - id: terraform_tflint
       - id: terraform_docs
+
   - repo: https://github.com/bridgecrewio/checkov
     rev: '2.0.1065'
     hooks:

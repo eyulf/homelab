@@ -41,6 +41,12 @@ I've also documented this on my [website](https://alexgardner.id.au/homelab/), b
 
  - [Renovate](https://github.com/renovatebot/renovate) - Periodically scans the repo and opens pull requests when it detects updates for various "package managers", including Ansible, Kubernetes, Helm, and Terraform.
 
+## :computer:&nbsp; Tasks
+
+I'm using [Task](https://taskfile.dev/) to execute tasks defined in Taskfiles that have been created throughout the repo.
+
+- [homelab](Taskfile.yaml)
+- [homelab/ansible](ansible/Taskfile.yaml)
 
 ## :wrench:&nbsp; Tech stack
 
