@@ -4,7 +4,9 @@ resource "random_password" "k8s-controller-01" {
 }
 
 module "k8s-controller-01" {
-  source    = "../../modules/kvm_virtual_machine"
+  source  = "eyulf/libvirt-virtual-machine/module"
+  version = "1.0.0"
+
   providers = {
     libvirt = libvirt.kvm1
   }

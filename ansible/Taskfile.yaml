@@ -5,7 +5,7 @@ vars:
 
 tasks:
   setup:
-    desc: Install Ansible Galexy collections
+    desc: Install Ansible Galaxy collections
     cmds:
       - ansible-galaxy collection install -r {{.PWD}}/requirements.yml
 

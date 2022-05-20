@@ -36,5 +36,8 @@
 **.tfstate
 **.tfstate.*
 
+# Checkov
+**/.external_modules/
+
 ### Python
 .python-version

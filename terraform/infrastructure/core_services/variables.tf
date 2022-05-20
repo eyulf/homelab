@@ -1,7 +1,7 @@
 variable "hypervisor_hosts" {
   description = "A map of host related variables."
   type        = map(map(string))
-  default     = {
+  default = {
     "host" = {
       "ip"   = "127.0.0.1",
       "user" = "root",
@@ -12,10 +12,10 @@ variable "hypervisor_hosts" {
 variable "virtual_machines" {
   description = "A map of virtual machine related variables."
   type        = map(map(string))
-  default     = {
+  default = {
     "vm1" = {
-      "ip"   = "127.0.0.1",
-      "os"   = "debian_10",
+      "ip" = "127.0.0.1",
+      "os" = "debian_10",
     }
   }
 }
@@ -28,7 +28,7 @@ variable "domain" {
 variable "host_admin_users" {
   description = "A map of admin users to configure with their SSH Key."
   type        = map(string)
-  default     = {
+  default = {
     "admin" = "ssh-rsa AA[...]ZZ==",
   }
 }

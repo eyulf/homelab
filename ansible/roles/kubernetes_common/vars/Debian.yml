@@ -1,0 +1,54 @@
+---
+kubernetes_controller_hosts_list: "{{ groups['k8s_controllers'] | map('extract',hostvars,'ansible_host') | list }}"
+kubernetes_workers_hosts_list: "{{ groups['k8s_workers'] | map('extract',hostvars,'ansible_host') | list }}"
+kubernetes_all_hosts_list: "{{ groups['k8s_all'] | map('extract',hostvars,'ansible_host') | list }}"
+corosync_hosts_list: "{{ groups['k8s_controllers'] | map('extract',hostvars,'ansible_host') | list }}"
+
+kubernetes_common_tcp_ports_list:
+  - '179'   # calico - bgp
+  - '5473'  # calico - typha
+  - '9099'  # calico - felix
+kubernetes_common_udp_ports_list:
+  - '4789'  # calico - vxlan
+
+kubernetes_packages_list:
+  - kubelet
+  - kubeadm
+  - kubectl
+corosync_packages:
+  - pacemaker
+  - corosync
+  - pcs
+  - crmsh
+
+kubernetes_controllers_conf_host_files:
+  - 'admin'
+  - 'controller-manager'
+  - 'scheduler'
+kubernetes_controllers_pki_crt_files:
+  - 'ca'
+  - 'front-proxy-ca'
+  - 'apiserver-etcd-client'
+  - 'apiserver'
+  - 'apiserver-kubelet-client'
+  - 'front-proxy-client'
+kubernetes_controllers_pki_key_files:
+  - 'apiserver-etcd-client'
+  - 'apiserver'
+  - 'apiserver-kubelet-client'
+  - 'front-proxy-client'
+kubernetes_controllers_etcd_pki_crt_files:
+  - 'healthcheck-client'
+kubernetes_controllers_etcd_pki_key_files:
+  - 'healthcheck-client'
+kubernetes_controllers_etcd_pki_crt_host_files:
+  - 'peer'
+  - 'server'
+kubernetes_controllers_etcd_pki_key_host_files:
+  - 'peer'
+  - 'server'
+
+corosync_cluster_name: kubernetes
+pacemaker_service_name: pacemaker
+corosync_service_name: corosync
+pcsd_service_name: pcsd

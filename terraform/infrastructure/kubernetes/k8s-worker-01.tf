@@ -4,12 +4,14 @@ resource "random_password" "k8s-worker-01" {
 }
 
 module "k8s-worker-01" {
-  source    = "../../modules/kvm_virtual_machine"
+  source  = "eyulf/libvirt-virtual-machine/module"
+  version = "1.0.0"
+
   providers = {
     libvirt = libvirt.kvm1
   }
 
-  vcpus  = 2
+  vcpus = 2
   #memory = "12288" # 12GB
 
   hostname = "k8s-worker-01"
@@ -17,6 +19,10 @@ module "k8s-worker-01" {
 
   cloudinit_pool_name = data.terraform_remote_state.hypervisors.outputs.kvm1_pool_name
   disk_base_volume_id = data.terraform_remote_state.hypervisors.outputs.kvm1_os_images[var.virtual_machines.k8s-worker-01.os]
+
+  additional_disks = {
+    "openebs" = 429496524800, # 400 GB
+  }
 
   network_ip_address     = var.virtual_machines.k8s-worker-01.ip
   network_gateway_ip     = var.network_gateway_ip

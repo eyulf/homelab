@@ -1,0 +1,53 @@
+---
+kubernetes_controller_hosts_list: "{{ groups['k8s_controllers'] | map('extract',hostvars,'ansible_host') | list }}"
+kubernetes_workers_hosts_list: "{{ groups['k8s_workers'] | map('extract',hostvars,'ansible_host') | list }}"
+kubernetes_all_hosts_list: "{{ groups['k8s_all'] | map('extract',hostvars,'ansible_host') | list }}"
+
+kubernetes_api_port: '6443'
+kubernetes_kublet_port: '10250'
+kubernetes_nodeport_port_range: '30000:32767'
+kubernetes_controller_ports_list:
+  - '2379'   # etcd server client API
+  - '2380'   # etcd server client API
+  - '10250'  # kubelet API
+  - '10251'  # kube-scheduler
+  - '10252'  # kube-controller-manager
+
+kubernetes_controllers_conf_host_files:
+  - 'admin'
+  - 'controller-manager'
+  - 'scheduler'
+kubernetes_controllers_pki_crt_files:
+  - 'front-proxy-ca'
+  - 'apiserver-etcd-client'
+  - 'apiserver'
+  - 'apiserver-kubelet-client'
+  - 'front-proxy-client'
+kubernetes_controllers_pki_key_files:
+  - 'apiserver-etcd-client'
+  - 'apiserver'
+  - 'apiserver-kubelet-client'
+  - 'front-proxy-client'
+kubernetes_controllers_etcd_pki_crt_files:
+  - 'ca'
+  - 'healthcheck-client'
+kubernetes_controllers_etcd_pki_key_files:
+  - 'healthcheck-client'
+kubernetes_controllers_etcd_pki_crt_host_files:
+  - 'peer'
+  - 'server'
+kubernetes_controllers_etcd_pki_key_host_files:
+  - 'peer'
+  - 'server'
+
+pacemaker_cluster_resources:
+  - resource_id: 'kubernetes-ip'
+    action: 'create'
+    provider: 'ocf:heartbeat:IPaddr2'
+    options:
+      - 'ip={{ pacemaker_cluster_ip }}'
+      - 'cidr_netmask=24'
+      - 'nic=ens3'
+    op: 'monitor'
+    op_options:
+      - 'interval=30s'

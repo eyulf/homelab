@@ -4,12 +4,12 @@ resource "random_password" "dns3" {
 }
 
 module "dns3" {
-  source    = "../../modules/kvm_virtual_machine"
+  source  = "eyulf/libvirt-virtual-machine/module"
+  version = "1.0.0"
+
   providers = {
     libvirt = libvirt.kvm3
   }
-
-  vcpus = 1
 
   hostname = "dns3"
   domain   = var.domain

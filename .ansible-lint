@@ -4,3 +4,5 @@ exclude_paths:
   - kubernetes
   - pki
   - terraform
+  - Taskfile.yaml
+  - ansible/Taskfile.yaml

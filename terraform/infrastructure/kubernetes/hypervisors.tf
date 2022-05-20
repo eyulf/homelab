@@ -8,15 +8,15 @@ data "terraform_remote_state" "hypervisors" {
 
 provider "libvirt" {
   alias = "kvm1"
-  uri   = "qemu+ssh://${ var.hypervisor_hosts.kvm1.user }@${ var.hypervisor_hosts.kvm1.ip }/system"
+  uri   = "qemu+ssh://${var.hypervisor_hosts.kvm1.user}@${var.hypervisor_hosts.kvm1.ip}/system"
 }
 
 provider "libvirt" {
   alias = "kvm2"
-  uri   = "qemu+ssh://${ var.hypervisor_hosts.kvm2.user }@${ var.hypervisor_hosts.kvm2.ip }/system"
+  uri   = "qemu+ssh://${var.hypervisor_hosts.kvm2.user}@${var.hypervisor_hosts.kvm2.ip}/system"
 }
 
 provider "libvirt" {
   alias = "kvm3"
-  uri   = "qemu+ssh://${ var.hypervisor_hosts.kvm3.user }@${ var.hypervisor_hosts.kvm3.ip }/system"
+  uri   = "qemu+ssh://${var.hypervisor_hosts.kvm3.user}@${var.hypervisor_hosts.kvm3.ip}/system"
 }
