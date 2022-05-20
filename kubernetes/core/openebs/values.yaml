@@ -1,4 +1,8 @@
 ---
+nodes:
+  k8s-worker-01: test
+  k8s-worker-02: test
+  k8s-worker-03: test
 openebs:
   cstor:
     enabled: true
