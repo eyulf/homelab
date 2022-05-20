@@ -1,0 +1,4 @@
+---
+openebs:
+  cstor:
+    enabled: true
