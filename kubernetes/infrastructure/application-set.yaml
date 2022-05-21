@@ -13,12 +13,14 @@ spec:
           - path: "kubernetes/infrastructure/**/application-config.json"
         template:
           spec:
+            project: default
             source:
               repoURL: https://github.com/eyulf/homelab.git
               targetRevision: main
               helm:
                 valueFiles:
                   - 'values.yaml'
+            destination: {}
     - git:
         repoURL: https://github.com/eyulf/homelab.git
         revision: main
