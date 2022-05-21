@@ -14,6 +14,8 @@ spec:
         template:
           spec:
             source:
+              repoURL: https://github.com/eyulf/homelab.git
+              targetRevision: main
               helm:
                 valueFiles:
                   - 'values.yaml'
