@@ -11,6 +11,17 @@ spec:
         revision: main
         files:
           - path: "kubernetes/infrastructure/**/application-config.json"
+        template:
+          spec:
+            source:
+              helm:
+                valueFiles:
+                  - 'values.yaml'
+    - git:
+        repoURL: https://github.com/eyulf/homelab.git
+        revision: main
+        files:
+          - path: "kubernetes/infrastructure/**/application-objects.json"
   template:
     metadata:
       name: '{{ name }}'
