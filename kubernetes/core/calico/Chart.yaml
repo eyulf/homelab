@@ -1,8 +1,8 @@
 ---
-name: calico
+name: projectcalico
 apiVersion: v2
 version: 1.0.0
 dependencies:
   - name: tigera-operator
     version: v3.23.1
-    repository: https://docs.projectcalico.org/charts
+    repository: https://projectcalico.docs.tigera.io/charts

@@ -1,7 +1,7 @@
 [
   {
     "name": "calico",
-    "namespace": "calico-system",
+    "namespace": "tigera-operator",
     "folderPath": "kubernetes/core/calico"
   }
 ]
