@@ -6,7 +6,7 @@
       helm dependencies update &&
       kubectl create namespace calico-system &&
       kubectl create namespace tigera-operator &&
-      helm install -n tigera-operator calico projectcalico/tigera-operator . -f values.yaml
+      helm install -n tigera-operator calico . -f values.yaml
     creates: /opt/cni/bin/install
   run_once: true
   notify:
