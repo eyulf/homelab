@@ -1,0 +1,7 @@
+[
+  {
+    "name": "pihole",
+    "namespace": "pihole",
+    "folderPath": "kubernetes/apps/pihole"
+  }
+]
