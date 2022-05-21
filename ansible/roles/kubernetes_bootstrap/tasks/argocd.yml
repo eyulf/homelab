@@ -53,7 +53,7 @@
       --dest-server https://kubernetes.default.svc
       --repo {{ git_repo_url }}
       --revision {{ git_branch }}
-      --path kubernetes/core/apps
+      --path kubernetes/core
       --sync-policy auto
       --core > /etc/kubernetes/argocd/core-apps
     creates: /etc/kubernetes/argocd/core-apps

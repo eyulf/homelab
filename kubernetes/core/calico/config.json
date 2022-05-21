@@ -1,0 +1,7 @@
+[
+  {
+    "name": "calico",
+    "namespace": "calico-system",
+    "folderPath": "kubernetes/core/calico"
+  }
+]

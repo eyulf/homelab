@@ -1,0 +1,7 @@
+[
+  {
+    "name": "argocd",
+    "namespace": "argocd-system",
+    "folderPath": "kubernetes/core/argocd"
+  }
+]

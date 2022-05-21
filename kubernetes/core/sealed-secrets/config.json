@@ -1,0 +1,7 @@
+[
+  {
+    "name": "sealed-secrets",
+    "namespace": "kube-system",
+    "folderPath": "kubernetes/core/sealed-secrets"
+  }
+]
