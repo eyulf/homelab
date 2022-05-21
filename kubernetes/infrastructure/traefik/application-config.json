@@ -1,0 +1,7 @@
+[
+  {
+    "name": "traefik",
+    "namespace": "traefik-infra",
+    "folderPath": "kubernetes/infrastructure/traefik"
+  }
+]

@@ -1,0 +1,7 @@
+[
+  {
+    "name": "metallb",
+    "namespace": "metallb-system",
+    "folderPath": "kubernetes/infrastructure/metallb"
+  }
+]
