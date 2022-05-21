@@ -22,9 +22,6 @@ spec:
         repoURL: https://github.com/eyulf/homelab.git
         targetRevision: main
         path: '{{ folderPath }}'
-        helm:
-          valueFiles:
-            - values.yaml
       destination:
         server: https://kubernetes.default.svc
         namespace: '{{ namespace }}'
