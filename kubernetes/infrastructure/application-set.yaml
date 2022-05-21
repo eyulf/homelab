@@ -12,6 +12,7 @@ spec:
         files:
           - path: "kubernetes/infrastructure/**/application-config.json"
         template:
+          metadata: {}
           spec:
             project: default
             source:
