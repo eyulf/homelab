@@ -12,7 +12,10 @@ spec:
         files:
           - path: "kubernetes/infrastructure/**/application-config.json"
         template:
-          metadata: {}
+          metadata:
+            name: '{{ name }}'
+            annotations:
+              argocd.argoproj.io/manifest-generate-paths: '/{{ folderPath }}'
           spec:
             project: default
             source:
@@ -21,7 +24,13 @@ spec:
               helm:
                 valueFiles:
                   - 'values.yaml'
-            destination: {}
+            destination:
+              server: https://kubernetes.default.svc
+              namespace: '{{ namespace }}'
+            syncPolicy:
+              automated: {}
+              syncOptions:
+                - CreateNamespace=true
     - git:
         repoURL: https://github.com/eyulf/homelab.git
         revision: main
