@@ -10,7 +10,32 @@ spec:
         repoURL: https://github.com/eyulf/homelab.git
         revision: main
         files:
-          - path: "kubernetes/core/**/config.json"
+          - path: "kubernetes/core/**/application-config.json"
+        template:
+          metadata:
+            name: '{{ name }}'
+            annotations:
+              argocd.argoproj.io/manifest-generate-paths: '/{{ folderPath }}'
+          spec:
+            project: default
+            source:
+              repoURL: https://github.com/eyulf/homelab.git
+              targetRevision: main
+              helm:
+                valueFiles:
+                  - 'values.yaml'
+            destination:
+              server: https://kubernetes.default.svc
+              namespace: '{{ namespace }}'
+            syncPolicy:
+              automated: {}
+              syncOptions:
+                - CreateNamespace=true
+    - git:
+        repoURL: https://github.com/eyulf/homelab.git
+        revision: main
+        files:
+          - path: "kubernetes/core/**/application-objects.json"
   template:
     metadata:
       name: '{{ name }}'
@@ -22,9 +47,6 @@ spec:
         repoURL: https://github.com/eyulf/homelab.git
         targetRevision: main
         path: '{{ folderPath }}'
-        helm:
-          valueFiles:
-            - values.yaml
       destination:
         server: https://kubernetes.default.svc
         namespace: '{{ namespace }}'

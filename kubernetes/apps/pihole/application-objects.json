@@ -1,0 +1,7 @@
+[
+  {
+    "name": "pihole-objects",
+    "namespace": "pihole",
+    "folderPath": "kubernetes/apps/pihole/objects"
+  }
+]
