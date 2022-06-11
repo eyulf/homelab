@@ -6,12 +6,18 @@ metadata:
   namespace: openebs-system
 spec:
   pools:
-    {{- range $node, $bd := .Values.nodes }}
+    {{- range $node := .Values.nodes }}
     - nodeSelector:
         kubernetes.io/hostname: {{ printf "%s" $node | quote }}
       dataRaidGroups:
         - blockDevices:
-            - blockDeviceName: {{ lookup "openebs.io/v1alpha1" "blockdevice" "" "openebs-system" | toJson | quote }}
+            {{ - range $index, $device := (lookup "openebs.io/v1alpha1" "BlockDevice" "openebs-system" "").items }}
+            {{ - if eq ($device).metadata.label.nodename $node }}
+            - blockDeviceName: {{ printf "%s" ($device).metadata.name | quote }}
+            {{ - end }}
+            {{ - end }}
       poolConfig:
         dataRaidGroupType: "stripe"
     {{- end }}
+
+
