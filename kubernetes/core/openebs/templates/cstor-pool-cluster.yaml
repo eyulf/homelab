@@ -12,7 +12,7 @@ spec:
       dataRaidGroups:
         - blockDevices:
           {{- range $index, $device := (lookup "openebs.io/v1alpha1" "BlockDevice" "openebs-system" "").items }}
-          {{- if eq ($device).metadata.label.nodename $node }}
+          {{- if eq ($device).metadata.labels.nodename $node }}
           - blockDeviceName: {{ printf "%s" ($device).metadata.name | quote }}
           {{- end }}
           {{- end }}
