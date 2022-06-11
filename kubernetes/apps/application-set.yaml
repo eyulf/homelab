@@ -10,6 +10,11 @@ spec:
         repoURL: https://github.com/eyulf/homelab.git
         revision: main
         files:
+          - path: "kubernetes/apps/**/application-secrets.json"
+    - git:
+        repoURL: https://github.com/eyulf/homelab.git
+        revision: main
+        files:
           - path: "kubernetes/apps/**/application-config.json"
         template:
           metadata:
