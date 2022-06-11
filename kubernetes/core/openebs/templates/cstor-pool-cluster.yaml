@@ -11,7 +11,7 @@ spec:
         kubernetes.io/hostname: {{ printf "%s" $node | quote }}
       dataRaidGroups:
         - blockDevices:
-            - blockDeviceName: {{ (lookup "v1" "blockdevice" "" .Release.Namespace) | quote }}
+            - blockDeviceName: {{ (lookup "openebs.io/v1alpha1" "blockdevice" "" .Release.Namespace) | quote }}
       poolConfig:
         dataRaidGroupType: "stripe"
     {{- end }}
