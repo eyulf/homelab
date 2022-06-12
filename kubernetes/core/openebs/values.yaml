@@ -1,8 +1,8 @@
 ---
 nodes:
-  - k8s-worker-01
-  - k8s-worker-02
-  - k8s-worker-03
+  k8s-worker-01: placeholder-k8s-worker-01
+  k8s-worker-02: placeholder-k8s-worker-02
+  k8s-worker-03: placeholder-k8s-worker-03
 openebs:
   cstor:
     enabled: true
