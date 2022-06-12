@@ -4,6 +4,8 @@ kind: CStorPoolCluster
 metadata:
   name: cstor-stripe
   namespace: openebs-system
+  annotations:
+    argocd.argoproj.io/sync-options: Validate=false
 spec:
   pools:
     {{- range $node := .Values.nodes }}
