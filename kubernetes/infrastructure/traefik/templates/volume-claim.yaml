@@ -5,7 +5,7 @@ metadata:
   name: traefik-vol
   namespace: traefik-infra
 spec:
-  storageClassName: cstor-csi-storage
+  storageClassName: cstor-stripe
   accessModes:
     - ReadWriteOnce
   resources:

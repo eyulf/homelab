@@ -2,10 +2,10 @@
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: cstor-csi-storage
+  name: cstor-stripe
 provisioner: cstor.csi.openebs.io
 allowVolumeExpansion: true
 parameters:
   cas-type: cstor
-  cstorPoolCluster: cstor-storage
+  cstorPoolCluster: cstor-stripe
   replicaCount: "3"
