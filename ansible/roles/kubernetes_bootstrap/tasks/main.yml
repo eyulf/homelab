@@ -5,6 +5,9 @@
     - kubernetes
     - kubernetes-bootstrap
     - argocd
+    - core
+    - infrastructure
+    - apps
   with_first_found:
     - "{{ ansible_facts['os_family'] }}.yml"
     - default.yml
@@ -26,6 +29,39 @@
     - kubernetes
     - kubernetes-bootstrap
     - argocd
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+# Core Apps
+- name: core
+  ansible.builtin.import_tasks: core.yml
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - core
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+# Infrastructure Apps
+- name: infrastructure
+  ansible.builtin.import_tasks: infrastructure.yml
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - infrastructure
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+# Apps Apps
+- name: apps
+  ansible.builtin.import_tasks: apps.yml
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - apps
   when:
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']

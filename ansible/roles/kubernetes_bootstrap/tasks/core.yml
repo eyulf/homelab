@@ -1,0 +1,116 @@
+---
+- name: core | install core-apps app
+  ansible.builtin.shell:
+    cmd: >
+      kubectl config set-context
+      --current
+      --namespace=argocd-system &&
+      argocd app create core-apps
+      --dest-namespace argocd-system
+      --dest-server https://kubernetes.default.svc
+      --repo {{ git_repo_url }}
+      --revision {{ git_branch }}
+      --path kubernetes/core
+      --sync-policy auto
+      --core > /etc/kubernetes/argocd/core-apps
+    creates: /etc/kubernetes/argocd/core-apps
+  run_once: true
+  notify:
+    - pause for core-apps app
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - core
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+    - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']
+
+# Flush Handlers
+- name: core | flush handlers
+  ansible.builtin.meta: flush_handlers
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - core
+
+- name: core | create /opt/homelab/kubernetes/core/openebs/ansible
+  ansible.builtin.file:
+    path: /opt/homelab/kubernetes/core/openebs/ansible
+    state: directory
+    owner: root
+    group: root
+    mode: '755'
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - core
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+- name: core | get openebs blockdevices from kubernetes cluster
+  ansible.builtin.command:
+    cmd: >
+      kubectl get blockdevice
+      -n openebs-system
+      -l kubernetes.io/hostname="{{ item }}"
+      -o json
+  register: blockdevices
+  loop: "{{ groups['k8s_workers'] }}"
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - core
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+    - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']
+
+- name: core | configure /opt/homelab/kubernetes/core/openebs/ansible/cstor-pool-cluster.yaml
+  ansible.builtin.template:
+    src: opt/homelab/kubernetes/core/openebs/ansible/cstor-pool-cluster.yaml.j2
+    dest: /opt/homelab/kubernetes/core/openebs/ansible/cstor-pool-cluster.yaml
+    owner: root
+    group: root
+    mode: '0644'
+  vars:
+    nodes: "{{ groups['k8s_workers'] }}"
+    blockdevice: "{{ blockdevices.results }}"
+  notify:
+    - apply cstor-pool-cluster.yaml
+    - pause for openebs storage cluster
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - core
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+    - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']
+
+- name: core | configure /opt/homelab/kubernetes/core/openebs/ansible/cstor-storage-class.yaml
+  ansible.builtin.copy:
+    src: opt/homelab/kubernetes/core/openebs/ansible/cstor-storage-class.yaml
+    dest: /opt/homelab/kubernetes/core/openebs/ansible/cstor-storage-class.yaml
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - apply cstor-storage-class.yaml
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - core
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+    - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']
+
+# Flush Handlers
+- name: core | flush handlers
+  ansible.builtin.meta: flush_handlers
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - core

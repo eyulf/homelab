@@ -1,0 +1,21 @@
+---
+apiVersion: cstor.openebs.io/v1
+kind: CStorPoolCluster
+metadata:
+  name: cstor-stripe
+  namespace: openebs-system
+spec:
+  pools:
+    {% for blockdevice in blockdevices.results -%}
+    {% for node in nodes -%}
+    {% if blockdevice.item == node -%}
+    - nodeSelector:
+        kubernetes.io/hostname: "{{ hostvars[node].inventory_hostname }}"
+      dataRaidGroups:
+        - blockDevices:
+          - blockDeviceName: "{{ blockdevice.stdout | from_json | community.general.json_query('items[0].metadata.name') }}"
+      poolConfig:
+        dataRaidGroupType: "stripe"
+    {% endif -%}
+    {% endfor -%}
+    {% endfor -%}

@@ -1,0 +1,35 @@
+---
+- name: infrastructure | install infrastructure-apps app
+  ansible.builtin.shell:
+    cmd: >
+      kubectl config set-context
+      --current
+      --namespace=argocd-system &&
+      argocd app create infrastructure-apps
+      --dest-namespace argocd-system
+      --dest-server https://kubernetes.default.svc
+      --repo {{ git_repo_url }}
+      --revision {{ git_branch }}
+      --path kubernetes/infrastructure
+      --sync-policy auto
+      --core > /etc/kubernetes/argocd/infrastructure-apps
+    creates: /etc/kubernetes/argocd/infrastructure-apps
+  run_once: true
+  notify:
+    - pause for infrastructure-apps app
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - infrastructure
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+    - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']
+
+# Flush Handlers
+- name: core | flush handlers
+  ansible.builtin.meta: flush_handlers
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - core

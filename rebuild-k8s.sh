@@ -8,11 +8,7 @@ ANSIBLE_DOMAIN=$(cd ${ANSIBLE_DIR} && grep 'domain:' group_vars/all.yml | awk '{
 
 cd terraform/infrastructure/kubernetes
 
-for host in ${ANSIBLE_ALL_HOSTS}; do
-	echo "Tainting: $host"
-	terraform1.1 taint module.$host.libvirt_domain.main
-	terraform1.1 taint module.$host.libvirt_volume.main
-done
+terraform1.1 destroy -auto-approve
 
 echo "Waiting 30s"
 sleep 30
@@ -28,10 +24,10 @@ for host in ${ANSIBLE_ALL_HOSTS}; do
 	echo "Resetting SSH Host Keys: $host"
 	ipv4=$(cd ${ANSIBLE_DIR} && ${ANSIBLE_INVENTORY} -y --host ${host} | grep 'ansible_host'| head -n 1 | awk '{print $2}')
 
-	ssh-keygen -R "${host}.${ANSIBLE_DOMAIN}"
+	ssh-keygen -R ${host}.${ANSIBLE_DOMAIN}
 	ssh-keygen -R ${ipv4}
-	ssh-keyscan -H "${host}.${ANSIBLE_DOMAIN}" >> ~/.ssh/known_hosts
-	ssh-keyscan -H ${ipv4} >> ~/.ssh/known_hosts
+	ssh-keyscan ${host}.${ANSIBLE_DOMAIN} >> ~/.ssh/known_hosts
+	ssh-keyscan ${ipv4} >> ~/.ssh/known_hosts
 done
 
 cd ansible
