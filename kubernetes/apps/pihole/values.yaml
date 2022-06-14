@@ -26,3 +26,6 @@ pihole:
     passwordKey: "password"
   DNS1: 1.1.1.1
   DNS2: 1.0.0.1
+  persistentVolumeClaim:
+    enabled: true
+    storageClass: cstor-stripe
