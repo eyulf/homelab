@@ -27,9 +27,9 @@
     - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']
 
 # Flush Handlers
-- name: core | flush handlers
+- name: infrastructure | flush handlers
   ansible.builtin.meta: flush_handlers
   tags:
     - kubernetes
     - kubernetes-bootstrap
-    - core
+    - infrastructure
