@@ -21,52 +21,32 @@
     {
       "matchDatasources": ["helm"],
       "commitMessageTopic": "Helm chart {{depName}}",
-      "separateMinorPatch": true
+      "separateMinorPatch": true,
+      "addLabels": ["renovate/helm-chart"]
     },
     {
       "matchDatasources": ["docker"],
       "commitMessageTopic": "Docker image {{depName}}",
       "commitMessageExtra": "to {{#if isSingleVersion}}v{{{newVersion}}}{{else}}{{{newValue}}}{{/if}}",
-      "matchUpdateTypes": ["major", "minor", "patch"]
+      "addLabels": ["renovate/image-release"]
     },
     {
-      "matchDatasources": ["docker"],
-      "automergeType": "true",
-      "requiredStatusChecks": null,
-      "addLabels": [
-        "container"
-      ],
-      "matchUpdateTypes": ["major", "minor", "patch" ]
+      "matchDatasources": ["ansible-galaxy"],
+      "commitMessageTopic": "Ansible collection {{depName}}",
+      "addLabels": ["renovate/ansible-galaxy"],
+      "automerge": true
     },
     {
-      "matchDatasources": ["docker"],
       "matchUpdateTypes": ["major"],
-      "labels": ["renovate/image-release", "dependency/major"]
+      "addLabels": ["dependency/major"]
     },
     {
-      "matchDatasources": ["docker"],
       "matchUpdateTypes": ["minor"],
-      "labels": ["renovate/image-release", "dependency/minor"]
+      "addLabels": ["dependency/minor"]
     },
     {
-      "matchDatasources": ["docker"],
       "matchUpdateTypes": ["patch"],
-      "labels": ["renovate/image-release", "dependency/patch"]
+      "addLabels": ["dependency/patch"]
     },
-    {
-      "matchDatasources": ["helm"],
-      "matchUpdateTypes": ["major"],
-      "labels": ["renovate/helm-chart", "dependency/major"]
-    },
-    {
-      "matchDatasources": ["helm"],
-      "matchUpdateTypes": ["minor"],
-      "labels": ["renovate/helm-chart", "dependency/minor"]
-    },
-    {
-      "matchDatasources": ["helm"],
-      "matchUpdateTypes": ["patch"],
-      "labels": ["renovate/helm-chart", "dependency/patch"]
-    }
   ]
 }
