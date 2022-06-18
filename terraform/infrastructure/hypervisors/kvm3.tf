@@ -1,6 +1,6 @@
 provider "libvirt" {
   alias = "kvm3"
-  uri   = "qemu+ssh://${ var.hypervisor_hosts.kvm3.user }@${ var.hypervisor_hosts.kvm3.ip }/system"
+  uri   = "qemu+ssh://${local.hypervisor_hosts.kvm3.user}@${local.hypervisor_hosts.kvm3.ip}/system"
 }
 
 resource "libvirt_pool" "kvm3" {

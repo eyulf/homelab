@@ -8,6 +8,8 @@ creation_rules:
   # Match terraform tfvar files
   - path_regex: terraform/.*/terraform.tfvars
     age: 'age1ety65vhtrhlevgmm899eyvdmv4avfm0replxg5tz6a2jyq84n4us7ryfc6'
+  - path_regex: terraform/.*/locals.tf
+    age: 'age1ety65vhtrhlevgmm899eyvdmv4avfm0replxg5tz6a2jyq84n4us7ryfc6'
 
   # Match corosync authkey
   - path_regex: ansible/roles/.*/files/etc/corosync/authkey
