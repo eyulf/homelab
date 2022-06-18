@@ -7,6 +7,15 @@
   "commitBodyTable": true,
   "rebaseWhen": "conflicted",
   "labels": ["renovate"],
+  "regexManagers": [
+    {
+      "fileMatch": ["kubernetes/.+\\.ya?ml$"],
+      "matchStrings": [
+        "dockerRepo=(?<depName>.*?)\n *tag: (?<currentValue>.*)\n"
+      ],
+      "datasourceTemplate": "docker"
+    }
+  ],
   "packageRules": [
     {
       "matchDatasources": ["helm"],
