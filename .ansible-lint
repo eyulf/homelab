@@ -1,6 +1,6 @@
 exclude_paths:
-  - ansible/group_vars/*.enc
-  - ansible/host_vars/*.enc
+  - ansible/group_vars/*.sops.yml
+  - ansible/host_vars/*.sops.yml
   - kubernetes
   - pki
   - terraform

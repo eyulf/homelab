@@ -1,12 +1,6 @@
 ### Unencrypted secrets
 
 # Ansible
-/ansible/group_vars/*.yml
-/ansible/group_vars/*.yaml
-
-/ansible/host_vars/*.yml
-/ansible/host_vars/*.yaml
-
 /ansible/roles/*/files/etc/corosync/authkey
 
 /ansible/roles/*/files/etc/kubernetes/*.conf

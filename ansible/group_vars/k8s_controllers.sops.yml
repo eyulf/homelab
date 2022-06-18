@@ -1,0 +1,21 @@
+kubernetes_secrets_key_secretbox: ENC[AES256_GCM,data:N/t3IxGdmSOqSdUVkQ7hmfAj2nl2NfMoqCSdtX6Fdmx/UWwZbW/OC13Wn+Y=,iv:49uHsPF6QJYJw+x5ANfjaduFzIhQ1dbxrTmiTl2oNcA=,tag:HY7LxO5blnYBWbQRHyLx5g==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1ety65vhtrhlevgmm899eyvdmv4avfm0replxg5tz6a2jyq84n4us7ryfc6
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB0d0ZZcWRmR1RTM1JRc0o2
+            Tm93ZFhoRms2aVlNbUo3MnBLZ0w0bVRxRURnCkNYeUlubXlQaTJMUlNJYUplY2x2
+            Y2dUL3FnamxmTkxzSVFMekRBNFFHR0EKLS0tIFlveUpPZnc3YXI5b3J4THl1czE5
+            R0tqcTNBd21VeWNNS3VyMjJCME02YVkKT2zQX4eQmcw1tzRIoJQepmjREXXB15Is
+            thOrmRE7DHVMygVl1zN1qkRysRLtNOLQM4k7xdfSkC12/MjoPluk9A==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2022-06-18T08:03:48Z"
+    mac: ENC[AES256_GCM,data:DTbJGop0XvrGfifr4T3WKtNW6vC5/+skN2w0alnNEBLGBqJNDBcqG1FqKDGtUh23UWh6Lp7ddjajvMY+8xoUgeKJmB1GDKn8rLRkAqMy9r5LOkMO91q1M+N91j4VKnKAPIDpD92d1ysgIvPZTCl+QioraSDmMIBmZB5pOzZtlL8=,iv:ruVrlDkxZgmzSvJ1OFjjXv1Ygq34p4FmhJYZhve8/C0=,tag:4Ntck5Xt2pWHGHQVwU2gkQ==,type:str]
+    pgp: []
+    unencrypted_suffix: _unencrypted
+    version: 3.7.1

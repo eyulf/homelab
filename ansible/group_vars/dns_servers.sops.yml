@@ -1,0 +1,23 @@
+mariadb_root_password: ENC[AES256_GCM,data:rE9AhcqRDorCZqEqqn2KQfUlcPRYiw3HvB6GlQGo,iv:GMhiK5beFsQ1FfR6pdfBpr2OAOhaW3M1wVyDVv3iuzc=,tag:UZrmEWg0MpH3MzVFOxHm7g==,type:str]
+mariadb_galera_auth_password: ENC[AES256_GCM,data:PVa1c5r791dVzxaOzD141UHHvss3Ujr1jOvdRUks,iv:aZJ4Ii9k7u2Kgn/Ud4Z7tNC/BKSYtFCgBnULMpj5j2g=,tag:IvGCqgOGDWiePnzfQ0aq7Q==,type:str]
+powerdns_mysql_password: ENC[AES256_GCM,data:DvVI2xVKd8oP4U1T6ZeoYcHZ7O6BKGveNdFSzehI,iv:52OSGdEQbkcs3I+FAkvif6ioVi9wS+TEX4PT4xF/tYo=,tag:wKCxsBAhuCAXgBZao9mAmw==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1ety65vhtrhlevgmm899eyvdmv4avfm0replxg5tz6a2jyq84n4us7ryfc6
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBVSkYrbUxhK0I4V2dFZTVS
+            S2tzb3duU3dWR1lPRGhkK0REV3RPc1l4bkNBCjBtUFlVdUpVQTlQcVhSRytUaEIr
+            SUNhZ3ZwUk1DZE02eGp1cU4xQjJuRUEKLS0tIDJSRlBTZC90YktOU05tZFU0RnQ3
+            MXNjOUdZRjFXNjdpMEFsdjlQSWhpdkEKWOKfZ6NrTe6gYbbaL8S24HI9MtTPjyTi
+            x6oS9D0UdNeVl0MQ5KGlHT+hmJayGpUejW4qBDsA43HbaH2Tym9WYw==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2022-06-18T08:01:31Z"
+    mac: ENC[AES256_GCM,data:8Hm5DEOe9G85Rqt5Wu7mzhd2Qk2OYd/gTERgXFyX7EGr6w0dk+nto0ZruQYgBZqlinhjGHE4AZJvTKPnjsUOJ/QHli+PWFE2BliHn3l8dziEdhCP8Nwu3bXT08jygQxn2G6OFZF+sDs1v1rt5tW9jtPI+5XOKf4IkML+ePFLHHY=,iv:irFzlGkzK5ntIKsyHXf0JIIzQ0Txi55LMhTz2/TqPhM=,tag:byD0txJezQgDysjZ2wrrtg==,type:str]
+    pgp: []
+    unencrypted_suffix: _unencrypted
+    version: 3.7.1
