@@ -2,7 +2,7 @@
 # Pre-generated key created using `corosync-keygen`
 - name: corosync | configure /etc/corosync/authkey
   ansible.builtin.copy:
-    src: etc/corosync/authkey
+    content: "{{ lookup('community.sops.sops', 'etc/corosync/authkey', rstrip=false) }}"
     dest: /etc/corosync/authkey
     owner: root
     group: root

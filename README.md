@@ -84,12 +84,12 @@ My homelab uses the following software, this list is non-exhaustive.
     <td>Container orchestration</td>
   </tr>
   <tr>
-    <td></td>
+    <td><img width="32" src="https://www.vectorlogo.zone/logos/redhat/redhat-icon.svg"></td>
     <td><a href="https://www.linux-kvm.org">KVM</a></td>
     <td>Virtual Machine Hypervisor</td>
   </tr>
   <tr>
-    <td></td>
+    <td><img width="32" src="https://libvirt.org/logos/logo-square-powered.svg"></td>
     <td><a href="https://libvirt.org/">libvirt</a></td>
     <td>Toolkit to manage KVM</td>
   </tr>

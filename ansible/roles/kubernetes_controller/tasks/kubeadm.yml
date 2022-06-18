@@ -48,6 +48,7 @@
     - inventory_hostname in groups['k8s_controllers']
     - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']
 
+# FIXME: This fails on runs not involving the host with the pacemaker cluster ip
 - name: kubeadm | join controllers
   ansible.builtin.command:
     cmd: "{{ hostvars['k8s-dummy-host']['token_cmd'] }} --ignore-preflight-errors 'FileAvailable--etc-kubernetes-kubelet.conf' --control-plane"

@@ -1,16 +1,5 @@
 ### Unencrypted secrets
 
-# Ansible
-/ansible/roles/*/files/etc/corosync/authkey
-
-/ansible/roles/*/files/etc/kubernetes/*.conf
-/ansible/roles/*/files/etc/kubernetes/pki/*.crt
-/ansible/roles/*/files/etc/kubernetes/pki/*.key
-/ansible/roles/*/files/etc/kubernetes/pki/*.pub
-/ansible/roles/*/files/etc/kubernetes/pki/etcd/*.crt
-/ansible/roles/*/files/etc/kubernetes/pki/etcd/*.key
-/ansible/roles/*/files/etc/kubernetes/secrets/*.yaml
-
 # Terraform
 **/locals.tf
 
@@ -20,6 +9,7 @@
 /pki/*.kubeconfig
 /pki/*.key
 /pki/*.pub
+/pki/*.yaml
 
 ### Terraform
 

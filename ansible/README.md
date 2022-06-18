@@ -4,6 +4,16 @@
 
 - It is assumed that all physical servers have already had your SSH key added to the ansible user, either through post installation scripts or manually using `ssh-copy-id`.
 
+### Editing Variables
+
+Most variables are saved in plain-text, however, some are encrypted using a combination of [SOPS](https://github.com/mozilla/sops) and [age](https://github.com/FiloSottile/age). These can be edited in-place using the `sops` cli.
+
+```bash
+sops -i group_vars/all.sops.yml
+```
+
+The community provided [SOPS Ansible collection](https://docs.ansible.com/ansible/latest/collections/community/sops/docsite/guide.html) is used to load the encrypted variables without manual intervention required.
+
 ## KVM Hypervisors
 Configure KVM Hypervisors using QEMU and LibVirt.
 

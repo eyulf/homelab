@@ -13,8 +13,11 @@ creation_rules:
 
   # Match corosync authkey
   - path_regex: ansible/roles/.*/files/etc/corosync/authkey
+    age: 'age1ety65vhtrhlevgmm899eyvdmv4avfm0replxg5tz6a2jyq84n4us7ryfc6'
 
   # Match kubernetes ssl certificates
+  - path_regex: pki/*
+    age: 'age1ety65vhtrhlevgmm899eyvdmv4avfm0replxg5tz6a2jyq84n4us7ryfc6'
   - path_regex: ansible/roles/.*/files/etc/kubernetes/.*.conf
     age: 'age1ety65vhtrhlevgmm899eyvdmv4avfm0replxg5tz6a2jyq84n4us7ryfc6'
   - path_regex: ansible/roles/.*/files/etc/kubernetes/pki/.*.(crt|key|pub)

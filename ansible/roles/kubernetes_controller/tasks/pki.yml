@@ -1,7 +1,7 @@
 ---
 - name: pki | configure /root/.kube/config
   ansible.builtin.copy:
-    src: etc/kubernetes/admin-{{ inventory_hostname }}.conf
+    content: "{{ lookup('community.sops.sops', 'etc/kubernetes/admin-' + inventory_hostname + '.conf', rstrip=false, output_type='json') }}"
     dest: /root/.kube/config
     owner: root
     group: root
@@ -16,7 +16,7 @@
 
 - name: pki | configure /etc/kubernetes/{{ item }}.conf
   ansible.builtin.copy:
-    src: etc/kubernetes/{{ item }}-{{ inventory_hostname }}.conf
+    content: "{{ lookup('community.sops.sops', 'etc/kubernetes/' + item + '-' + inventory_hostname + '.conf', rstrip=false) }}"
     dest: /etc/kubernetes/{{ item }}.conf
     owner: root
     group: root
@@ -32,7 +32,7 @@
 
 - name: pki | configure /etc/kubernetes/pki/{{ item }}.crt
   ansible.builtin.copy:
-    src: etc/kubernetes/pki/{{ item }}.crt
+    content: "{{ lookup('community.sops.sops', 'etc/kubernetes/pki/' + item + '.crt', rstrip=false) }}"
     dest: /etc/kubernetes/pki/{{ item }}.crt
     owner: root
     group: root
@@ -48,7 +48,7 @@
 
 - name: pki | configure /etc/kubernetes/pki/{{ item }}.key
   ansible.builtin.copy:
-    src: etc/kubernetes/pki/{{ item }}.key
+    content: "{{ lookup('community.sops.sops', 'etc/kubernetes/pki/' + item + '.key', rstrip=false) }}"
     dest: /etc/kubernetes/pki/{{ item }}.key
     owner: root
     group: root
@@ -64,7 +64,7 @@
 
 - name: pki | configure /etc/kubernetes/pki/etcd/{{ item }}.crt
   ansible.builtin.copy:
-    src: etc/kubernetes/pki/etcd/{{ item }}.crt
+    content: "{{ lookup('community.sops.sops', 'etc/kubernetes/pki/etcd/' + item + '.crt', rstrip=false) }}"
     dest: /etc/kubernetes/pki/etcd/{{ item }}.crt
     owner: root
     group: root
@@ -80,7 +80,7 @@
 
 - name: pki | configure /etc/kubernetes/pki/etcd/{{ item }}.key
   ansible.builtin.copy:
-    src: etc/kubernetes/pki/etcd/{{ item }}.key
+    content: "{{ lookup('community.sops.sops', 'etc/kubernetes/pki/etcd/' + item + '.key', rstrip=false) }}"
     dest: /etc/kubernetes/pki/etcd/{{ item }}.key
     owner: root
     group: root
@@ -96,7 +96,7 @@
 
 - name: pki | configure /etc/kubernetes/pki/etcd/{{ item }}.crt
   ansible.builtin.copy:
-    src: etc/kubernetes/pki/etcd/{{ item }}-{{ inventory_hostname }}.crt
+    content: "{{ lookup('community.sops.sops', 'etc/kubernetes/pki/etcd/' + item + '-' + inventory_hostname +'.crt', rstrip=false) }}"
     dest: /etc/kubernetes/pki/etcd/{{ item }}.crt
     owner: root
     group: root
@@ -112,7 +112,7 @@
 
 - name: pki | configure /etc/kubernetes/pki/etcd/{{ item }}.key
   ansible.builtin.copy:
-    src: etc/kubernetes/pki/etcd/{{ item }}-{{ inventory_hostname }}.key
+    content: "{{ lookup('community.sops.sops', 'etc/kubernetes/pki/etcd/' + item + '-' + inventory_hostname +'.key', rstrip=false) }}"
     dest: /etc/kubernetes/pki/etcd/{{ item }}.key
     owner: root
     group: root
@@ -128,7 +128,7 @@
 
 - name: pki | configure /etc/kubernetes/pki/sa.{{ item }}
   ansible.builtin.copy:
-    src: etc/kubernetes/pki/sa.{{ item }}
+    content: "{{ lookup('community.sops.sops', 'etc/kubernetes/pki/sa.' + item, rstrip=false) }}"
     dest: /etc/kubernetes/pki/sa.{{ item }}
     owner: root
     group: root

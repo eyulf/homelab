@@ -1,7 +1,7 @@
 ---
 - name: pki | configure /etc/kubernetes/kubelet.conf
   ansible.builtin.copy:
-    src: etc/kubernetes/kubelet-{{ inventory_hostname }}.conf
+    content: "{{ lookup('community.sops.sops', 'etc/kubernetes/kubelet-' + inventory_hostname + '.conf', rstrip=false) }}"
     dest: /etc/kubernetes/kubelet.conf
     owner: root
     group: root
@@ -14,7 +14,7 @@
 
 - name: pki | configure /etc/kubernetes/pki/ca.crt
   ansible.builtin.copy:
-    src: etc/kubernetes/pki/ca.crt
+    content: "{{ lookup('community.sops.sops', 'etc/kubernetes/pki/ca.crt', rstrip=false) }}"
     dest: /etc/kubernetes/pki/ca.crt
     owner: root
     group: root

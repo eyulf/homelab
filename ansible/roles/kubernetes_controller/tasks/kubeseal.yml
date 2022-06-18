@@ -39,7 +39,7 @@
 
 - name: kubeseal | configure /etc/kubernetes/secrets/sealed-secrets.yaml
   ansible.builtin.copy:
-    src: etc/kubernetes/secrets/sealed-secrets.yaml
+    content: "{{ lookup('community.sops.sops', 'etc/kubernetes/secrets/sealed-secrets.yaml', rstrip=false) }}"
     dest: /etc/kubernetes/secrets/sealed-secrets.yaml
     owner: root
     group: root

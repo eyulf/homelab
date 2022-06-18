@@ -1,6 +1,7 @@
 exclude_paths:
   - ansible/group_vars/*.sops.yml
   - ansible/host_vars/*.sops.yml
+  - ansible/roles/kubernetes_controller/files/etc/kubernetes/secrets/sealed-secrets.yaml
   - kubernetes
   - pki
   - terraform

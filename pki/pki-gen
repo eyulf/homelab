@@ -103,24 +103,20 @@ fi
 function ssl_ca_kubernetes {
 	filename=${K8S_CA_NAME}
 	cfssl gencert -initca $filename-csr.json | cfssljson -bare $filename
-	cp ${filename}.pem ${ANSIBLE_COMMON_PKI_DIR}/ca.crt
-	sops -e ${ANSIBLE_COMMON_PKI_DIR}/ca.crt > ${ANSIBLE_COMMON_PKI_DIR}/ca.crt.enc
-	cp ${filename}.pem ${ANSIBLE_CONTROLLER_PKI_DIR}/ca.crt
-	sops -e ${ANSIBLE_CONTROLLER_PKI_DIR}/ca.crt > ${ANSIBLE_CONTROLLER_PKI_DIR}/ca.crt.enc
+	sops -e ${filename}.pem > ${ANSIBLE_COMMON_PKI_DIR}/ca.crt
+	sops -e ${filename}.pem > ${ANSIBLE_CONTROLLER_PKI_DIR}/ca.crt
 }
 
 function ssl_ca_etcd {
 	filename=etcd-ca
 	cfssl gencert -initca $filename-csr.json | cfssljson -bare $filename
-	cp ${filename}.pem ${ANSIBLE_CONTROLLER_ETCD_DIR}/ca.crt
-	sops -e ${ANSIBLE_CONTROLLER_ETCD_DIR}/ca.crt > ${ANSIBLE_CONTROLLER_ETCD_DIR}/ca.crt.enc
+	sops -e ${filename}.pem > ${ANSIBLE_CONTROLLER_ETCD_DIR}/ca.crt
 }
 
 function ssl_ca_front_proxy {
 	filename=front-proxy-ca
 	cfssl gencert -initca $filename-csr.json | cfssljson -bare $filename
-	cp ${filename}.pem ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt
-	sops -e ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt.enc
+	sops -e ${filename}.pem > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt
 }
 
 function ssl_crt_etcd_etcd_controller_hosts {
@@ -129,47 +125,37 @@ function ssl_crt_etcd_etcd_controller_hosts {
 		filename=${1}-${host}
 		ipv4=$(cd ${ANSIBLE_DIR} && ${ANSIBLE_INVENTORY} -y --host ${host} | grep 'ansible_host'| head -n 1 | awk '{print $2}')
 		${ETCD_CA_GENCERT} --hostname="${host},${ipv4},localhost,127.0.0.1" --cn="${host}" etcd-${csr}-csr.json | cfssljson -bare etcd-${filename}
-		cp etcd-${filename}.pem ${ANSIBLE_CONTROLLER_ETCD_DIR}/${filename}.crt
-		sops -e ${ANSIBLE_CONTROLLER_ETCD_DIR}/${filename}.crt > ${ANSIBLE_CONTROLLER_ETCD_DIR}/${filename}.crt.enc
-		cp etcd-${filename}-key.pem ${ANSIBLE_CONTROLLER_ETCD_DIR}/${filename}.key
-		sops -e ${ANSIBLE_CONTROLLER_ETCD_DIR}/${filename}.key > ${ANSIBLE_CONTROLLER_ETCD_DIR}/${filename}.key.enc
+		sops -e etcd-${filename}.pem > ${ANSIBLE_CONTROLLER_ETCD_DIR}/${filename}.crt
+		sops -e etcd-${filename}-key.pem > ${ANSIBLE_CONTROLLER_ETCD_DIR}/${filename}.key
 	done
 }
 
 function ssl_crt_etcd_etcd {
 	filename=$1
 	${ETCD_CA_GENCERT} etcd-${filename}-csr.json | cfssljson -bare etcd-${filename}
-	cp etcd-${filename}.pem ${ANSIBLE_CONTROLLER_ETCD_DIR}/${filename}.crt
-	sops -e ${ANSIBLE_CONTROLLER_ETCD_DIR}/${filename}.crt > ${ANSIBLE_CONTROLLER_ETCD_DIR}/${filename}.crt.enc
-	cp etcd-${filename}-key.pem ${ANSIBLE_CONTROLLER_ETCD_DIR}/${filename}.key
-	sops -e ${ANSIBLE_CONTROLLER_ETCD_DIR}/${filename}.key > ${ANSIBLE_CONTROLLER_ETCD_DIR}/${filename}.key.enc
+	sops -e etcd-${filename}.pem > ${ANSIBLE_CONTROLLER_ETCD_DIR}/${filename}.crt
+	sops -e etcd-${filename}-key.pem > ${ANSIBLE_CONTROLLER_ETCD_DIR}/${filename}.key
 }
 
 function ssl_crt_etcd {
 	filename=$1
 	${ETCD_CA_GENCERT} ${filename}-csr.json | cfssljson -bare ${filename}
-	cp ${filename}.pem ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt
-	sops -e ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt.enc
-	cp ${filename}-key.pem ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key
-	sops -e ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key.enc
+	sops -e ${filename}.pem > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt
+	sops -e ${filename}-key.pem > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key
 }
 
 function ssl_crt_kube_apiserver {
 	filename=apiserver
 	${K8S_CA_GENCERT} --hostname=${CLUSTER_FQDN},${KUBERNETES_HOSTNAMES},${CLUSTER_IP},${KUBERNETES_CONTROLLER_IPS::-1},${CALICO_POD_IP},127.0.0.1 ${filename}-csr.json | cfssljson -bare ${filename}
-	cp ${filename}.pem ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt
-	sops -e ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt.enc
-	cp ${filename}-key.pem ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key
-	sops -e ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key.enc
+	sops -e ${filename}.pem > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt
+	sops -e ${filename}-key.pem > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key
 }
 
 function ssl_crt_k8s {
 	filename=$1
 	${K8S_CA_GENCERT} ${filename}-csr.json | cfssljson -bare ${filename}
-	cp ${filename}.pem ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt
-	sops -e ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt.enc
-	cp ${filename}-key.pem ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key
-	sops -e ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key.enc
+	sops -e ${filename}.pem > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt
+	sops -e ${filename}-key.pem > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key
 }
 
 function ssl_crt_kubelet_client {
@@ -177,20 +163,16 @@ function ssl_crt_kubelet_client {
 		filename=apiserver-kubelet-client-${host}
 		ipv4=$(cd ${ANSIBLE_DIR} && ${ANSIBLE_INVENTORY} -y --host ${host} | grep 'ansible_host'| head -n 1 | awk '{print $2}')
 		${K8S_CA_GENCERT} --hostname=${host},${ip} --cn="system:node:${host}" kubelet-client-csr.json | cfssljson -bare ${filename}
-		cp ${filename}.pem ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt
-		sops -e ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt.enc
-		cp ${filename}-key.pem ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key
-		sops -e ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key.enc
+		sops -e ${filename}.pem > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt
+		sops -e ${filename}-key.pem > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key
 	done
 }
 
 function ssl_crt_proxy {
 	filename=$1
 	${PROXY_CA_GENCERT} ${filename}-csr.json | cfssljson -bare ${filename}
-	cp ${filename}.pem ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt
-	sops -e ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt.enc
-	cp ${filename}-key.pem ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key
-	sops -e ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key.enc
+	sops -e ${filename}.pem > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt
+	sops -e ${filename}-key.pem > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key
 }
 
 function ssl_crt_kubeconfig_admin {
@@ -201,8 +183,7 @@ function ssl_crt_kubeconfig_admin {
 		kubectl config set-credentials ${filename} --client-certificate=${filename}.pem --client-key=${filename}-key.pem --embed-certs=true --kubeconfig=${filename}.kubeconfig
 		kubectl config set-context default --cluster=${CLUSTER_NAME} --user=${filename} --kubeconfig=${filename}.kubeconfig
 		kubectl config use-context default --kubeconfig=${filename}.kubeconfig
-		cp ${filename}.kubeconfig ${ANSIBLE_CONTROLLER_K8S_DIR}/${filename}.conf
-		sops -e ${ANSIBLE_CONTROLLER_K8S_DIR}/${filename}.conf > ${ANSIBLE_CONTROLLER_K8S_DIR}/${filename}.conf.enc
+		sops -e ${filename}.kubeconfig > ${ANSIBLE_CONTROLLER_K8S_DIR}/${filename}.conf
 	done
 }
 
@@ -214,8 +195,7 @@ function ssl_crt_kubeconfig_kublet {
 		kubectl config set-credentials "system:node:${host}" --client-certificate=${filename}.pem --client-key=${filename}-key.pem --embed-certs=true --kubeconfig=${filename}.kubeconfig
 		kubectl config set-context "system:node:${host}" --cluster=${CLUSTER_NAME} --user=system:node:${host} --kubeconfig=${filename}.kubeconfig
 		kubectl config use-context "system:node:${host}" --kubeconfig=${filename}.kubeconfig
-		cp ${filename}.kubeconfig ${ANSIBLE_COMMON_K8S_DIR}/${filename}.conf
-		sops -e ${ANSIBLE_COMMON_K8S_DIR}/${filename}.conf > ${ANSIBLE_COMMON_K8S_DIR}/${filename}.conf.enc
+		sops -e ${filename}.kubeconfig > ${ANSIBLE_COMMON_K8S_DIR}/${filename}.conf
 	done
 }
 
@@ -230,8 +210,7 @@ function ssl_crt_kubeconfig_system {
 		kubectl config set-credentials system:${filename} --client-certificate=${filename}.pem --client-key=${filename}-key.pem --embed-certs=true --kubeconfig=${filename}.kubeconfig
 		kubectl config set-context default --cluster=${CLUSTER_NAME} --user=system:${filename} --kubeconfig=${filename}.kubeconfig
 		kubectl config use-context default --kubeconfig=${filename}.kubeconfig
-		cp ${filename}.kubeconfig ${ANSIBLE_CONTROLLER_K8S_DIR}/${ansible_filename}.conf
-		sops -e ${ANSIBLE_CONTROLLER_K8S_DIR}/${ansible_filename}.conf > ${ANSIBLE_CONTROLLER_K8S_DIR}/${ansible_filename}.conf.enc
+		sops -e ${filename}.kubeconfig > ${ANSIBLE_CONTROLLER_K8S_DIR}/${ansible_filename}.conf
 	done
 }
 
@@ -239,10 +218,8 @@ function ssl_crt_sa {
 	filename="sa"
 	openssl genrsa -out ${filename}.key 3072
 	openssl rsa -in ${filename}.key -pubout -out ${filename}.pub
-	cp ${filename}.pub ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.pub
-	sops -e ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.pub > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.pub.enc
-	cp ${filename}.key ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key
-	sops -e ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key.enc
+	sops -e ${filename}.pub > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.pub
+	sops -e ${filename}.key > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key
 }
 
 function ssl_ca {
@@ -299,8 +276,8 @@ function sealed_secrets {
 	filename="sealed-secrets"
 	openssl req -x509 -nodes -newkey rsa:4096 -keyout "${filename}.key" -out "${filename}.pem" -subj "/CN=sealed-secret/O=sealed-secret"
 	cp ${filename}.pem ${ANSIBLE_CONTROLLER_K8S_DIR}/secrets/${filename}.pem
-	kubectl create secret tls custom-sealed-secrets-key --cert="${filename}.pem" --key="${filename}.key" -n "kube-system" --dry-run=client -o yaml > ${ANSIBLE_CONTROLLER_K8S_DIR}/secrets/${filename}.yaml
-	sops -e ${ANSIBLE_CONTROLLER_K8S_DIR}/secrets/${filename}.yaml > ${ANSIBLE_CONTROLLER_K8S_DIR}/secrets/${filename}.yaml.enc
+	kubectl create secret tls custom-sealed-secrets-key --cert="${filename}.pem" --key="${filename}.key" -n "kube-system" --dry-run=client -o yaml > ${filename}.yaml
+	sops -e ${filename}.yaml > ${ANSIBLE_CONTROLLER_K8S_DIR}/secrets/${filename}.yaml
 }
 
 ############################################################
