@@ -6,17 +6,21 @@ data "terraform_remote_state" "hypervisors" {
   }
 }
 
+data "sops_file" "hypervisors" {
+  source_file = "../hypervisors/hypervisors.yaml"
+}
+
 provider "libvirt" {
   alias = "kvm1"
-  uri   = "qemu+ssh://${local.hypervisor_hosts.kvm1.user}@${local.hypervisor_hosts.kvm1.ip}/system"
+  uri   = "qemu+ssh://${data.sops_file.hypervisors.data["kvm1.user"]}@${data.sops_file.hypervisors.data["kvm1.ip"]}/system"
 }
 
 provider "libvirt" {
   alias = "kvm2"
-  uri   = "qemu+ssh://${local.hypervisor_hosts.kvm2.user}@${local.hypervisor_hosts.kvm2.ip}/system"
+  uri   = "qemu+ssh://${data.sops_file.hypervisors.data["kvm2.user"]}@${data.sops_file.hypervisors.data["kvm2.ip"]}/system"
 }
 
 provider "libvirt" {
   alias = "kvm3"
-  uri   = "qemu+ssh://${local.hypervisor_hosts.kvm3.user}@${local.hypervisor_hosts.kvm3.ip}/system"
+  uri   = "qemu+ssh://${data.sops_file.hypervisors.data["kvm3.user"]}@${data.sops_file.hypervisors.data["kvm3.ip"]}/system"
 }

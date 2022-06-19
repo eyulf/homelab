@@ -20,7 +20,6 @@ repos:
     rev: v1.71.0
     hooks:
       - id: terraform_fmt
-      - id: terraform_providers_lock
       - id: terraform_tflint
       - id: terraform_docs
 

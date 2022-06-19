@@ -2,17 +2,18 @@
 
 ## General Assumptions
 
-- Regular users of Terraform will note that remote states are not being used. While this goes against best practise, this is intentional for the following reasons.
+- Regular users of Terraform will note that remote states are not being used. While this goes against best practice, this is intentional for the following reasons.
 
   1. As a personal homelab, this environment is primarily maintained by a single user.
   2. No cloud resources are being managed or configured by this repository.
   3. In the event a state file gets corrupted or goes missing, the state data can be re-imported into a new state file.
 
-- The primary provider module used is [dmacvicar/libvirt](https://github.com/dmacvicar/terraform-provider-libvirt).
+- The [`dmacvicar/libvirt`](https://github.com/dmacvicar/terraform-provider-libvirt) provider module is used to for KVM resources.
+- The [`carlpett/sops`](https://github.com/carlpett/terraform-provider-sops) provider module is used to decrypt data encrypted by [SOPS](https://github.com/mozilla/sops) with [age](https://github.com/FiloSottile/age).
 
 ## Infrastructure
 
-The [infrastructure](infrastructure) directory contains all infrastructure configuration seperated into distinct parts with their own states. This reduces the blast radius from a potential misconfiguration taking out all infrastructure at once.
+The [infrastructure](infrastructure) directory contains all infrastructure configuration separated into distinct parts with their own states. This reduces the blast radius from a potential misconfiguration taking out all infrastructure at once.
 
 ### Hypervisors
 
@@ -43,11 +44,3 @@ cd infrastructure/kubernetes
 terraform init
 terraform apply
 ```
-
-## Modules
-
-The [modules](modules) directory contains all custom Terraform modules used by this repository that do not yet warrant their own seperately maintained respository.
-
-### KVM Virtual Machine
-
-This module is documented at [modules/kvm_virtual_machine](modules/kvm_virtual_machine) and is used for all VMs created on the KVM Hypervisors.

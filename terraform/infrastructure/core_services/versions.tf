@@ -6,5 +6,9 @@ terraform {
       source  = "dmacvicar/libvirt"
       version = "0.6.14"
     }
+    sops = {
+      source  = "carlpett/sops"
+      version = "0.7.1"
+    }
   }
 }
