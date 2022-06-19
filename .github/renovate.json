@@ -38,6 +38,11 @@
       "automerge": true
     },
     {
+      "matchDatasources": ["pre-commit"],
+      "addLabels": ["renovate/pre-commit"],
+      "automerge": true
+    },
+    {
       "matchUpdateTypes": ["major"],
       "addLabels": ["dependency/major"]
     },
