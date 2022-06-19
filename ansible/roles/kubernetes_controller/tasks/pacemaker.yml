@@ -17,9 +17,9 @@
   ansible.builtin.command:
     cmd: >
       pcs resource create {{ item['resource_id'] }}
-      {{ item['provider'] }} {{ item['options']|join(' ') }}
+      {{ item['provider'] }} {{ item['options'] | join(' ') }}
       {% if item['op'] is defined %}op {{ item['op'] }}{% endif %}
-      {% if item['op_options'] is defined %}{{ item['op_options']|join(' ') }}{% endif %}
+      {% if item['op_options'] is defined %}{{ item['op_options'] | join(' ') }}{% endif %}
   run_once: true
   with_items: '{{ pacemaker_cluster_resources }}'
   notify:
