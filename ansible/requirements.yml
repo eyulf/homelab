@@ -3,6 +3,6 @@ collections:
   - name: community.general
     version: 5.1.1
   - name: community.sops
-    version: 1.2.2
+    version: 1.2.3
   - name: community.mysql
     version: 3.3.0
