@@ -30,13 +30,13 @@
       "addLabels": ["renovate/image-release"]
     },
     {
-      "matchDatasources": ["galaxy-collection"],
+      "matchManagers": ["ansible-galaxy"],
       "commitMessageTopic": "Ansible collection {{depName}}",
       "addLabels": ["renovate/ansible-galaxy"],
       "automerge": true
     },
     {
-      "matchDatasources": ["pre-commit"],
+      "matchManagers": ["pre-commit"],
       "addLabels": ["renovate/pre-commit"],
       "automerge": true
     },
