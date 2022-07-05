@@ -30,7 +30,7 @@
       "addLabels": ["renovate/image-release"]
     },
     {
-      "matchDatasources": ["ansible-galaxy"],
+      "matchDatasources": ["galaxy-collection"],
       "commitMessageTopic": "Ansible collection {{depName}}",
       "addLabels": ["renovate/ansible-galaxy"],
       "automerge": true
