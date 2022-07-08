@@ -7,3 +7,4 @@ exclude_paths:
   - terraform
   - Taskfile.yaml
   - ansible/Taskfile.yaml
+  - .github
