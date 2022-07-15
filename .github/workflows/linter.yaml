@@ -21,7 +21,6 @@ jobs:
       - name: Lint Code Base
         uses: github/super-linter/slim@v4
         env:
-          ANSIBLE_CONFIG_FILE: .config/ansible-lint.yml
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VALIDATE_ALL_CODEBASE: true
