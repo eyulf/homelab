@@ -20,6 +20,8 @@ The [core](core) directory contains the minimum services that are required for t
   - [calico](core/calico) [\[website\]](https://projectcalico.docs.tigera.io/about/about-calico) - Kubernetes cluster networking provider.
 - **kube-system**
   - [sealed-secrets](core/sealed-secrets) [\[website\]](https://projectcalico.docs.tigera.io/about/about-calico) - Kubernetes cluster networking provider.
+- **openebs-system**
+  - [openebs](core/openebs) [\[website\]](https://openebs.io/) - Kubernetes native Container Attached Storage solution.
 
 ### General Infrastructure
 

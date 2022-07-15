@@ -13,8 +13,8 @@ repos:
     hooks:
       - id: ansible-lint
         args: [
-          "--project-dir",
-          "ansible"
+          "--config-file=.ansible-lint.yml",
+          "--project-dir=ansible"
         ]
 
   - repo: https://github.com/antonbabenko/pre-commit-terraform

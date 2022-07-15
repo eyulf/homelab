@@ -1,5 +1,7 @@
 # Alex's Homelab
 
+[![GitHub Super-Linter](https://github.com/eyulf/homelab/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
+
 My Homelab utilizes [Infrastructure as Code](https://en.wikipedia.org/wiki/Infrastructure_as_code) and [GitOps methodologies](https://www.weave.works/blog/what-is-gitops-really) to automate provisioning, operating, and updating self-hosted services. I have also been documenting the progress of this on my blog as part of my [homelab refresh](https://alexgardner.id.au/blog/home-lab-refresh/).
 
 Using my quick and dirty [rebuild](rebuild-k8s.sh) script, I can destroy and completely rebuild the Kubernetes Cluster with all defined apps deployed within approximately 30 minutes time.
