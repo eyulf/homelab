@@ -23,6 +23,5 @@ jobs:
         env:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          KUBERNETES_KUBEVAL_OPTIONS:
-            - "--ignore-missing-schemas"
+          KUBERNETES_KUBEVAL_OPTIONS: "--ignore-missing-schemas"
           VALIDATE_ALL_CODEBASE: true
