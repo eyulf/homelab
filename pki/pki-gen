@@ -43,8 +43,7 @@ CLEAR='\e[0m'
 # Check if requirements are met
 commands=(cfssl cfssljson ansible-inventory sops)
 for command in "${commands[@]}"; do
-	test=$(which "$command")
-	if [[ $? -ne 0 ]]; then
+	if [[ ! $(which "$command") ]]; then
 		echo -e "\n$command command not found!\n"
 		exit 1
 	fi
@@ -89,7 +88,7 @@ function help_text {
 }
 
 # Ensure exactly one permitted argument
-if [[ $# -ne 1 ]] || [[ ! "${allowed_functions[*]}" =~ "$1" ]]; then
+if [[ $# -ne 1 ]] || [[ ! "${allowed_functions[*]}" =~ $1 ]]; then
 	help_text
 	exit 1
 fi
@@ -98,125 +97,125 @@ fi
 ### Create Functions
 
 function ssl_ca_kubernetes {
-	filename=${K8S_CA_NAME}
-	cfssl gencert -initca $filename-csr.json | cfssljson -bare $filename
-	sops -e ${filename}.pem > ${ANSIBLE_COMMON_PKI_DIR}/ca.crt
-	sops -e ${filename}.pem > ${ANSIBLE_CONTROLLER_PKI_DIR}/ca.crt
+	filename="${K8S_CA_NAME}"
+	cfssl gencert -initca "${filename}-csr.json" | cfssljson -bare "$filename"
+	sops -e "${filename}.pem" > "${ANSIBLE_COMMON_PKI_DIR}/ca.crt"
+	sops -e "${filename}.pem" > "${ANSIBLE_CONTROLLER_PKI_DIR}/ca.crt"
 }
 
 function ssl_ca_etcd {
 	filename=etcd-ca
-	cfssl gencert -initca $filename-csr.json | cfssljson -bare $filename
-	sops -e ${filename}.pem > ${ANSIBLE_CONTROLLER_ETCD_DIR}/ca.crt
+	cfssl gencert -initca "${filename}-csr.json" | cfssljson -bare "$filename"
+	sops -e "${filename}.pem" > "${ANSIBLE_CONTROLLER_ETCD_DIR}/ca.crt"
 }
 
 function ssl_ca_front_proxy {
 	filename=front-proxy-ca
-	cfssl gencert -initca $filename-csr.json | cfssljson -bare $filename
-	sops -e ${filename}.pem > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt
+	cfssl gencert -initca ${filename}-csr.json | cfssljson -bare "$filename"
+	sops -e "${filename}.pem" > "${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt"
 }
 
 function ssl_crt_etcd_etcd_controller_hosts {
 	csr=$1
 	for host in ${ANSIBLE_CONTROLLER_HOSTS}; do
 		filename=${1}-${host}
-		ipv4=$(cd ${ANSIBLE_DIR} && ${ANSIBLE_INVENTORY} -y --host ${host} | grep 'ansible_host'| head -n 1 | awk '{print $2}')
-		${ETCD_CA_GENCERT} --hostname="${host},${ipv4},localhost,127.0.0.1" --cn="${host}" etcd-${csr}-csr.json | cfssljson -bare etcd-${filename}
-		sops -e etcd-${filename}.pem > ${ANSIBLE_CONTROLLER_ETCD_DIR}/${filename}.crt
-		sops -e etcd-${filename}-key.pem > ${ANSIBLE_CONTROLLER_ETCD_DIR}/${filename}.key
+		ipv4=$(cd ${ANSIBLE_DIR} && ${ANSIBLE_INVENTORY} -y --host "${host}" | grep 'ansible_host'| head -n 1 | awk '{print $2}')
+		${ETCD_CA_GENCERT} --hostname="${host},${ipv4},localhost,127.0.0.1" --cn="${host}" "etcd-${csr}-csr.json" | cfssljson -bare "etcd-${filename}"
+		sops -e "etcd-${filename}.pem" > "${ANSIBLE_CONTROLLER_ETCD_DIR}/${filename}.crt"
+		sops -e "etcd-${filename}-key.pem" > "${ANSIBLE_CONTROLLER_ETCD_DIR}/${filename}.key"
 	done
 }
 
 function ssl_crt_etcd_etcd {
 	filename=$1
-	${ETCD_CA_GENCERT} etcd-${filename}-csr.json | cfssljson -bare etcd-${filename}
-	sops -e etcd-${filename}.pem > ${ANSIBLE_CONTROLLER_ETCD_DIR}/${filename}.crt
-	sops -e etcd-${filename}-key.pem > ${ANSIBLE_CONTROLLER_ETCD_DIR}/${filename}.key
+	${ETCD_CA_GENCERT} "etcd-${filename}-csr.json" | cfssljson -bare "etcd-${filename}"
+	sops -e "etcd-${filename}.pem" > "${ANSIBLE_CONTROLLER_ETCD_DIR}/${filename}.crt"
+	sops -e "etcd-${filename}-key.pem" > "${ANSIBLE_CONTROLLER_ETCD_DIR}/${filename}.key"
 }
 
 function ssl_crt_etcd {
 	filename=$1
-	${ETCD_CA_GENCERT} ${filename}-csr.json | cfssljson -bare ${filename}
-	sops -e ${filename}.pem > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt
-	sops -e ${filename}-key.pem > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key
+	${ETCD_CA_GENCERT} "${filename}-csr.json" | cfssljson -bare "${filename}"
+	sops -e "${filename}.pem" > "${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt"
+	sops -e "${filename}-key.pem" > "${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key"
 }
 
 function ssl_crt_kube_apiserver {
 	filename=apiserver
-	${K8S_CA_GENCERT} --hostname=${CLUSTER_FQDN},${KUBERNETES_HOSTNAMES},${CLUSTER_IP},${KUBERNETES_CONTROLLER_IPS::-1},${CALICO_POD_IP},127.0.0.1 ${filename}-csr.json | cfssljson -bare ${filename}
-	sops -e ${filename}.pem > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt
-	sops -e ${filename}-key.pem > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key
+	${K8S_CA_GENCERT} --hostname="${CLUSTER_FQDN},${KUBERNETES_HOSTNAMES},${CLUSTER_IP},${KUBERNETES_CONTROLLER_IPS::-1},${CALICO_POD_IP},127.0.0.1" "${filename}-csr.json" | cfssljson -bare "${filename}"
+	sops -e "${filename}.pem" > "${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt"
+	sops -e "${filename}-key.pem" > "${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key"
 }
 
 function ssl_crt_k8s {
-	filename=$1
-	${K8S_CA_GENCERT} ${filename}-csr.json | cfssljson -bare ${filename}
-	sops -e ${filename}.pem > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt
-	sops -e ${filename}-key.pem > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key
+	filename="$1"
+	${K8S_CA_GENCERT} "${filename}-csr.json" | cfssljson -bare "${filename}"
+	sops -e "${filename}.pem" > "${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt"
+	sops -e "${filename}-key.pem" > "${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key"
 }
 
 function ssl_crt_kubelet_client {
 	for host in ${ANSIBLE_WORKER_HOSTS}; do
-		filename=apiserver-kubelet-client-${host}
-		ipv4=$(cd ${ANSIBLE_DIR} && ${ANSIBLE_INVENTORY} -y --host ${host} | grep 'ansible_host'| head -n 1 | awk '{print $2}')
-		${K8S_CA_GENCERT} --hostname=${host},${ip} --cn="system:node:${host}" kubelet-client-csr.json | cfssljson -bare ${filename}
-		sops -e ${filename}.pem > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt
-		sops -e ${filename}-key.pem > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key
+		filename="apiserver-kubelet-client-${host}"
+		ipv4=$(cd ${ANSIBLE_DIR} && ${ANSIBLE_INVENTORY} -y --host "${host}" | grep 'ansible_host'| head -n 1 | awk '{print $2}')
+		${K8S_CA_GENCERT} --hostname="${host}","${ipv4}" --cn="system:node:${host}" kubelet-client-csr.json | cfssljson -bare "${filename}"
+		sops -e "${filename}.pem" > "${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt"
+		sops -e "${filename}-key.pem" > "${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key"
 	done
 }
 
 function ssl_crt_proxy {
-	filename=$1
-	${PROXY_CA_GENCERT} ${filename}-csr.json | cfssljson -bare ${filename}
-	sops -e ${filename}.pem > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt
-	sops -e ${filename}-key.pem > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key
+	filename="$1"
+	${PROXY_CA_GENCERT} "${filename}-csr.json" | cfssljson -bare "${filename}"
+	sops -e "${filename}.pem" > "${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.crt"
+	sops -e "${filename}-key.pem" > "${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key"
 }
 
 function ssl_crt_kubeconfig_admin {
 	for host in ${ANSIBLE_CONTROLLER_HOSTS}; do
-		filename=admin-${host}
-		${K8S_CA_GENCERT} admin-csr.json | cfssljson -bare ${filename}
-		kubectl config set-cluster ${CLUSTER_NAME} --certificate-authority=${K8S_CA_NAME}.pem --embed-certs=true --server=https://${CLUSTER_FQDN}:6443 --kubeconfig=${filename}.kubeconfig
-		kubectl config set-credentials ${filename} --client-certificate=${filename}.pem --client-key=${filename}-key.pem --embed-certs=true --kubeconfig=${filename}.kubeconfig
-		kubectl config set-context default --cluster=${CLUSTER_NAME} --user=${filename} --kubeconfig=${filename}.kubeconfig
-		kubectl config use-context default --kubeconfig=${filename}.kubeconfig
-		sops -e ${filename}.kubeconfig > ${ANSIBLE_CONTROLLER_K8S_DIR}/${filename}.conf
+		filename="admin-${host}"
+		${K8S_CA_GENCERT} admin-csr.json | cfssljson -bare "${filename}"
+		kubectl config set-cluster "${CLUSTER_NAME}" --certificate-authority="${K8S_CA_NAME}.pem" --embed-certs=true --server="https://${CLUSTER_FQDN}:6443" --kubeconfig="${filename}.kubeconfig"
+		kubectl config set-credentials "${filename}" --client-certificate="${filename}.pem" --client-key="${filename}-key.pem" --embed-certs=true --kubeconfig="${filename}.kubeconfig"
+		kubectl config set-context default --cluster="${CLUSTER_NAME}" --user="${filename}" --kubeconfig="${filename}.kubeconfig"
+		kubectl config use-context default --kubeconfig="${filename}.kubeconfig"
+		sops -e "${filename}.kubeconfig" > "${ANSIBLE_CONTROLLER_K8S_DIR}/${filename}.conf"
 	done
 }
 
 function ssl_crt_kubeconfig_kublet {
 	for host in ${ANSIBLE_ALL_HOSTS}; do
-		filename=kubelet-${host}
-		${K8S_CA_GENCERT} --hostname=${host},${ip} --cn="system:node:${host}" kubelet-csr.json | cfssljson -bare ${filename}
-		kubectl config set-cluster ${CLUSTER_NAME} --certificate-authority=${K8S_CA_NAME}.pem --embed-certs=true --server=https://${CLUSTER_FQDN}:6443 --kubeconfig=${filename}.kubeconfig
-		kubectl config set-credentials "system:node:${host}" --client-certificate=${filename}.pem --client-key=${filename}-key.pem --embed-certs=true --kubeconfig=${filename}.kubeconfig
-		kubectl config set-context "system:node:${host}" --cluster=${CLUSTER_NAME} --user=system:node:${host} --kubeconfig=${filename}.kubeconfig
-		kubectl config use-context "system:node:${host}" --kubeconfig=${filename}.kubeconfig
-		sops -e ${filename}.kubeconfig > ${ANSIBLE_COMMON_K8S_DIR}/${filename}.conf
+		filename="kubelet-${host}"
+		${K8S_CA_GENCERT} --hostname="${host}" --cn="system:node:${host}" kubelet-csr.json | cfssljson -bare "${filename}"
+		kubectl config set-cluster "${CLUSTER_NAME}" --certificate-authority="${K8S_CA_NAME}.pem" --embed-certs=true --server="https://${CLUSTER_FQDN}:6443" --kubeconfig="${filename}.kubeconfig"
+		kubectl config set-credentials "system:node:${host}" --client-certificate="${filename}.pem" --client-key="${filename}-key.pem" --embed-certs=true --kubeconfig="${filename}.kubeconfig"
+		kubectl config set-context "system:node:${host}" --cluster="${CLUSTER_NAME}" --user="system:node:${host}" --kubeconfig="${filename}.kubeconfig"
+		kubectl config use-context "system:node:${host}" --kubeconfig="${filename}.kubeconfig"
+		sops -e "${filename}.kubeconfig" > "${ANSIBLE_COMMON_K8S_DIR}/${filename}.conf"
 	done
 }
 
 function ssl_crt_kubeconfig_system {
 	csr=$1
 	for host in ${ANSIBLE_CONTROLLER_HOSTS}; do
-		filename=${1}-${host}
+		filename="${1}-${host}"
 		ansible_filename=$(echo "${filename}"|cut -d '-' -f 2-10)
-		ipv4=$(cd ${ANSIBLE_DIR} && ${ANSIBLE_INVENTORY} -y --host ${host} | grep 'ansible_host'| head -n 1 | awk '{print $2}')
-		${K8S_CA_GENCERT} ${csr}-csr.json | cfssljson -bare ${filename}
-		kubectl config set-cluster ${CLUSTER_NAME} --certificate-authority=${K8S_CA_NAME}.pem --embed-certs=true --server=https://${ipv4}:6443 --kubeconfig=${filename}.kubeconfig
-		kubectl config set-credentials system:${filename} --client-certificate=${filename}.pem --client-key=${filename}-key.pem --embed-certs=true --kubeconfig=${filename}.kubeconfig
-		kubectl config set-context default --cluster=${CLUSTER_NAME} --user=system:${filename} --kubeconfig=${filename}.kubeconfig
-		kubectl config use-context default --kubeconfig=${filename}.kubeconfig
-		sops -e ${filename}.kubeconfig > ${ANSIBLE_CONTROLLER_K8S_DIR}/${ansible_filename}.conf
+		ipv4=$(cd ${ANSIBLE_DIR} && ${ANSIBLE_INVENTORY} -y --host "${host}" | grep 'ansible_host'| head -n 1 | awk '{print $2}')
+		${K8S_CA_GENCERT} "${csr}-csr.json" | cfssljson -bare "${filename}"
+		kubectl config set-cluster "${CLUSTER_NAME}" --certificate-authority="${K8S_CA_NAME}.pem" --embed-certs=true --server="https://${ipv4}:6443" --kubeconfig="${filename}.kubeconfig"
+		kubectl config set-credentials "system:${filename}" --client-certificate="${filename}.pem" --client-key="${filename}-key.pem" --embed-certs=true --kubeconfig="${filename}.kubeconfig"
+		kubectl config set-context default --cluster="${CLUSTER_NAME}" --user="system:${filename}" --kubeconfig="${filename}.kubeconfig"
+		kubectl config use-context default --kubeconfig="${filename}.kubeconfig"
+		sops -e "${filename}.kubeconfig" > "${ANSIBLE_CONTROLLER_K8S_DIR}/${ansible_filename}.conf"
 	done
 }
 
 function ssl_crt_sa {
 	filename="sa"
-	openssl genrsa -out ${filename}.key 3072
-	openssl rsa -in ${filename}.key -pubout -out ${filename}.pub
-	sops -e ${filename}.pub > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.pub
-	sops -e ${filename}.key > ${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key
+	openssl genrsa -out "${filename}.key" 3072
+	openssl rsa -in "${filename}.key" -pubout -out "${filename}.pub"
+	sops -e "${filename}.pub" > "${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.pub"
+	sops -e "${filename}.key" > "${ANSIBLE_CONTROLLER_PKI_DIR}/${filename}.key"
 }
 
 function ssl_ca {
