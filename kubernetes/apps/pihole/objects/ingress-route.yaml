@@ -9,10 +9,10 @@ spec:
   entryPoints:
     - websecure
   routes:
-  - match: Host(`pihole.lab.alexgardner.id.au`)
-    kind: Rule
-    services:
-    - name: pihole-web
-      port: 80
+    - match: Host(`pihole.lab.alexgardner.id.au`)
+      kind: Rule
+      services:
+        - name: pihole-web
+          port: 80
   tls:
     certResolver: letsencrypt

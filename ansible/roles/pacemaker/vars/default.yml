@@ -1,3 +1,4 @@
+---
 pacemaker_tcp_ports:
   - '2224'
   - '3121'
@@ -9,6 +10,7 @@ pacemaker_packages:
   - corosync
   - pcs
   - crmsh
+
 pacemaker_service_name: pacemaker
 corosync_service_name: corosync
 pcsd_service_name: pcsd

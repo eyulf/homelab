@@ -1,3 +1,4 @@
+---
 ansible_user: ENC[AES256_GCM,data:4nligA==,iv:dWuLLlAbbSHKJ8wGwRyV76BcSfcVvi3uuACUmESDtYg=,tag:591PQbgeKOVnP1Yc/uWl3w==,type:str]
 sops:
     kms: []

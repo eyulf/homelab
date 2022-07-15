@@ -1,3 +1,4 @@
+---
 kvm1:
     ip: ENC[AES256_GCM,data:QLvgQ3PJ9fYw,iv:WEUETWvAuHIO9KhS2VrNs7NSIrSOXMbR+aZJ7ByO6FQ=,tag:1cDRUTZBA1RNeCRZcE47ww==,type:str]
     user: ENC[AES256_GCM,data:/LtapQ==,iv:jYPs+dkY/l2olGuUxFmpQmQ5Z/WcJ9LA4JWW9vSjJ3c=,tag:ubP5YxxISuNg+Cr4LYIBfg==,type:str]

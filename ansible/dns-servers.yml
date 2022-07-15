@@ -1,3 +1,4 @@
+---
 - name: dns_servers
   hosts: dns_servers
   gather_facts: true

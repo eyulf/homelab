@@ -1,3 +1,4 @@
+---
 kubernetes_secrets_key_secretbox: ENC[AES256_GCM,data:N/t3IxGdmSOqSdUVkQ7hmfAj2nl2NfMoqCSdtX6Fdmx/UWwZbW/OC13Wn+Y=,iv:49uHsPF6QJYJw+x5ANfjaduFzIhQ1dbxrTmiTl2oNcA=,tag:HY7LxO5blnYBWbQRHyLx5g==,type:str]
 sops:
     kms: []

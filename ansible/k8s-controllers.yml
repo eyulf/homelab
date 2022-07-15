@@ -1,3 +1,4 @@
+---
 - name: k8s_controllers
   hosts: k8s_controllers
   gather_facts: true
