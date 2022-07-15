@@ -4,8 +4,6 @@
 
 ############################################################
 ## Variables
-PKI_DIR=(pwd)
-
 ANSIBLE_DIR="../ansible"
 ANSIBLE_INVENTORY="ansible-inventory -i production"
 ANSIBLE_COMMON_K8S_DIR="${ANSIBLE_DIR}/roles/kubernetes_common/files/etc/kubernetes"
@@ -22,18 +20,17 @@ ETCD_CA_GENCERT="cfssl gencert -ca=etcd-ca.pem -ca-key=etcd-ca-key.pem --config=
 K8S_CA_GENCERT="cfssl gencert -ca=${K8S_CA_NAME}.pem -ca-key=${K8S_CA_NAME}-key.pem --config=ca-config.json -profile=kubernetes"
 PROXY_CA_GENCERT="cfssl gencert -ca=front-proxy-ca.pem -ca-key=front-proxy-ca-key.pem --config=ca-config.json -profile=proxy"
 
-KUBERNETES_DEFAULT_HOSTNAMES=kubernetes,kubernetes.default,kubernetes.default.svc,kubernetes.default.svc.cluster,kubernetes.svc.cluster.local
 KUBERNETES_CONTROLLER_IPS=$(
 	for host in ${ANSIBLE_CONTROLLER_HOSTS}; do
-		ipv4=$(cd ${ANSIBLE_DIR} && ${ANSIBLE_INVENTORY} -y --host ${host} | grep 'ansible_host'| head -n 1 | awk '{print $2}')
+		ipv4=$(cd ${ANSIBLE_DIR} && ${ANSIBLE_INVENTORY} -y --host "${host}" | grep 'ansible_host'| head -n 1 | awk '{print $2}')
 		echo -n "$ipv4,"
 	done
 )
 
-DOMAIN=$(cd ${ANSIBLE_DIR} && ${ANSIBLE_INVENTORY} --graph k8s_controllers | grep '|' | cut -d '-' -f3-6 | head -n 1 | xargs ${ANSIBLE_INVENTORY} -y --host | grep 'domain'| head -n 1 | awk '{print $2}')
-CLUSTER_NAME=$(cd ${ANSIBLE_DIR} && ${ANSIBLE_INVENTORY} --graph k8s_controllers | grep '|' | cut -d '-' -f3-6 | head -n 1 | xargs ${ANSIBLE_INVENTORY} -y --host | grep 'kubernetes_cluster_name'| head -n 1 | awk '{print $2}')
-CLUSTER_IP=$(cd ${ANSIBLE_DIR} && ${ANSIBLE_INVENTORY} --graph k8s_controllers | grep '|' | cut -d '-' -f3-6 | head -n 1 | xargs ${ANSIBLE_INVENTORY} -y --host | grep 'pacemaker_cluster_ip'| head -n 1 | awk '{print $2}')
-CLUSTER_FQDN=$(cd ${ANSIBLE_DIR} && ${ANSIBLE_INVENTORY} --graph k8s_controllers | grep '|' | cut -d '-' -f3-6 | head -n 1 | xargs ${ANSIBLE_INVENTORY} -y --host | grep 'kubernetes_cluster_fqdn'| head -n 1 | awk '{print $2}' | cut -d '.' -f1).${DOMAIN}
+DOMAIN=$(cd ${ANSIBLE_DIR} && ${ANSIBLE_INVENTORY} --graph k8s_controllers | grep '|' | cut -d '-' -f3-6 | head -n 1 | xargs "${ANSIBLE_INVENTORY}" -y --host | grep 'domain'| head -n 1 | awk '{print $2}')
+CLUSTER_NAME=$(cd ${ANSIBLE_DIR} && ${ANSIBLE_INVENTORY} --graph k8s_controllers | grep '|' | cut -d '-' -f3-6 | head -n 1 | xargs "${ANSIBLE_INVENTORY}" -y --host | grep 'kubernetes_cluster_name'| head -n 1 | awk '{print $2}')
+CLUSTER_IP=$(cd ${ANSIBLE_DIR} && ${ANSIBLE_INVENTORY} --graph k8s_controllers | grep '|' | cut -d '-' -f3-6 | head -n 1 | xargs "${ANSIBLE_INVENTORY}" -y --host | grep 'pacemaker_cluster_ip'| head -n 1 | awk '{print $2}')
+CLUSTER_FQDN=$(cd ${ANSIBLE_DIR} && ${ANSIBLE_INVENTORY} --graph k8s_controllers | grep '|' | cut -d '-' -f3-6 | head -n 1 | xargs "${ANSIBLE_INVENTORY}" -y --host | grep 'kubernetes_cluster_fqdn'| head -n 1 | awk '{print $2}' | cut -d '.' -f1).${DOMAIN}
 CALICO_POD_IP="10.96.0.1"
 
 ############################################################
@@ -45,8 +42,8 @@ CLEAR='\e[0m'
 
 # Check if requirements are met
 commands=(cfssl cfssljson ansible-inventory sops)
-for command in ${commands[@]}; do
-	test=$(which $command)
+for command in "${commands[@]}"; do
+	test=$(which "$command")
 	if [[ $? -ne 0 ]]; then
 		echo -e "\n$command command not found!\n"
 		exit 1
@@ -78,14 +75,14 @@ function help_text {
 	echo "https://github.com/cloudflare/cfssl"
 	echo ""
 	echo "Requires the following things setup and working:"
-	for command in ${commands[@]}; do
+	for command in "${commands[@]}"; do
 		echo "- ${command}"
 	done
 	echo ""
 	echo -e "${BOLD}usage: $0 function${CLEAR}"
 	echo ""
 	echo "Avaliable functions:"
-	for function in ${allowed_functions[@]}; do
+	for function in "${allowed_functions[@]}"; do
 		echo "- ${function}"
 	done
 	echo ""
@@ -284,21 +281,21 @@ function sealed_secrets {
 ### Clean Functions
 
 function clean_crt_hosts {
-	rm ${1}-*{.pem,-key.pem,.csr}
-	clean_kubeconfig ${1}
+	rm "${1}"-*{.pem,-key.pem,.csr}
+	clean_kubeconfig "${1}"
 }
 
 function clean_crt_single {
-	rm ${1}{.pem,-key.pem,.csr}
-	clean_kubeconfig ${1}
+	rm "${1}"{.pem,-key.pem,.csr}
+	clean_kubeconfig "${1}"
 }
 
 function clean_kubeconfig {
-	rm ${1}*.kubeconfig
+	rm "${1}"*.kubeconfig
 }
 
 function clean_keypair {
-	rm ${1}{.pub,.key}
+	rm "${1}"{.pub,.key}
 }
 
 function clean_ca {

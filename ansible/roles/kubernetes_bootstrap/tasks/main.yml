@@ -6,6 +6,7 @@
     - kubernetes-bootstrap
     - argocd
     - core
+    - core-openebs
     - infrastructure
     - apps
   with_first_found:
@@ -40,6 +41,17 @@
     - kubernetes
     - kubernetes-bootstrap
     - core
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['k8s_controllers']
+
+# Core OpenEBS
+- name: core-openebs
+  ansible.builtin.import_tasks: core-openebs.yml
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - core-openebs
   when:
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']

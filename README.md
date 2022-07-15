@@ -19,7 +19,7 @@ The major components of the homelab configuration are split out into sub-directo
 
 ## :gear:&nbsp; Hardware
 
-I've also documented this on my [website](https://alexgardner.id.au/homelab/), but the hardware used consists of the following.
+I've also documented this on my [personal site](https://alexgardner.id.au/homelab/), but the hardware used consists of the following.
 
 - 1x Mikrotik CRS109-8G-1S-2HnD-IN Router
 
@@ -41,11 +41,11 @@ I've also documented this on my [website](https://alexgardner.id.au/homelab/), b
 
 ## :robot:&nbsp; Automation
 
- - [Renovate](https://github.com/renovatebot/renovate) - Periodically scans the repo and opens pull requests when it detects updates for various "package managers", including Ansible, Kubernetes, Helm, and Terraform.
+- [Renovate](https://github.com/renovatebot/renovate) - Periodically scans the repository and opens pull requests when it detects updates for various "package managers", including Ansible, Kubernetes, Helm, and Terraform.
 
 ## :computer:&nbsp; Tasks
 
-I'm using [Task](https://taskfile.dev/) to execute tasks defined in Taskfiles that have been created throughout the repo.
+I'm using [Task](https://taskfile.dev/) to execute tasks defined in Taskfiles that have been created throughout the repository.
 
 - [homelab](Taskfile.yaml)
 - [homelab/ansible](ansible/Taskfile.yaml)
