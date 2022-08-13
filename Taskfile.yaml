@@ -57,3 +57,11 @@ tasks:
       - rm {{.PWD}}/.python-version
     status:
       - test ! -f {{.PWD}}/.python-version
+
+  linter-setup:
+    cmds:
+      - docker pull github/super-linter:latest
+
+  linter-run:
+    cmds:
+      - docker run -e RUN_LOCAL=true -e USE_FIND_ALGORITHM=true -e IGNORE_GITIGNORED_FILES=true -v $(pwd):/tmp/lint/file github/super-linter

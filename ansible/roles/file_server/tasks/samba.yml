@@ -28,7 +28,7 @@
   ansible.builtin.service:
     name: '{{ samba_service }}'
     state: started
-    enabled: yes
+    enabled: true
   tags:
     - file_server
     - samba

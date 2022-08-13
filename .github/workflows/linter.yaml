@@ -27,3 +27,4 @@ jobs:
           LINTER_RULES_PATH: /
           VALIDATE_ALL_CODEBASE: false
           VALIDATE_JSCPD: false
+          VALIDATE_XML: false

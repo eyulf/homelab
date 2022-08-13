@@ -42,7 +42,7 @@
   ansible.builtin.service:
     name: syncthing
     state: started
-    enabled: yes
+    enabled: true
   tags:
     - file_server
     - syncthing
