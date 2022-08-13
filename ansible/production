@@ -21,3 +21,6 @@ k8s-worker-03
 [k8s_all:children]
 k8s_controllers
 k8s_workers
+
+[file_server]
+storage

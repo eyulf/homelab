@@ -1,0 +1,52 @@
+---
+- name: file-server | set variables
+  ansible.builtin.include_vars: '{{ item }}'
+  tags:
+    - file_server
+    - syncthing
+    - samba
+    - backups
+    - monitoring
+  with_first_found:
+    - "{{ ansible_facts['os_family'] }}.yml"
+    - default.yml
+
+# Syncthing
+- name: file-server | syncthing
+  ansible.builtin.import_tasks: syncthing.yml
+  tags:
+    - file_server
+    - syncthing
+  when:
+    - ansible_facts['os_family'] == 'FreeBSD'
+    - inventory_hostname in groups['file_server']
+
+# Samba
+- name: file-server | samba
+  ansible.builtin.import_tasks: samba.yml
+  tags:
+    - file_server
+    - samba
+  when:
+    - ansible_facts['os_family'] == 'FreeBSD'
+    - inventory_hostname in groups['file_server']
+
+# Backups
+- name: file-server | backups
+  ansible.builtin.import_tasks: backups.yml
+  tags:
+    - file_server
+    - backups
+  when:
+    - ansible_facts['os_family'] == 'FreeBSD'
+    - inventory_hostname in groups['file_server']
+
+# Monitoring
+- name: file-server | monitoring
+  ansible.builtin.import_tasks: monitoring.yml
+  tags:
+    - file_server
+    - monitoring
+  when:
+    - ansible_facts['os_family'] == 'FreeBSD'
+    - inventory_hostname in groups['file_server']

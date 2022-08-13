@@ -10,7 +10,7 @@
 - name: users | create admin users
   ansible.builtin.user:
     name: '{{ item }}'
-    shell: /bin/bash
+    shell: '{{ user_shell }}'
   loop: '{{ admin_users }}'
   tags:
     - common
@@ -18,7 +18,7 @@
 
 - name: users | configure {{ sudo_sudoers_path }}/20_admins_sudo
   ansible.builtin.template:
-    src: '{{ sudo_sudoers_path }}/20_admins_sudo.j2'
+    src: etc/sudoers.d/20_admins_sudo.j2
     dest: /{{ sudo_sudoers_path }}/20_admins_sudo
     owner: root
     group: '{{ main_root_group }}'

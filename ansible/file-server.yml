@@ -1,0 +1,8 @@
+---
+- name: file_server
+  hosts: file_server
+  gather_facts: true
+  become: true
+  roles:
+    - common
+    - file_server

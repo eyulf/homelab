@@ -1,0 +1,33 @@
+---
+- name: backups | configure backup files
+  ansible.builtin.copy:
+    src: root/{{ item }}
+    dest: /root/{{ item }}
+    owner: root
+    group: wheel
+    mode: '0755'
+  loop:
+    - backup-initdisk.sh
+    - backup-start.sh
+    - backup-finished.sh
+  tags:
+    - file_server
+    - backups
+  when:
+    - ansible_facts['os_family'] == 'FreeBSD'
+    - inventory_hostname in groups['file_server']
+
+- name: backups | configure cron - backup-start
+  ansible.builtin.cron:
+    name: backup-start
+    minute: '0'
+    hour: '*/4'
+    user: root
+    job: '/root/backup-start.sh partial'
+    cron_file: backup_start
+  tags:
+    - file_server
+    - backups
+  when:
+    - ansible_facts['os_family'] == 'FreeBSD'
+    - inventory_hostname in groups['file_server']

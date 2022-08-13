@@ -34,3 +34,8 @@ tasks:
     desc: Run Ansible playbooks on kvm hypervisors
     cmds:
       - '{{.ANSIBLE_PROD}} kvm-hypervisors.yml'
+
+  file-server:
+    desc: Run Ansible playbooks on file servers
+    cmds:
+      - '{{.ANSIBLE_PROD}} file-server.yml'

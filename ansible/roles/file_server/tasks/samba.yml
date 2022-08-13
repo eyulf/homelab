@@ -1,0 +1,37 @@
+---
+- name: samba | install {{ samba_package }} package
+  ansible.builtin.package:
+    pkg: '{{ samba_package }}'
+    state: present
+  tags:
+    - file_server
+    - samba
+  when:
+    - ansible_facts['os_family'] == 'FreeBSD'
+    - inventory_hostname in groups['file_server']
+
+- name: samba | configure samba
+  ansible.builtin.copy:
+    content: "{{ lookup('community.sops.sops', 'usr/local/etc/smb4.conf', rstrip=false) }}"
+    dest: /usr/local/etc/smb4.conf
+    owner: root
+    group: wheel
+    mode: '0644'
+  tags:
+    - file_server
+    - samba
+  when:
+    - ansible_facts['os_family'] == 'FreeBSD'
+    - inventory_hostname in groups['file_server']
+
+- name: samba | start and enable {{ samba_service }} service
+  ansible.builtin.service:
+    name: '{{ samba_service }}'
+    state: started
+    enabled: yes
+  tags:
+    - file_server
+    - samba
+  when:
+    - ansible_facts['os_family'] == 'FreeBSD'
+    - inventory_hostname in groups['file_server']

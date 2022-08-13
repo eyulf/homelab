@@ -1,0 +1,65 @@
+---
+- name: syncthing | install syncthing packages
+  ansible.builtin.package:
+    pkg: syncthing
+    state: present
+  tags:
+    - file_server
+    - syncthing
+  when:
+    - ansible_facts['os_family'] == 'FreeBSD'
+    - inventory_hostname in groups['file_server']
+
+- name: syncthing | create syncthing config dir
+  ansible.builtin.file:
+    path: /usr/local/etc/syncthing/
+    state: directory
+    owner: syncthing
+    group: syncthing
+    mode: '0700'
+  tags:
+    - file_server
+    - syncthing
+  when:
+    - ansible_facts['os_family'] == 'FreeBSD'
+    - inventory_hostname in groups['file_server']
+
+- name: syncthing | configure syncthing
+  ansible.builtin.copy:
+    content: "{{ lookup('community.sops.sops', 'usr/local/etc/syncthing/config.xml', rstrip=false) }}"
+    dest: /usr/local/etc/syncthing/config.xml
+    owner: syncthing
+    group: syncthing
+    mode: '0600'
+  tags:
+    - file_server
+    - syncthing
+  when:
+    - ansible_facts['os_family'] == 'FreeBSD'
+    - inventory_hostname in groups['file_server']
+
+- name: syncthing | start and enable syncthing service
+  ansible.builtin.service:
+    name: syncthing
+    state: started
+    enabled: yes
+  tags:
+    - file_server
+    - syncthing
+  when:
+    - ansible_facts['os_family'] == 'FreeBSD'
+    - inventory_hostname in groups['file_server']
+
+- name: syncthing | Set perms on syncthing logs file
+  ansible.builtin.file:
+    path: /var/log/syncthing.log
+    state: file
+    owner: syncthing
+    group: syncthing
+    mode: '0600'
+  tags:
+    - file_server
+    - syncthing
+  when:
+    - ansible_facts['os_family'] == 'FreeBSD'
+    - inventory_hostname in groups['file_server']

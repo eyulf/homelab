@@ -5,5 +5,7 @@ main_packages_list:
   - atop
   - lsof
   - screen
+  - rsync
 sudo_package_name: sudo
 sudo_sudoers_path: usr/local/etc/sudoers.d
+user_shell: /bin/csh

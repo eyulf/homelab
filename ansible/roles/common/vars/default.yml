@@ -22,3 +22,4 @@ main_packages_list:
 debian_version: buster
 sudo_package_name: sudo
 sudo_sudoers_path: etc/sudoers.d
+user_shell: /bin/bash

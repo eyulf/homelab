@@ -12,7 +12,7 @@
     src: etc/resolv.conf.j2
     dest: /etc/resolv.conf
     owner: root
-    group: root
+    group: '{{ main_root_group }}'
     mode: '644'
   tags:
     - common
@@ -23,7 +23,7 @@
     src: etc/hosts.j2
     dest: /etc/hosts
     owner: root
-    group: root
+    group: '{{ main_root_group }}'
     mode: '644'
   tags:
     - common
