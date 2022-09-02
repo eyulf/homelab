@@ -1,0 +1,18 @@
+---
+# https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/defining-the-mergeability-of-pull-requests/troubleshooting-required-status-checks#handling-skipped-but-required-checks
+name: Deploy MkDocs
+
+on:
+  push:
+    paths-ignore:
+      - 'mkdocs.yml'
+      - 'docs/**'
+
+jobs:
+  deploy:
+    name: Deploy MkDocs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy MkDocs
+        run: 'echo "No deployment required"'
