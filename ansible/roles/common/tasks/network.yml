@@ -1,5 +1,5 @@
 ---
-- name: network | update hostname
+- name: Network | update hostname
   ansible.builtin.hostname:
     name: '{{ inventory_hostname }}'
   tags:
@@ -7,7 +7,7 @@
     - network
   when: ansible_facts.hostname != inventory_hostname
 
-- name: network | configure /etc/resolv.conf
+- name: Network | configure /etc/resolv.conf
   ansible.builtin.template:
     src: etc/resolv.conf.j2
     dest: /etc/resolv.conf
@@ -18,7 +18,7 @@
     - common
     - network
 
-- name: network | configure /etc/hosts
+- name: Network | configure /etc/hosts
   ansible.builtin.template:
     src: etc/hosts.j2
     dest: /etc/hosts

@@ -1,5 +1,5 @@
 ---
-- name: network | allow pacemaker tcp inbound from pacemaker servers
+- name: Network | allow pacemaker tcp inbound from pacemaker servers
   community.general.ufw:
     rule: allow
     port: '{{ item[0] }}'
@@ -13,7 +13,7 @@
   when:
     - ansible_facts['os_family'] == 'Debian'
 
-- name: network | allow pacemaker udp inbound from pacemaker servers
+- name: Network | allow pacemaker udp inbound from pacemaker servers
   community.general.ufw:
     rule: allow
     port: '{{ item[0] }}'

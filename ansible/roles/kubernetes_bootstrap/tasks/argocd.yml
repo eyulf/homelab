@@ -1,5 +1,5 @@
 ---
-- name: argocd | manage argocd 'flag' directory
+- name: ArgoCD | manage argocd 'flag' directory
   ansible.builtin.file:
     path: /etc/kubernetes/argocd/
     state: directory
@@ -14,7 +14,7 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-- name: argocd | install argocd
+- name: ArgoCD | install argocd
   ansible.builtin.shell:
     chdir: /opt/homelab/kubernetes/core/argocd
     cmd: |
@@ -35,7 +35,7 @@
     - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']
 
 # Flush Handlers
-- name: argocd | flush handlers
+- name: ArgoCD | flush handlers
   ansible.builtin.meta: flush_handlers
   tags:
     - kubernetes

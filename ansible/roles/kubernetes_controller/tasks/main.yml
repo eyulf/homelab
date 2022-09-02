@@ -1,5 +1,5 @@
 ---
-- name: kubernetes-controller | set variables
+- name: Kubernetes Controller | set variables
   ansible.builtin.include_vars: '{{ item }}'
   tags:
     - kubernetes
@@ -19,7 +19,7 @@
     - default.yml
 
 # Network
-- name: network
+- name: Network
   ansible.builtin.import_tasks: network.yml
   tags:
     - kubernetes
@@ -30,7 +30,7 @@
     - inventory_hostname in groups['k8s_controllers']
 
 # Pacemaker
-- name: pacemaker
+- name: Pacemaker
   ansible.builtin.import_tasks: pacemaker.yml
   tags:
     - kubernetes
@@ -41,7 +41,7 @@
     - inventory_hostname in groups['k8s_controllers']
 
 # Directories
-- name: directories
+- name: Directories
   ansible.builtin.import_tasks: directories.yml
   tags:
     - kubernetes
@@ -52,7 +52,7 @@
     - inventory_hostname in groups['k8s_controllers']
 
 # PKI
-- name: kubernetes-pki
+- name: PKI
   ansible.builtin.import_tasks: pki.yml
   tags:
     - kubernetes
@@ -63,7 +63,7 @@
     - inventory_hostname in groups['k8s_controllers']
 
 # Kubeadm
-- name: kubeadm
+- name: Kubeadm
   ansible.builtin.import_tasks: kubeadm.yml
   tags:
     - kubernetes
@@ -74,7 +74,7 @@
     - inventory_hostname in groups['k8s_controllers']
 
 # Encryption
-- name: encryption
+- name: Encryption
   ansible.builtin.import_tasks: encryption.yml
   tags:
     - kubernetes
@@ -85,7 +85,7 @@
     - inventory_hostname in groups['k8s_controllers']
 
 # Helm
-- name: helm
+- name: Helm
   ansible.builtin.import_tasks: helm.yml
   tags:
     - kubernetes
@@ -96,7 +96,7 @@
     - inventory_hostname in groups['k8s_controllers']
 
 # ArgoCD CLI
-- name: argocd
+- name: ArgoCD
   ansible.builtin.import_tasks: argocd.yml
   tags:
     - kubernetes
@@ -107,7 +107,7 @@
     - inventory_hostname in groups['k8s_controllers']
 
 # KubeSeal
-- name: kubeseal
+- name: KubeSeal
   ansible.builtin.import_tasks: kubeseal.yml
   tags:
     - kubernetes
@@ -118,7 +118,7 @@
     - inventory_hostname in groups['k8s_controllers']
 
 # Gitrepo
-- name: git-repo
+- name: Gitrepo
   ansible.builtin.import_tasks: gitrepo.yml
   tags:
     - kubernetes
@@ -129,7 +129,7 @@
     - inventory_hostname in groups['k8s_controllers']
 
 # Calico
-- name: calico
+- name: Calico
   ansible.builtin.import_tasks: calico.yml
   tags:
     - kubernetes

@@ -1,5 +1,5 @@
 ---
-- name: calico | install calico
+- name: Calico | install calico
   ansible.builtin.shell:
     chdir: /opt/homelab/kubernetes/core/calico
     cmd: |

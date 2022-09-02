@@ -1,5 +1,5 @@
 ---
-- name: kubeadm | create join token
+- name: Kubeadm | create join token
   ansible.builtin.command:
     argv:
       - kubeadm
@@ -19,7 +19,7 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_workers']
 
-- name: kubeadm | store join token
+- name: Kubeadm | store join token
   ansible.builtin.add_host:
     name: k8s-dummy-host
     token_cmd: '{{ kubernetes_join_token_cmd.stdout }}'
@@ -31,7 +31,7 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_workers']
 
-- name: kubeadm | join workers
+- name: Kubeadm | join workers
   ansible.builtin.command:
     cmd: "{{ hostvars['k8s-dummy-host']['token_cmd'] }} --ignore-preflight-errors '{{ kubernetes_kubeadm_ignore }}'"
   tags:

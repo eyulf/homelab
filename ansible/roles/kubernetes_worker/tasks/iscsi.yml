@@ -1,5 +1,5 @@
 ---
-- name: iscsi | install iscsi package
+- name: ISCSI | install iscsi package
   ansible.builtin.package:
     pkg: '{{ iscsi_package }}'
     state: present
@@ -9,7 +9,7 @@
     - iscsi
   when: ansible_facts['os_family'] == 'Debian'
 
-- name: iscsi | start and enable {{ iscsi_service_name }} service
+- name: ISCSI | start and enable {{ iscsi_service_name }} service
   ansible.builtin.service:
     name: '{{ iscsi_service_name }}'
     state: started

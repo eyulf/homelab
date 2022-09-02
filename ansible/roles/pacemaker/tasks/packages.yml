@@ -1,5 +1,5 @@
 ---
-- name: packages | install pacemaker packages
+- name: Packages | install pacemaker packages
   ansible.builtin.package:
     pkg: '{{ item }}'
     state: present

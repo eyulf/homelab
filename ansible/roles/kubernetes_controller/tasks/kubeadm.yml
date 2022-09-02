@@ -1,5 +1,5 @@
 ---
-- name: kubeadm | kubeadm init
+- name: Kubeadm | kubeadm init
   ansible.builtin.command:
     argv:
       - kubeadm
@@ -16,7 +16,7 @@
     - inventory_hostname in groups['k8s_controllers']
     - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']
 
-- name: kubeadm | create join token
+- name: Kubeadm | create join token
   ansible.builtin.command:
     argv:
       - kubeadm
@@ -35,7 +35,7 @@
     - inventory_hostname in groups['k8s_controllers']
     - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']
 
-- name: kubeadm | store join token
+- name: Kubeadm | store join token
   ansible.builtin.add_host:
     name: k8s-dummy-host
     token_cmd: '{{ kubernetes_join_token_cmd.stdout }}'
@@ -49,7 +49,7 @@
     - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']
 
 # FIXME: This fails on runs not involving the host with the pacemaker cluster ip
-- name: kubeadm | join controllers
+- name: Kubeadm | join controllers
   ansible.builtin.command:
     cmd: "{{ hostvars['k8s-dummy-host']['token_cmd'] }} --ignore-preflight-errors 'FileAvailable--etc-kubernetes-kubelet.conf' --control-plane"
     creates: /etc/kubernetes/manifests/kube-apiserver.yaml

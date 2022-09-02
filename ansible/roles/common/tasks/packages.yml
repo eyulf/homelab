@@ -1,5 +1,5 @@
 ---
-- name: packages | install common packages
+- name: Packages | install common packages
   ansible.builtin.package:
     pkg: '{{ item }}'
     state: present
@@ -8,7 +8,7 @@
     - common
     - packages
 
-- name: packages | enable additional repos
+- name: Packages | enable additional repos
   ansible.builtin.replace:
     path: /etc/apt/sources.list
     regexp: '{{ debian_version }} main$'

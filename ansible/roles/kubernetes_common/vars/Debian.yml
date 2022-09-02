@@ -1,8 +1,8 @@
 ---
-kubernetes_controller_hosts_list: "{{ groups['k8s_controllers'] | map('extract',hostvars,'ansible_host') | list }}"
-kubernetes_workers_hosts_list: "{{ groups['k8s_workers'] | map('extract',hostvars,'ansible_host') | list }}"
-kubernetes_all_hosts_list: "{{ groups['k8s_all'] | map('extract',hostvars,'ansible_host') | list }}"
-corosync_hosts_list: "{{ groups['k8s_controllers'] | map('extract',hostvars,'ansible_host') | list }}"
+kubernetes_controller_hosts_list: "{{ groups['k8s_controllers'] | map('extract', hostvars, 'ansible_host') | list }}"
+kubernetes_workers_hosts_list: "{{ groups['k8s_workers'] | map('extract', hostvars, 'ansible_host') | list }}"
+kubernetes_all_hosts_list: "{{ groups['k8s_all'] | map('extract', hostvars, 'ansible_host') | list }}"
+corosync_hosts_list: "{{ groups['k8s_controllers'] | map('extract', hostvars, 'ansible_host') | list }}"
 
 kubernetes_common_tcp_ports_list:
   - '179'   # calico - bgp

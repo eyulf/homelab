@@ -1,5 +1,5 @@
 ---
-- name: kubeseal | download archived kubeseal binary
+- name: KubeSeal | download archived kubeseal binary
   ansible.builtin.get_url:
     url: https://github.com/bitnami-labs/sealed-secrets/releases/download/v{{ kubeseal_version }}/kubeseal-{{ kubeseal_version }}-linux-amd64.tar.gz
     dest: /etc/kubernetes/kubeseal-{{ kubeseal_version }}-linux-amd64.tar.gz
@@ -17,7 +17,7 @@
     - ansible_facts['architecture'] == 'x86_64'
     - inventory_hostname in groups['k8s_controllers']
 
-- name: kubeseal | extract kubeseal binary
+- name: KubeSeal | extract kubeseal binary
   ansible.builtin.unarchive:
     src: /etc/kubernetes/kubeseal-{{ kubeseal_version }}-linux-amd64.tar.gz
     dest: /usr/local/bin/
@@ -37,7 +37,7 @@
     - ansible_facts['architecture'] == 'x86_64'
     - inventory_hostname in groups['k8s_controllers']
 
-- name: kubeseal | configure /etc/kubernetes/secrets/sealed-secrets.yaml
+- name: KubeSeal | configure /etc/kubernetes/secrets/sealed-secrets.yaml
   ansible.builtin.copy:
     content: "{{ lookup('community.sops.sops', 'etc/kubernetes/secrets/sealed-secrets.yaml', rstrip=false) }}"
     dest: /etc/kubernetes/secrets/sealed-secrets.yaml
@@ -52,7 +52,7 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-- name: kubeseal | apply /etc/kubernetes/secrets/sealed-secrets.yaml
+- name: KubeSeal | apply /etc/kubernetes/secrets/sealed-secrets.yaml
   ansible.builtin.shell:
     cmd: |
       kubectl create -f /etc/kubernetes/secrets/sealed-secrets.yaml > /etc/kubernetes/secrets/sealed-secrets-flag

@@ -1,5 +1,5 @@
 ---
-- name: argocd | pause to allow argocd to fully deploy
+- name: ArgoCD | pause to allow argocd to fully deploy
   ansible.builtin.pause:
     seconds: 150
   listen: pause for argocd
@@ -11,7 +11,7 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-- name: core | pause to allow core-apps app to fully deploy
+- name: Core | pause to allow core-apps app to fully deploy
   ansible.builtin.pause:
     seconds: 150
   listen: pause for core-apps app
@@ -23,7 +23,7 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-- name: core | apply /opt/homelab/kubernetes/core/openebs/ansible/cstor-pool-cluster.yaml
+- name: OpenEBS | apply /opt/homelab/kubernetes/core/openebs/ansible/cstor-pool-cluster.yaml
   ansible.builtin.command:
     chdir: /opt/homelab/kubernetes/core/openebs/ansible/
     cmd: kubectl apply -f /opt/homelab/kubernetes/core/openebs/ansible/cstor-pool-cluster.yaml
@@ -31,24 +31,24 @@
   tags:
     - kubernetes
     - kubernetes-bootstrap
-    - core
+    - openebs
   when:
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-- name: core | pause to allow the openebs storage cluster to fully provision
+- name: OpenEBS | pause to allow the openebs storage cluster to fully provision
   ansible.builtin.pause:
     seconds: 150
   listen: pause for openebs storage cluster
   tags:
     - kubernetes
     - kubernetes-bootstrap
-    - core
+    - openebs
   when:
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-- name: core | apply /opt/homelab/kubernetes/core/openebs/ansible/cstor-storage-class.yaml
+- name: OpenEBS | apply /opt/homelab/kubernetes/core/openebs/ansible/cstor-storage-class.yaml
   ansible.builtin.command:
     chdir: /opt/homelab/kubernetes/core/openebs/ansible/
     cmd: kubectl apply -f /opt/homelab/kubernetes/core/openebs/ansible/cstor-storage-class.yaml
@@ -56,12 +56,12 @@
   tags:
     - kubernetes
     - kubernetes-bootstrap
-    - core
+    - openebs
   when:
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-- name: infrastructure | pause to allow infrastructure-apps app to fully deploy
+- name: Infrastructure | pause to allow infrastructure-apps app to fully deploy
   ansible.builtin.pause:
     seconds: 150
   listen: pause for infrastructure-apps app
@@ -73,7 +73,7 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-- name: apps | pause to allow apps-apps app to fully deploy
+- name: Apps | pause to allow apps-apps app to fully deploy
   ansible.builtin.pause:
     seconds: 150
   listen: pause for apps-apps app

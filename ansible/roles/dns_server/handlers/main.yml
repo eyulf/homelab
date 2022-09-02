@@ -1,5 +1,5 @@
 ---
-- name: powerdns | import database schema
+- name: Powerdns | import database schema
   community.mysql.mysql_db:
     state: import
     name: '{{ powerdns_mysql_database_name }}'
@@ -13,7 +13,7 @@
     - ansible_facts.os_family == 'Debian'
     - ansible_facts.hostname == mariadb_galera_bootstrap_host
 
-- name: powerdns | restart powerdns
+- name: Powerdns | restart powerdns
   ansible.builtin.service:
     name: '{{ powerdns_service_name }}'
     state: restarted
@@ -23,7 +23,7 @@
     - powerdns
   when: ansible_facts.os_family == 'Debian'
 
-- name: powerdns | restart powerdns-recursor
+- name: Powerdns | restart powerdns-recursor
   ansible.builtin.service:
     name: '{{ powerdns_recursor_service_name }}'
     state: restarted
@@ -33,7 +33,7 @@
     - powerdns
   when: ansible_facts.os_family == 'Debian'
 
-- name: powerdns | import zone sql
+- name: Powerdns | import zone sql
   ansible.builtin.shell:
     cmd: mysql {{ powerdns_mysql_database_name }} < /etc/powerdns/zones.sql
   run_once: true

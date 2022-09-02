@@ -1,5 +1,5 @@
 ---
-- name: auto-updates | install unattended-upgrades package
+- name: Auto-updates | install unattended-upgrades package
   ansible.builtin.apt:
     pkg:
       - unattended-upgrades
@@ -11,7 +11,7 @@
     - auto-updates
   when: ansible_facts['os_family'] == 'Debian'
 
-- name: auto-updates | configure /etc/apt/apt.conf.d/20auto-upgrades
+- name: Auto-updates | configure /etc/apt/apt.conf.d/20auto-upgrades
   ansible.builtin.copy:
     src: etc/apt/apt.conf.d/20auto-upgrades
     dest: /etc/apt/apt.conf.d/20auto-upgrades
@@ -24,7 +24,7 @@
     - auto-updates
   when: ansible_facts['os_family'] == 'Debian'
 
-- name: auto-updates | configure /etc/apt/apt.conf.d/50unattended-upgrades
+- name: Auto-updates | configure /etc/apt/apt.conf.d/50unattended-upgrades
   ansible.builtin.template:
     src: templates/etc/apt/apt.conf.d/50unattended-upgrades.j2
     dest: /etc/apt/apt.conf.d/50unattended-upgrades
@@ -37,7 +37,7 @@
     - auto-updates
   when: ansible_facts['os_family'] == 'Debian'
 
-- name: auto-updates | start and enable unattended-upgrades service
+- name: Auto-updates | start and enable unattended-upgrades service
   ansible.builtin.service:
     name: unattended-upgrades
     state: started

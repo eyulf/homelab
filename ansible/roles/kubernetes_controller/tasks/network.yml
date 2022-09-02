@@ -1,5 +1,5 @@
 ---
-- name: network | allow kubernetes ports inbound from kubernetes controllers
+- name: Network | allow kubernetes ports inbound from kubernetes controllers
   community.general.ufw:
     rule: allow
     port: '{{ item[0] }}'
@@ -15,7 +15,7 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-- name: network | allow kubernetes api inbound from kubernetes servers
+- name: Network | allow kubernetes api inbound from kubernetes servers
   community.general.ufw:
     rule: allow
     port: '{{ kubernetes_api_port }}'
@@ -31,7 +31,7 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-- name: network | allow kubernetes api inbound from permitted clients
+- name: Network | allow kubernetes api inbound from permitted clients
   community.general.ufw:
     rule: allow
     port: '{{ kubernetes_api_port }}'

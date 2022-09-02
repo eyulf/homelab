@@ -1,5 +1,5 @@
 ---
-- name: powerdns | install powerdns key
+- name: Powerdns | install powerdns key
   ansible.builtin.copy:
     src: etc/apt/trusted.gpg.d/pdns.gpg
     dest: /etc/apt/trusted.gpg.d/pdns.gpg
@@ -11,7 +11,7 @@
     - powerdns
   when: ansible_facts.os_family == 'Debian'
 
-- name: powerdns | add powerdns repo
+- name: Powerdns | add powerdns repo
   ansible.builtin.apt_repository:
     repo: deb [arch=amd64] http://repo.powerdns.com/debian {{ debian_version }}-auth-{{ powerdns_version }} main
     state: present
@@ -21,7 +21,7 @@
     - powerdns
   when: ansible_facts.os_family == 'Debian'
 
-- name: powerdns | configure /etc/apt/preferences.d/pdns
+- name: Powerdns | configure /etc/apt/preferences.d/pdns
   ansible.builtin.copy:
     src: etc/apt/preferences.d/pdns
     dest: /etc/apt/preferences.d/pdns
@@ -33,7 +33,7 @@
     - powerdns
   when: ansible_facts.os_family == 'Debian'
 
-- name: powerdns | install powerdns packages
+- name: Powerdns | install powerdns packages
   ansible.builtin.package:
     pkg: '{{ item }}'
     state: present
@@ -43,7 +43,7 @@
     - powerdns
   when: ansible_facts.os_family == 'Debian'
 
-- name: powerdns | remove unrequired powerdns packages
+- name: Powerdns | remove unrequired powerdns packages
   ansible.builtin.package:
     pkg: '{{ item }}'
     state: absent
@@ -53,7 +53,7 @@
     - powerdns
   when: ansible_facts.os_family == 'Debian'
 
-- name: powerdns | remove /etc/powerdns/pdns.d/bind.conf
+- name: Powerdns | remove /etc/powerdns/pdns.d/bind.conf
   ansible.builtin.file:
     path: /etc/powerdns/pdns.d/bind.conf
     state: absent
@@ -62,7 +62,7 @@
     - powerdns
   when: ansible_facts.os_family == 'Debian'
 
-- name: powerdns | ensure database created
+- name: Powerdns | ensure database created
   community.mysql.mysql_db:
     login_unix_socket: '{{ mariadb_login_unix_socket }}'
     name: '{{ powerdns_mysql_database_name }}'
@@ -77,7 +77,7 @@
     - ansible_facts.os_family == 'Debian'
     - ansible_facts.hostname == mariadb_galera_bootstrap_host
 
-- name: powerdns | ensure database user created
+- name: Powerdns | ensure database user created
   community.mysql.mysql_user:
     login_unix_socket: '{{ mariadb_login_unix_socket }}'
     name: '{{ powerdns_mysql_database_name }}'
@@ -92,7 +92,7 @@
     - ansible_facts.os_family == 'Debian'
     - ansible_facts.hostname == mariadb_galera_bootstrap_host
 
-- name: powerdns | configure /etc/powerdns/pdns.d/mysql.conf
+- name: Powerdns | configure /etc/powerdns/pdns.d/mysql.conf
   ansible.builtin.template:
     src: etc/powerdns/pdns.d/mysql.conf.j2
     dest: /etc/powerdns/pdns.d/mysql.conf
@@ -106,7 +106,7 @@
     - powerdns
   when: ansible_facts.os_family == 'Debian'
 
-- name: powerdns | configure /etc/powerdns/pdns.d/pdns.conf
+- name: Powerdns | configure /etc/powerdns/pdns.d/pdns.conf
   ansible.builtin.template:
     src: etc/powerdns/pdns.d/pdns.conf.j2
     dest: /etc/powerdns/pdns.d/pdns.conf
@@ -120,7 +120,7 @@
     - powerdns
   when: ansible_facts.os_family == 'Debian'
 
-- name: powerdns | start and enable powerdns service
+- name: Powerdns | start and enable powerdns service
   ansible.builtin.service:
     name: '{{ powerdns_service_name }}'
     enabled: true
@@ -130,7 +130,7 @@
     - powerdns
   when: ansible_facts.os_family == 'Debian'
 
-- name: powerdns | configure /etc/powerdns/recursor.d/recursor.conf
+- name: Powerdns | configure /etc/powerdns/recursor.d/recursor.conf
   ansible.builtin.template:
     src: etc/powerdns/recursor.d/recursor.conf.j2
     dest: /etc/powerdns/recursor.d/recursor.conf
@@ -144,7 +144,7 @@
     - powerdns
   when: ansible_facts.os_family == 'Debian'
 
-- name: powerdns | start and enable powerdns recursor service
+- name: Powerdns | start and enable powerdns recursor service
   ansible.builtin.service:
     name: '{{ powerdns_recursor_service_name }}'
     enabled: true
@@ -154,7 +154,7 @@
     - powerdns
   when: ansible_facts.os_family == 'Debian'
 
-- name: powerdns | allow powerdns inbound from servers and clients
+- name: Powerdns | allow powerdns inbound from servers and clients
   community.general.ufw:
     rule: allow
     port: '53'
@@ -167,7 +167,7 @@
     - powerdns
   when: ansible_facts.os_family == 'Debian'
 
-- name: powerdns-zones | configure /etc/powerdns/zones.sql
+- name: Powerdns-zones | configure /etc/powerdns/zones.sql
   ansible.builtin.template:
     src: etc/powerdns/zones.sql.j2
     dest: /etc/powerdns/zones.sql

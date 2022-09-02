@@ -1,5 +1,5 @@
 ---
-- name: firewall | install ufw package
+- name: Firewall | install ufw package
   ansible.builtin.apt:
     name: ufw
     state: present
@@ -9,7 +9,7 @@
     - firewall
   when: ansible_facts['os_family'] == 'Debian'
 
-- name: firewall | allow ssh inbound from clients
+- name: Firewall | allow ssh inbound from clients
   community.general.ufw:
     rule: allow
     port: ssh
@@ -21,7 +21,7 @@
     - firewall
   when: ansible_facts['os_family'] == 'Debian'
 
-- name: firewall | set outbound default
+- name: Firewall | set outbound default
   community.general.ufw:
     default: allow
     direction: outgoing
@@ -30,7 +30,7 @@
     - firewall
   when: ansible_facts['os_family'] == 'Debian'
 
-- name: firewall | set inbound default
+- name: Firewall | set inbound default
   community.general.ufw:
     default: deny
     direction: incoming
@@ -39,7 +39,7 @@
     - firewall
   when: ansible_facts['os_family'] == 'Debian'
 
-- name: firewall | enable firewall
+- name: Firewall | enable firewall
   community.general.ufw:
     state: enabled
   tags:

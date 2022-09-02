@@ -1,5 +1,5 @@
 ---
-- name: network | configure /etc/modules-load.d/k8s.conf
+- name: Network | configure /etc/modules-load.d/k8s.conf
   ansible.builtin.copy:
     src: etc/modules-load.d/k8s.conf
     dest: /etc/modules-load.d/k8s.conf
@@ -12,7 +12,7 @@
     - network
   when: ansible_facts['os_family'] == 'Debian'
 
-- name: network | configure /etc/sysctl.d/k8s.conf
+- name: Network | configure /etc/sysctl.d/k8s.conf
   ansible.builtin.copy:
     src: etc/sysctl.d/k8s.conf
     dest: /etc/sysctl.d/k8s.conf
@@ -25,7 +25,7 @@
     - network
   when: ansible_facts['os_family'] == 'Debian'
 
-- name: network | allow kubernetes related tcp ports inbound from all kubernetes hosts
+- name: Network | allow kubernetes related tcp ports inbound from all kubernetes hosts
   community.general.ufw:
     rule: allow
     port: '{{ item[0] }}'
@@ -39,7 +39,7 @@
     - network
   when: ansible_facts['os_family'] == 'Debian'
 
-- name: network | allow kubernetes related udp ports inbound from all kubernetes hosts
+- name: Network | allow kubernetes related udp ports inbound from all kubernetes hosts
   community.general.ufw:
     rule: allow
     port: '{{ item[0] }}'

@@ -1,5 +1,5 @@
 ---
-- name: firewall | install firewalld package
+- name: Firewall | install firewalld package
   ansible.builtin.yum:
     name: firewalld
     state: present
@@ -9,7 +9,7 @@
     - firewall
   when: ansible_facts['os_family'] == 'RedHat'
 
-- name: firewall | set default zone
+- name: Firewall | set default zone
   ansible.posix.firewalld:
     zone: block
     interface: eth0
@@ -20,7 +20,7 @@
     - firewall
   when: ansible_facts['os_family'] == 'RedHat'
 
-- name: firewall | allow ssh inbound
+- name: Firewall | allow ssh inbound
   ansible.posix.firewalld:
     service: ssh
     zone: block
@@ -31,7 +31,7 @@
     - firewall
   when: ansible_facts['os_family'] == 'RedHat'
 
-- name: firewall | allow dhcp inbound
+- name: Firewall | allow dhcp inbound
   ansible.posix.firewalld:
     service: dhcpv6-client
     zone: block

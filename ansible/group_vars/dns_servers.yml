@@ -2,7 +2,7 @@
 mariadb_version: mariadb-10.5
 mariadb_galera_auth_user: mariabackup
 mariadb_galera_bootstrap_host: dns1
-mariadb_galera_hosts_list: "{{ groups['dns_servers'] | map('extract',hostvars,'ansible_host') | list }}"
+mariadb_galera_hosts_list: "{{ groups['dns_servers'] | map('extract', hostvars, 'ansible_host') | list }}"
 
 powerdns_version: '45'
 powerdns_forward_recursors: 10.1.1.110;1.1.1.1;1.0.0.1

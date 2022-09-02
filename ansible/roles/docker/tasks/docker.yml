@@ -1,5 +1,5 @@
 ---
-- name: docker | install docker key
+- name: Docker | install docker key
   ansible.builtin.copy:
     src: usr/share/keyrings/docker-archive-keyring.gpg
     dest: /usr/share/keyrings/docker-archive-keyring.gpg
@@ -10,7 +10,7 @@
     - docker
   when: ansible_facts['os_family'] == 'Debian'
 
-- name: docker | add docker repo
+- name: Docker | add docker repo
   ansible.builtin.apt_repository:
     repo: deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian {{ debian_version }} stable
     state: present
@@ -19,7 +19,7 @@
     - docker
   when: ansible_facts['os_family'] == 'Debian'
 
-- name: docker | install docker engine packages
+- name: Docker | install docker engine packages
   ansible.builtin.package:
     pkg: '{{ item }}'
     state: present
@@ -28,7 +28,7 @@
     - docker
   when: ansible_facts['os_family'] == 'Debian'
 
-- name: docker | configure /etc/docker/daemon.json
+- name: Docker | configure /etc/docker/daemon.json
   ansible.builtin.copy:
     src: etc/docker/daemon.json
     dest: /etc/docker/daemon.json
@@ -41,7 +41,7 @@
     - docker
   when: ansible_facts['os_family'] == 'Debian'
 
-- name: docker | configure /etc/containerd/config.toml
+- name: Docker | configure /etc/containerd/config.toml
   ansible.builtin.copy:
     src: etc/containerd/config.toml
     dest: /etc/containerd/config.toml
@@ -54,7 +54,7 @@
     - docker
   when: ansible_facts['os_family'] == 'Debian'
 
-- name: docker | start and enable {{ docker_service_name }} service
+- name: Docker | start and enable {{ docker_service_name }} service
   ansible.builtin.service:
     name: '{{ docker_service_name }}'
     state: started
@@ -63,7 +63,7 @@
     - docker
   when: ansible_facts['os_family'] == 'Debian'
 
-- name: docker | start and enable {{ containerd_service_name }} service
+- name: Docker | start and enable {{ containerd_service_name }} service
   ansible.builtin.service:
     name: '{{ containerd_service_name }}'
     state: started

@@ -1,5 +1,5 @@
 ---
-- name: swap | disable swap
+- name: Swap | disable swap
   ansible.builtin.command:
     cmd: swapoff -a
   tags:
@@ -10,7 +10,7 @@
     - ansible_facts['os_family'] == 'Debian'
     - ansible_facts['swaptotal_mb'] > 0
 
-- name: swap | disable swap on system start
+- name: Swap | disable swap on system start
   ansible.posix.mount:
     name: "{{ item }}"
     fstype: swap

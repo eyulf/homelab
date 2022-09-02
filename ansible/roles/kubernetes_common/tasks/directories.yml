@@ -1,5 +1,5 @@
 ---
-- name: directories | manage kubernetes directories
+- name: Directories | manage kubernetes directories
   ansible.builtin.file:
     path: '{{ item }}'
     state: directory

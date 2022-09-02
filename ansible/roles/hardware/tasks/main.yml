@@ -1,5 +1,5 @@
 ---
-- name: hardware | set variables
+- name: Hardware | set variables
   ansible.builtin.include_vars: '{{ item }}'
   tags:
     - hardware
@@ -9,14 +9,14 @@
     - default.yml
 
 # Packages
-- name: packages
+- name: Packages
   ansible.builtin.import_tasks: packages.yml
   tags:
     - hardware
     - packages
 
 # Coretemp
-- name: coretemp | enable coretemp
+- name: CoreTemp | enable coretemp
   ansible.builtin.lineinfile:
     path: /boot/loader.conf
     regexp: '^coretemp_load='

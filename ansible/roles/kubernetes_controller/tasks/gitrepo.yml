@@ -1,5 +1,5 @@
 ---
-- name: git-repo | checkout git-repo
+- name: Gitrepo | checkout git-repo
   ansible.builtin.git:
     repo: '{{ git_repo_url }}'
     dest: /opt/homelab

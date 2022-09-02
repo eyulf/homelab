@@ -1,5 +1,5 @@
 ---
-- name: mariadb | install mariadb key
+- name: Mariadb | install mariadb key
   ansible.builtin.apt_key:
     keyserver: keyserver.ubuntu.com
     id: '0xF1656F24C74CD1D8'
@@ -9,7 +9,7 @@
   when:
     - ansible_facts.os_family == 'Debian'
 
-- name: mariadb | add mariadb repo
+- name: Mariadb | add mariadb repo
   ansible.builtin.apt_repository:
     repo: deb http://downloads.mariadb.com/MariaDB/{{ mariadb_version }}/repo/debian {{ debian_version }} main
     state: present
@@ -20,7 +20,7 @@
   when:
     - ansible_facts.os_family == 'Debian'
 
-- name: mariadb | install mariadb packages
+- name: Mariadb | install mariadb packages
   ansible.builtin.package:
     pkg: '{{ item }}'
     state: present
@@ -31,7 +31,7 @@
   when:
     - ansible_facts.os_family == 'Debian'
 
-- name: mariadb | allow mariadb inbound from network
+- name: Mariadb | allow mariadb inbound from network
   community.general.ufw:
     rule: allow
     port: mysql
@@ -46,7 +46,7 @@
     - mariadb_visibility is defined
     - mariadb_visibility == 'network'
 
-- name: mariadb | allow galera inbound from mariadb servers
+- name: Mariadb | allow galera inbound from mariadb servers
   community.general.ufw:
     rule: allow
     port: '{{ item[0] }}'
@@ -59,7 +59,7 @@
     - mariadb
   when: ansible_facts.os_family == 'Debian'
 
-- name: mariadb | configure /etc/mysql/mariadb.conf.d/60-galera.cnf
+- name: Mariadb | configure /etc/mysql/mariadb.conf.d/60-galera.cnf
   ansible.builtin.template:
     src: etc/mysql/mariadb.conf.d/60-galera.cnf.j2
     dest: /etc/mysql/mariadb.conf.d/60-galera.cnf
@@ -73,7 +73,7 @@
     - mariadb
   when: ansible_facts.os_family == 'Debian'
 
-- name: mariadb | start and enable {{ mariadb_service_name }} service
+- name: Mariadb | start and enable {{ mariadb_service_name }} service
   ansible.builtin.service:
     name: '{{ mariadb_service_name }}'
     enabled: true
@@ -83,7 +83,7 @@
     - mariadb
   when: ansible_facts.os_family == 'Debian'
 
-- name: mariadb | create replication user
+- name: Mariadb | create replication user
   community.mysql.mysql_user:
     login_unix_socket: '{{ mariadb_login_unix_socket }}'
     name: '{{ mariadb_galera_auth_user }}'

@@ -1,5 +1,5 @@
 ---
-- name: backups | configure backup files
+- name: Backups | configure backup files
   ansible.builtin.copy:
     src: root/{{ item }}
     dest: /root/{{ item }}
@@ -17,7 +17,7 @@
     - ansible_facts['os_family'] == 'FreeBSD'
     - inventory_hostname in groups['file_server']
 
-- name: backups | configure cron - backup-start
+- name: Backups | configure cron - backup-start
   ansible.builtin.cron:
     name: backup-start
     minute: '0'

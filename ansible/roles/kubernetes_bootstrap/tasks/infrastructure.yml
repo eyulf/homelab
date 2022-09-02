@@ -1,5 +1,5 @@
 ---
-- name: infrastructure | install infrastructure-apps app
+- name: Infrastructure | install infrastructure-apps app
   ansible.builtin.shell:
     cmd: >
       kubectl config set-context
@@ -27,7 +27,7 @@
     - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']
 
 # Flush Handlers
-- name: infrastructure | flush handlers
+- name: Infrastructure | flush handlers
   ansible.builtin.meta: flush_handlers
   tags:
     - kubernetes

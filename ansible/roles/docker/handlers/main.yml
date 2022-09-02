@@ -1,5 +1,5 @@
 ---
-- name: docker | restart docker
+- name: Docker | restart docker
   ansible.builtin.service:
     name: '{{ docker_service_name }}'
     state: restarted
@@ -8,7 +8,7 @@
     - docker
   when: ansible_facts['os_family'] == 'Debian'
 
-- name: docker | restart containerd
+- name: Docker | restart containerd
   ansible.builtin.service:
     name: '{{ containerd_service_name }}'
     state: restarted

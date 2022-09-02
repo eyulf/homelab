@@ -1,5 +1,5 @@
 ---
-- name: pacemaker | set variables
+- name: Pacemaker | set variables
   ansible.builtin.include_vars: '{{ item }}'
   tags:
     - pacemaker
@@ -13,7 +13,7 @@
     - default.yml
 
 # Network
-- name: network
+- name: Network
   ansible.builtin.import_tasks: network.yml
   tags:
     - pacemaker
@@ -21,7 +21,7 @@
   when: ansible_facts['os_family'] == 'Debian'
 
 # Packages
-- name: packages
+- name: Packages
   ansible.builtin.import_tasks: packages.yml
   tags:
     - pacemaker
@@ -30,7 +30,7 @@
     - ansible_facts['os_family'] == 'Debian'
 
 # Services
-- name: services
+- name: Services
   ansible.builtin.import_tasks: services.yml
   tags:
     - pacemaker
@@ -39,7 +39,7 @@
     - ansible_facts['os_family'] == 'Debian'
 
 # Corosync
-- name: corosync
+- name: Corosync
   ansible.builtin.import_tasks: corosync.yml
   tags:
     - pacemaker
@@ -48,7 +48,7 @@
     - ansible_facts['os_family'] == 'Debian'
 
 # Settings
-- name: settings
+- name: Settings
   ansible.builtin.import_tasks: settings.yml
   tags:
     - pacemaker

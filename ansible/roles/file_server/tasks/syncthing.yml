@@ -1,5 +1,5 @@
 ---
-- name: syncthing | install syncthing packages
+- name: Syncthing | install syncthing packages
   ansible.builtin.package:
     pkg: syncthing
     state: present
@@ -10,7 +10,7 @@
     - ansible_facts['os_family'] == 'FreeBSD'
     - inventory_hostname in groups['file_server']
 
-- name: syncthing | create syncthing config dir
+- name: Syncthing | create syncthing config dir
   ansible.builtin.file:
     path: /usr/local/etc/syncthing/
     state: directory
@@ -24,7 +24,7 @@
     - ansible_facts['os_family'] == 'FreeBSD'
     - inventory_hostname in groups['file_server']
 
-- name: syncthing | configure syncthing
+- name: Syncthing | configure syncthing
   ansible.builtin.copy:
     content: "{{ lookup('community.sops.sops', 'usr/local/etc/syncthing/config.xml', rstrip=false) }}"
     dest: /usr/local/etc/syncthing/config.xml
@@ -38,7 +38,7 @@
     - ansible_facts['os_family'] == 'FreeBSD'
     - inventory_hostname in groups['file_server']
 
-- name: syncthing | start and enable syncthing service
+- name: Syncthing | start and enable syncthing service
   ansible.builtin.service:
     name: syncthing
     state: started
@@ -50,7 +50,7 @@
     - ansible_facts['os_family'] == 'FreeBSD'
     - inventory_hostname in groups['file_server']
 
-- name: syncthing | Set perms on syncthing logs file
+- name: Syncthing | Set perms on syncthing logs file
   ansible.builtin.file:
     path: /var/log/syncthing.log
     state: file

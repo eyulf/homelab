@@ -1,5 +1,5 @@
 ---
-- name: monitoring | configure /root/zfs_health.sh
+- name: Monitoring | configure /root/zfs_health.sh
   ansible.builtin.copy:
     src: root/zfs_health.sh
     dest: /root/zfs_health.sh
@@ -15,7 +15,7 @@
     - ansible_facts['os_family'] == 'FreeBSD'
     - inventory_hostname in groups['file_server']
 
-- name: monitoring | configure cron - zfs-health
+- name: Monitoring | configure cron - zfs-health
   ansible.builtin.cron:
     name: zfs-health
     minute: '0'
@@ -30,7 +30,7 @@
     - ansible_facts['os_family'] == 'FreeBSD'
     - inventory_hostname in groups['file_server']
 
-- name: monitoring | configure cron - zfs-scrub
+- name: Monitoring | configure cron - zfs-scrub
   ansible.builtin.cron:
     name: zfs-scrub
     minute: '1'

@@ -1,5 +1,5 @@
 ---
-- name: core | install core-apps app
+- name: Core | install core-apps app
   ansible.builtin.shell:
     cmd: >
       kubectl config set-context
@@ -27,14 +27,14 @@
     - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']
 
 # Flush Handlers
-- name: core | flush handlers
+- name: Core | flush handlers
   ansible.builtin.meta: flush_handlers
   tags:
     - kubernetes
     - kubernetes-bootstrap
     - core
 
-- name: core | create /opt/homelab/kubernetes/core/openebs/ansible
+- name: Core | create /opt/homelab/kubernetes/core/openebs/ansible
   ansible.builtin.file:
     path: /opt/homelab/kubernetes/core/openebs/ansible
     state: directory
@@ -49,7 +49,7 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-- name: core | get openebs blockdevices from kubernetes cluster
+- name: Core | get openebs blockdevices from kubernetes cluster
   ansible.builtin.command:
     cmd: >
       kubectl get blockdevice
@@ -67,7 +67,7 @@
     - inventory_hostname in groups['k8s_controllers']
     - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']
 
-- name: core | configure /opt/homelab/kubernetes/core/openebs/ansible/cstor-pool-cluster.yaml
+- name: Core | configure /opt/homelab/kubernetes/core/openebs/ansible/cstor-pool-cluster.yaml
   ansible.builtin.template:
     src: opt/homelab/kubernetes/core/openebs/ansible/cstor-pool-cluster.yaml.j2
     dest: /opt/homelab/kubernetes/core/openebs/ansible/cstor-pool-cluster.yaml
@@ -89,7 +89,7 @@
     - inventory_hostname in groups['k8s_controllers']
     - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']
 
-- name: core | configure /opt/homelab/kubernetes/core/openebs/ansible/cstor-storage-class.yaml
+- name: Core | configure /opt/homelab/kubernetes/core/openebs/ansible/cstor-storage-class.yaml
   ansible.builtin.copy:
     src: opt/homelab/kubernetes/core/openebs/ansible/cstor-storage-class.yaml
     dest: /opt/homelab/kubernetes/core/openebs/ansible/cstor-storage-class.yaml
@@ -108,7 +108,7 @@
     - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']
 
 # Flush Handlers
-- name: core | flush handlers
+- name: Core | flush handlers
   ansible.builtin.meta: flush_handlers
   tags:
     - kubernetes

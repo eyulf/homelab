@@ -1,5 +1,5 @@
 ---
-- name: database | set variables
+- name: Database | set variables
   ansible.builtin.include_vars: '{{ item }}'
   tags:
     - database
@@ -10,7 +10,7 @@
     - default.yml
 
 # MariaDB Configuration
-- name: mariadb
+- name: Mariadb
   ansible.builtin.import_tasks: mariadb.yml
   tags:
     - database
@@ -18,7 +18,7 @@
   when: ansible_facts.os_family == 'Debian'
 
 # MariaDB Secure Installation
-- name: mariadb-secure
+- name: Mariadb-secure
   ansible.builtin.import_tasks: mariadb-secure.yml
   tags:
     - database
@@ -26,7 +26,7 @@
   when: ansible_facts.os_family == 'Debian'
 
 # Flush Handlers
-- name: database | flush handlers
+- name: Database | flush handlers
   ansible.builtin.meta: flush_handlers
   tags:
     - database

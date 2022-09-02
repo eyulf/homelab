@@ -1,5 +1,5 @@
 ---
-- name: pacemaker | capture configured resources
+- name: Pacemaker | capture configured resources
   ansible.builtin.command:
     cmd: pcs resource config
   run_once: true
@@ -13,7 +13,7 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-- name: pacemaker | create kubernetes-ip resource
+- name: Pacemaker | create kubernetes-ip resource
   ansible.builtin.command:
     cmd: >
       pcs resource create {{ item['resource_id'] }}
@@ -36,14 +36,14 @@
     - item['options']|join(' ') not in pcs_resource_config['stdout']
     - item['action']|lower == 'create'
 
-- name: pacemaker | flush handlers
+- name: Pacemaker | flush handlers
   ansible.builtin.meta: flush_handlers
   tags:
     - kubernetes
     - kubernetes-controller
     - pacemaker
 
-- name: pacemaker | refresh ip address facts
+- name: Pacemaker | refresh ip address facts
   ansible.builtin.setup:
     gather_subset:
       - 'network'

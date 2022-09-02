@@ -6,7 +6,7 @@ kubernetes_cluster_fqdn: k8s-controller.{{ domain }}
 kubernetes_pod_network_cidr: 10.10.0.0/16
 kubernetes_calico_network_cidr: 10.10.0.0/16
 
-pacemaker_hosts_list: "{{ groups['k8s_controllers'] | map('extract',hostvars,'ansible_host') | list }}"
+pacemaker_hosts_list: "{{ groups['k8s_controllers'] | map('extract', hostvars, 'ansible_host') | list }}"
 pacemaker_hosts: "{{ groups['k8s_controllers'] }}"
 pacemaker_primary_host: "{{ groups['k8s_controllers'][0] }}"
 pacemaker_cluster_name: k8s-controller

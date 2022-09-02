@@ -1,5 +1,5 @@
 ---
-- name: ntp | restart ntp
+- name: NTP | restart ntp
   ansible.builtin.service:
     name: '{{ ntp_service_name }}'
     state: restarted
@@ -8,7 +8,7 @@
     - common
     - ntp
 
-- name: auto-updates | restart yum-cron service
+- name: Auto-updates | restart yum-cron service
   ansible.builtin.service:
     name: yum-cron
     state: restarted
@@ -18,7 +18,7 @@
     - auto-updates
   when: ansible_facts['os_family'] == 'RedHat'
 
-- name: auto-updates | restart unattended-upgrades service
+- name: Auto-updates | restart unattended-upgrades service
   ansible.builtin.service:
     name: unattended-upgrades
     state: restarted

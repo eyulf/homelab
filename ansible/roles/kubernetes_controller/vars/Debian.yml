@@ -1,7 +1,7 @@
 ---
-kubernetes_controller_hosts_list: "{{ groups['k8s_controllers'] | map('extract',hostvars,'ansible_host') | list }}"
-kubernetes_workers_hosts_list: "{{ groups['k8s_workers'] | map('extract',hostvars,'ansible_host') | list }}"
-kubernetes_all_hosts_list: "{{ groups['k8s_all'] | map('extract',hostvars,'ansible_host') | list }}"
+kubernetes_controller_hosts_list: "{{ groups['k8s_controllers'] | map('extract', hostvars, 'ansible_host') | list }}"
+kubernetes_workers_hosts_list: "{{ groups['k8s_workers'] | map('extract', hostvars, 'ansible_host') | list }}"
+kubernetes_all_hosts_list: "{{ groups['k8s_all'] | map('extract', hostvars, 'ansible_host') | list }}"
 
 kubernetes_api_port: '6443'
 kubernetes_kublet_port: '10250'

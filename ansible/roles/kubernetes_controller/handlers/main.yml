@@ -1,5 +1,5 @@
 ---
-- name: pacemaker | pause to allow floating ip address to come online
+- name: Pacemaker | pause to allow floating ip address to come online
   ansible.builtin.pause:
     seconds: 30
   listen: pause for pacemaker
@@ -11,7 +11,7 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-- name: encryption | pause to allow kube-apiserver to redeploy
+- name: Encryption | pause to allow kube-apiserver to redeploy
   ansible.builtin.pause:
     seconds: 60
   listen: pause for apiserver
@@ -23,7 +23,7 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-- name: calico | pause to allow calico to fully deploy
+- name: Calico | pause to allow calico to fully deploy
   ansible.builtin.pause:
     seconds: 150
   listen: pause for calico
@@ -35,7 +35,7 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-- name: kubeseal | apply sealed-secrets label to custom-sealed-secrets-key secret
+- name: KubeSeal | apply sealed-secrets label to custom-sealed-secrets-key secret
   ansible.builtin.command:
     argv:
       - kubectl

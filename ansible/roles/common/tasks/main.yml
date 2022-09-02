@@ -1,5 +1,5 @@
 ---
-- name: common | set variables
+- name: Common | set variables
   ansible.builtin.include_vars: '{{ item }}'
   tags:
     - common
@@ -13,20 +13,20 @@
     - "{{ ansible_facts['os_family'] }}.yml"
     - default.yml
 
-- name: common | populate service facts
+- name: Common | populate service facts
   ansible.builtin.service_facts:
   tags:
     - common
 
 # Network
-- name: network
+- name: Network
   ansible.builtin.import_tasks: network.yml
   tags:
     - common
     - network
 
 # Firewall
-- name: firewall
+- name: Firewall
   ansible.builtin.include_tasks:
     file: firewall-{{ ansible_facts['os_family'] }}.yml
     apply:
@@ -35,21 +35,21 @@
         - firewall
 
 # NTP
-- name: ntp
+- name: NTP
   ansible.builtin.import_tasks: ntp.yml
   tags:
     - common
     - ntp
 
 # Packages
-- name: packages
+- name: Packages
   ansible.builtin.import_tasks: packages.yml
   tags:
     - common
     - packages
 
 # Auto Updates
-- name: auto-updates
+- name: Auto-updates
   ansible.builtin.include_tasks:
     file: auto-update-{{ ansible_facts['os_family'] }}.yml
     apply:
@@ -58,14 +58,14 @@
         - auto-updates
 
 # Users
-- name: users
+- name: Users
   ansible.builtin.import_tasks: users.yml
   tags:
     - common
     - users
 
 # Flush Handlers
-- name: common | flush handlers
+- name: Common | flush handlers
   ansible.builtin.meta: flush_handlers
   tags:
     - common

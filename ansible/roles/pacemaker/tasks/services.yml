@@ -1,5 +1,5 @@
 ---
-- name: services | start and enable services
+- name: Services | start and enable services
   ansible.builtin.service:
     name: '{{ item }}'
     state: started

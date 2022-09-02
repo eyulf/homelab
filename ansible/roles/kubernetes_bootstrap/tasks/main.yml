@@ -1,19 +1,19 @@
 ---
-- name: kubernetes-bootstrap | set variables
+- name: Kubernetes Bootstrap | set variables
   ansible.builtin.include_vars: '{{ item }}'
   tags:
     - kubernetes
     - kubernetes-bootstrap
     - argocd
     - core
-    - core-openebs
+    - openebs
     - infrastructure
     - apps
   with_first_found:
     - "{{ ansible_facts['os_family'] }}.yml"
     - default.yml
 
-- name: kubernetes-bootstrap | pause to allow cluster to fully come online
+- name: Kubernetes Bootstrap | pause to allow cluster to fully come online
   ansible.builtin.pause:
     seconds: 150
   tags:
@@ -24,7 +24,7 @@
     - inventory_hostname in groups['k8s_controllers']
 
 # ArgoCD
-- name: argocd
+- name: ArgoCD
   ansible.builtin.import_tasks: argocd.yml
   tags:
     - kubernetes
@@ -35,7 +35,7 @@
     - inventory_hostname in groups['k8s_controllers']
 
 # Core Apps
-- name: core
+- name: Core
   ansible.builtin.import_tasks: core.yml
   tags:
     - kubernetes
@@ -45,19 +45,19 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-# Core OpenEBS
-- name: core-openebs
-  ansible.builtin.import_tasks: core-openebs.yml
+# OpenEBS
+- name: OpenEBS
+  ansible.builtin.import_tasks: openebs.yml
   tags:
     - kubernetes
     - kubernetes-bootstrap
-    - core-openebs
+    - openebs
   when:
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
 # Infrastructure Apps
-- name: infrastructure
+- name: Infrastructure
   ansible.builtin.import_tasks: infrastructure.yml
   tags:
     - kubernetes
@@ -68,7 +68,7 @@
     - inventory_hostname in groups['k8s_controllers']
 
 # Apps Apps
-- name: apps
+- name: Apps
   ansible.builtin.import_tasks: apps.yml
   tags:
     - kubernetes

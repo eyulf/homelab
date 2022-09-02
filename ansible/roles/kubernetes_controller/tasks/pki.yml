@@ -1,5 +1,5 @@
 ---
-- name: pki | configure /root/.kube/config
+- name: PKI | configure /root/.kube/config
   ansible.builtin.copy:
     content: "{{ lookup('community.sops.sops', 'etc/kubernetes/admin-' + inventory_hostname + '.conf', rstrip=false, output_type='json') }}"
     dest: /root/.kube/config
@@ -14,7 +14,7 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-- name: pki | configure /etc/kubernetes/{{ item }}.conf
+- name: PKI | configure /etc/kubernetes/{{ item }}.conf
   ansible.builtin.copy:
     content: "{{ lookup('community.sops.sops', 'etc/kubernetes/' + item + '-' + inventory_hostname + '.conf', rstrip=false) }}"
     dest: /etc/kubernetes/{{ item }}.conf
@@ -30,7 +30,7 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-- name: pki | configure /etc/kubernetes/pki/{{ item }}.crt
+- name: PKI | configure /etc/kubernetes/pki/{{ item }}.crt
   ansible.builtin.copy:
     content: "{{ lookup('community.sops.sops', 'etc/kubernetes/pki/' + item + '.crt', rstrip=false) }}"
     dest: /etc/kubernetes/pki/{{ item }}.crt
@@ -46,7 +46,7 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-- name: pki | configure /etc/kubernetes/pki/{{ item }}.key
+- name: PKI | configure /etc/kubernetes/pki/{{ item }}.key
   ansible.builtin.copy:
     content: "{{ lookup('community.sops.sops', 'etc/kubernetes/pki/' + item + '.key', rstrip=false) }}"
     dest: /etc/kubernetes/pki/{{ item }}.key
@@ -62,7 +62,7 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-- name: pki | configure /etc/kubernetes/pki/etcd/{{ item }}.crt
+- name: PKI | configure /etc/kubernetes/pki/etcd/{{ item }}.crt
   ansible.builtin.copy:
     content: "{{ lookup('community.sops.sops', 'etc/kubernetes/pki/etcd/' + item + '.crt', rstrip=false) }}"
     dest: /etc/kubernetes/pki/etcd/{{ item }}.crt
@@ -78,7 +78,7 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-- name: pki | configure /etc/kubernetes/pki/etcd/{{ item }}.key
+- name: PKI | configure /etc/kubernetes/pki/etcd/{{ item }}.key
   ansible.builtin.copy:
     content: "{{ lookup('community.sops.sops', 'etc/kubernetes/pki/etcd/' + item + '.key', rstrip=false) }}"
     dest: /etc/kubernetes/pki/etcd/{{ item }}.key
@@ -94,9 +94,9 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-- name: pki | configure /etc/kubernetes/pki/etcd/{{ item }}.crt
+- name: PKI | configure /etc/kubernetes/pki/etcd/{{ item }}.crt
   ansible.builtin.copy:
-    content: "{{ lookup('community.sops.sops', 'etc/kubernetes/pki/etcd/' + item + '-' + inventory_hostname +'.crt', rstrip=false) }}"
+    content: "{{ lookup('community.sops.sops', 'etc/kubernetes/pki/etcd/' + item + '-' + inventory_hostname + '.crt', rstrip=false) }}"
     dest: /etc/kubernetes/pki/etcd/{{ item }}.crt
     owner: root
     group: root
@@ -110,9 +110,9 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-- name: pki | configure /etc/kubernetes/pki/etcd/{{ item }}.key
+- name: PKI | configure /etc/kubernetes/pki/etcd/{{ item }}.key
   ansible.builtin.copy:
-    content: "{{ lookup('community.sops.sops', 'etc/kubernetes/pki/etcd/' + item + '-' + inventory_hostname +'.key', rstrip=false) }}"
+    content: "{{ lookup('community.sops.sops', 'etc/kubernetes/pki/etcd/' + item + '-' + inventory_hostname + '.key', rstrip=false) }}"
     dest: /etc/kubernetes/pki/etcd/{{ item }}.key
     owner: root
     group: root
@@ -126,7 +126,7 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-- name: pki | configure /etc/kubernetes/pki/sa.{{ item }}
+- name: PKI | configure /etc/kubernetes/pki/sa.{{ item }}
   ansible.builtin.copy:
     content: "{{ lookup('community.sops.sops', 'etc/kubernetes/pki/sa.' + item, rstrip=false) }}"
     dest: /etc/kubernetes/pki/sa.{{ item }}

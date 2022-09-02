@@ -1,5 +1,5 @@
 ---
-- name: kubernetes-worker | set variables
+- name: Kubernetes Worker | set variables
   ansible.builtin.include_vars: '{{ item }}'
   tags:
     - kubernetes
@@ -11,7 +11,7 @@
     - "{{ ansible_facts['os_family'] }}.yml"
     - default.yml
 
-- name: kubernetes-worker | populate service facts
+- name: Kubernetes Worker | populate service facts
   ansible.builtin.service_facts:
   tags:
     - kubernetes
@@ -21,7 +21,7 @@
     - iscsi
 
 # Network
-- name: network
+- name: Network
   ansible.builtin.import_tasks: network.yml
   tags:
     - kubernetes
@@ -32,7 +32,7 @@
     - inventory_hostname in groups['k8s_workers']
 
 # Kubeadm
-- name: kubeadm
+- name: Kubeadm
   ansible.builtin.import_tasks: kubeadm.yml
   tags:
     - kubernetes
@@ -42,8 +42,8 @@
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_workers']
 
-# ISCSI
-- name: iscsi
+# iSCSI
+- name: ISCSI
   ansible.builtin.import_tasks: iscsi.yml
   tags:
     - kubernetes

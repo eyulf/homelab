@@ -1,12 +1,12 @@
 ---
-- name: ntp | update timezone
+- name: NTP | update timezone
   community.general.timezone:
     name: '{{ timezone }}'
   tags:
     - common
     - ntp
 
-- name: ntp | install ntp package
+- name: NTP | install ntp package
   ansible.builtin.package:
     name: ntp
     state: present
@@ -15,7 +15,7 @@
     - ntp
   when: ansible_facts['os_family'] != 'FreeBSD'
 
-- name: ntp | configure /etc/ntp.conf
+- name: NTP | configure /etc/ntp.conf
   ansible.builtin.copy:
     src: etc/ntp-{{ ansible_facts['os_family'] }}.conf
     dest: /etc/ntp.conf
@@ -28,7 +28,7 @@
     - common
     - ntp
 
-- name: ntp | start and enable {{ ntp_service_name }} service
+- name: NTP | start and enable {{ ntp_service_name }} service
   ansible.builtin.service:
     name: '{{ ntp_service_name }}'
     state: started

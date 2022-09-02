@@ -1,5 +1,5 @@
 ---
-- name: users | install sudo package
+- name: Users | install sudo package
   ansible.builtin.package:
     name: '{{ sudo_package_name }}'
     state: present
@@ -7,7 +7,7 @@
     - common
     - users
 
-- name: users | create admin users
+- name: Users | create admin users
   ansible.builtin.user:
     name: '{{ item }}'
     shell: '{{ user_shell }}'
@@ -16,7 +16,7 @@
     - common
     - users
 
-- name: users | configure {{ sudo_sudoers_path }}/20_admins_sudo
+- name: Users | configure {{ sudo_sudoers_path }}/20_admins_sudo
   ansible.builtin.template:
     src: etc/sudoers.d/20_admins_sudo.j2
     dest: /{{ sudo_sudoers_path }}/20_admins_sudo

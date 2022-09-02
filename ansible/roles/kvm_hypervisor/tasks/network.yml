@@ -1,5 +1,5 @@
 ---
-- name: network | install networking packages
+- name: Network | install networking packages
   ansible.builtin.package:
     pkg: '{{ item }}'
     state: present
@@ -9,7 +9,7 @@
     - network
   when: ansible_facts['os_family'] == 'Debian'
 
-- name: network | configure /etc/network/interfaces
+- name: Network | configure /etc/network/interfaces
   ansible.builtin.copy:
     src: files/etc/network/interfaces
     dest: /etc/network/interfaces
@@ -21,7 +21,7 @@
     - network
   when: ansible_facts['os_family'] == 'Debian'
 
-- name: network | configure /etc/interfaces.d/br0
+- name: Network | configure /etc/interfaces.d/br0
   ansible.builtin.copy:
     src: files/etc/network/interfaces.d/br0
     dest: /etc/network/interfaces.d/br0

@@ -1,5 +1,5 @@
 ---
-- name: kubernetes-common | set variables
+- name: Kubernetes Common | set variables
   ansible.builtin.include_vars: '{{ item }}'
   tags:
     - kubernetes
@@ -14,7 +14,7 @@
     - default.yml
 
 # Swap
-- name: swap
+- name: Swap
   ansible.builtin.import_tasks: swap.yml
   tags:
     - kubernetes
@@ -23,7 +23,7 @@
   when: ansible_facts['os_family'] == 'Debian'
 
 # Network
-- name: network
+- name: Network
   ansible.builtin.import_tasks: network.yml
   tags:
     - kubernetes
@@ -32,7 +32,7 @@
   when: ansible_facts['os_family'] == 'Debian'
 
 # Packages
-- name: packages
+- name: Packages
   ansible.builtin.import_tasks: packages.yml
   tags:
     - kubernetes
@@ -41,7 +41,7 @@
   when: ansible_facts['os_family'] == 'Debian'
 
 # Directories
-- name: directories
+- name: Directories
   ansible.builtin.import_tasks: directories.yml
   tags:
     - kubernetes
@@ -50,7 +50,7 @@
   when: ansible_facts['os_family'] == 'Debian'
 
 # PKI
-- name: pki
+- name: PKI
   ansible.builtin.import_tasks: pki.yml
   tags:
     - kubernetes

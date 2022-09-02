@@ -1,5 +1,5 @@
 ---
-- name: auto-updates | install yum-cron package
+- name: Auto-updates | install yum-cron package
   ansible.builtin.yum:
     name: yum-cron
     state: present
@@ -9,7 +9,7 @@
     - auto-updates
   when: ansible_facts['os_family'] == 'RedHat'
 
-- name: auto-updates | configure /etc/yum/yum-cron.conf
+- name: Auto-updates | configure /etc/yum/yum-cron.conf
   ansible.builtin.template:
     src: etc/yum/yum-cron.conf.j2
     dest: /etc/yum/yum-cron.conf
@@ -22,7 +22,7 @@
     - auto-updates
   when: ansible_facts['os_family'] == 'RedHat'
 
-- name: auto-updates | start and enable yum-cron service
+- name: Auto-updates | start and enable yum-cron service
   ansible.builtin.service:
     name: yum-cron
     state: started

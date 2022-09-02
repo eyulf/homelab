@@ -1,5 +1,5 @@
 ---
-- name: docker | set variables
+- name: Docker | set variables
   ansible.builtin.include_vars: '{{ item }}'
   tags:
     - docker
@@ -7,14 +7,14 @@
     - "{{ ansible_facts['os_family'] }}.yml"
     - default.yml
 
-- name: docker
+- name: Docker
   ansible.builtin.include_tasks: docker.yml
   tags:
     - docker
   when: ansible_facts['os_family'] == 'Debian'
 
 # Flush Handlers
-- name: docker | flush handlers
+- name: Docker | flush handlers
   ansible.builtin.meta: flush_handlers
   tags:
     - docker

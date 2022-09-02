@@ -1,5 +1,5 @@
 ---
-- name: file-server | set variables
+- name: File Server | set variables
   ansible.builtin.include_vars: '{{ item }}'
   tags:
     - file_server
@@ -12,7 +12,7 @@
     - default.yml
 
 # Syncthing
-- name: file-server | syncthing
+- name: File Server | syncthing
   ansible.builtin.import_tasks: syncthing.yml
   tags:
     - file_server
@@ -22,7 +22,7 @@
     - inventory_hostname in groups['file_server']
 
 # Samba
-- name: file-server | samba
+- name: File Server | samba
   ansible.builtin.import_tasks: samba.yml
   tags:
     - file_server
@@ -32,7 +32,7 @@
     - inventory_hostname in groups['file_server']
 
 # Backups
-- name: file-server | backups
+- name: File Server | backups
   ansible.builtin.import_tasks: backups.yml
   tags:
     - file_server
@@ -42,7 +42,7 @@
     - inventory_hostname in groups['file_server']
 
 # Monitoring
-- name: file-server | monitoring
+- name: File Server | monitoring
   ansible.builtin.import_tasks: monitoring.yml
   tags:
     - file_server

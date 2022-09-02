@@ -1,5 +1,5 @@
 ---
-- name: packages | install hardware packages
+- name: Packages | install hardware packages
   ansible.builtin.package:
     pkg: '{{ item }}'
     state: present

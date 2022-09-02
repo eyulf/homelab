@@ -1,5 +1,5 @@
 ---
-- name: argocd | download argocd binary
+- name: ArgoCD | download argocd binary
   ansible.builtin.get_url:
     url: https://github.com/argoproj/argo-cd/releases/download/{{ argocd_version }}/argocd-linux-amd64
     dest: /usr/local/bin/argocd

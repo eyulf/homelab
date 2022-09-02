@@ -1,5 +1,5 @@
 ---
-- name: settings | capture cluster properties
+- name: Settings | capture cluster properties
   ansible.builtin.command:
     cmd: pcs property show
   run_once: true
@@ -9,7 +9,7 @@
     - pacemaker
     - settings
 
-- name: settings | disable stonith
+- name: Settings | disable stonith
   ansible.builtin.command:
     cmd: pcs property set stonith-enabled=false
   run_once: true

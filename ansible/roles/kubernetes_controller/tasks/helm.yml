@@ -1,5 +1,5 @@
 ---
-- name: helm | download archived helm binary
+- name: Helm | download archived helm binary
   ansible.builtin.get_url:
     url: https://get.helm.sh/helm-{{ helm_version }}-linux-amd64.tar.gz
     dest: /etc/kubernetes/helm-{{ helm_version }}-linux-amd64.tar.gz
@@ -17,7 +17,7 @@
     - ansible_facts['architecture'] == 'x86_64'
     - inventory_hostname in groups['k8s_controllers']
 
-- name: helm | extract helm binary
+- name: Helm | extract helm binary
   ansible.builtin.unarchive:
     src: /etc/kubernetes/helm-{{ helm_version }}-linux-amd64.tar.gz
     dest: /usr/local/bin/
