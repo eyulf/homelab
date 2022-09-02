@@ -2,7 +2,7 @@
 pihole:
   image:
     # renovate: dockerRepo=pihole/pihole
-    tag: '2022.07.1'
+    tag: '2022.08.3'
   serviceWeb:
     loadBalancerIP: 10.1.1.110
     annotations:
