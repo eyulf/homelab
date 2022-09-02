@@ -2,3 +2,4 @@ ansible
 netaddr
 pre-commit
 checkov
+mkdocs
