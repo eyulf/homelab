@@ -2,4 +2,4 @@ ansible
 netaddr
 pre-commit
 checkov
-mkdocs
+mkdocs-material

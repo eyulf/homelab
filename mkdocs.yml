@@ -2,4 +2,31 @@
 site_name: Alex's Homelab Documentation
 site_description: Documentation for my HomeLab
 
+repo_name: eyulf/homelab
 repo_url: https://github.com/eyulf/homelab/
+
+theme:
+  name: material
+  palette:
+    scheme: slate
+  font: false
+  features:
+    - navigation.expand
+    - navigation.indexes
+    - navigation.sections
+    - navigation.tabs
+    - navigation.top
+
+nav:
+  - Overview: index.md
+
+extra:
+  social:
+    - icon: fontawesome/solid/globe
+      link: https://alexgardner.id.au
+    - icon: fontawesome/brands/gitlab
+      link: https://gitlab.com/eyulf
+    - icon: fontawesome/brands/github
+      link: https://github.com/eyulf
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/alexandergardner?rel=author
