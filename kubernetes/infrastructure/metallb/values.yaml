@@ -1,8 +1,0 @@
----
-metallb:
-  configInline:
-    address-pools:
-      - name: default
-        protocol: layer2
-        addresses:
-          - 10.1.1.70-10.1.1.110
