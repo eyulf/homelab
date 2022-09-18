@@ -1,7 +1,7 @@
 ---
 - name: PKI | configure /root/.kube/config
   ansible.builtin.copy:
-    content: "{{ lookup('community.sops.sops', 'etc/kubernetes/admin-' + inventory_hostname + '.conf', rstrip=false, output_type='json') }}"
+    content: "{{ lookup('community.sops.sops', 'etc/kubernetes/admin-' + inventory_hostname + '.conf', rstrip=false) }}"
     dest: /root/.kube/config
     owner: root
     group: root
