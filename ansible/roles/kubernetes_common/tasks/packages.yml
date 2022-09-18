@@ -44,3 +44,14 @@
     - kubernetes-common
     - packages
   when: ansible_facts['os_family'] == 'Debian'
+
+- name: Packages | install bash auto-completion script
+  ansible.builtin.shell:
+    cmd: kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl > /dev/null
+    creates: /etc/bash_completion.d/kubectl
+  loop: '{{ kubernetes_packages_list }}'
+  tags:
+    - kubernetes
+    - kubernetes-common
+    - packages
+  when: ansible_facts['os_family'] == 'Debian'

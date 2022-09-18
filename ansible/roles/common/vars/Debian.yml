@@ -19,7 +19,8 @@ main_packages_list:
   - gnupg
   - lsb-release
   - tree
+  - bash-completion
 debian_version: buster
 sudo_package_name: sudo
 sudo_sudoers_path: etc/sudoers.d
-sudo_shell: /bin/bash
+user_shell: /bin/bash

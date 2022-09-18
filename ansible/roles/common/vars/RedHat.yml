@@ -9,6 +9,7 @@ main_packages_list:
   - telnet
   - vim
   - rsync
+  - bash-completion
 sudo_package_name: sudo
 sudo_sudoers_path: etc/sudoers.d
 user_shell: /bin/bash
