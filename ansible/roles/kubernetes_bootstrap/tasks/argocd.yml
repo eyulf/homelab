@@ -24,7 +24,7 @@
     creates: /etc/kubernetes/argocd/argocd
   run_once: true
   notify:
-    - pause for argocd
+    - wait for argocd
   tags:
     - kubernetes
     - kubernetes-bootstrap

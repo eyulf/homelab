@@ -1,29 +1,41 @@
 ---
-- name: ArgoCD | pause to allow argocd to fully deploy
-  ansible.builtin.pause:
-    seconds: 150
-  listen: pause for argocd
+- name: ArgoCD | wait to allow argocd to fully deploy
+  ansible.builtin.command:
+    cmd: kubectl wait --namespace=argocd-system --for=condition=Ready pods --selector app.kubernetes.io/part-of=argocd --timeout=15m
+  listen: wait for argocd
   tags:
     - kubernetes
     - kubernetes-bootstrap
     - argocd
-  when:
-    - ansible_facts['os_family'] == 'Debian'
-    - inventory_hostname in groups['k8s_controllers']
 
-- name: Core | pause to allow core-apps app to fully deploy
+- name: Core | pause to allow ArgoCD to create the core-apps app
   ansible.builtin.pause:
-    seconds: 150
+    seconds: 30
   listen: pause for core-apps app
   tags:
     - kubernetes
     - kubernetes-bootstrap
     - core
-  when:
-    - ansible_facts['os_family'] == 'Debian'
-    - inventory_hostname in groups['k8s_controllers']
 
-- name: OpenEBS | apply /opt/homelab/kubernetes/core/openebs/ansible/cstor-pool-cluster.yaml
+- name: Core | wait to allow sealed-secrets to fully deploy
+  ansible.builtin.command:
+    cmd: kubectl wait --namespace=kube-system --for=condition=Ready pods --selector app.kubernetes.io/name=sealed-secrets --timeout=15m
+  listen: wait for sealed-secrets
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - core
+
+- name: Core | wait to allow openebs to fully deploy
+  ansible.builtin.command:
+    cmd: kubectl wait --namespace=openebs-system --for=condition=Ready pods --selector release=openebs --timeout=15m
+  listen: wait for openebs
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - core
+
+- name: Core | apply /opt/homelab/kubernetes/core/openebs/ansible/cstor-pool-cluster.yaml
   ansible.builtin.command:
     chdir: /opt/homelab/kubernetes/core/openebs/ansible/
     cmd: kubectl apply -f /opt/homelab/kubernetes/core/openebs/ansible/cstor-pool-cluster.yaml
@@ -31,24 +43,27 @@
   tags:
     - kubernetes
     - kubernetes-bootstrap
-    - openebs
-  when:
-    - ansible_facts['os_family'] == 'Debian'
-    - inventory_hostname in groups['k8s_controllers']
+    - core
 
-- name: OpenEBS | pause to allow the openebs storage cluster to fully provision
+- name: Core | pause to allow the openebs storage cluster to start provisioning
   ansible.builtin.pause:
-    seconds: 150
+    seconds: 30
   listen: pause for openebs storage cluster
   tags:
     - kubernetes
     - kubernetes-bootstrap
-    - openebs
-  when:
-    - ansible_facts['os_family'] == 'Debian'
-    - inventory_hostname in groups['k8s_controllers']
+    - core
 
-- name: OpenEBS | apply /opt/homelab/kubernetes/core/openebs/ansible/cstor-storage-class.yaml
+- name: Core | wait to allow the openebs storage cluster to fully provision
+  ansible.builtin.command:
+    cmd: kubectl wait --namespace=openebs-system --for=condition=Ready pods --selector app=cstor-pool --timeout=15m
+  listen: wait for openebs storage cluster
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - core
+
+- name: Core | apply /opt/homelab/kubernetes/core/openebs/ansible/cstor-storage-class.yaml
   ansible.builtin.command:
     chdir: /opt/homelab/kubernetes/core/openebs/ansible/
     cmd: kubectl apply -f /opt/homelab/kubernetes/core/openebs/ansible/cstor-storage-class.yaml
@@ -56,31 +71,49 @@
   tags:
     - kubernetes
     - kubernetes-bootstrap
-    - openebs
-  when:
-    - ansible_facts['os_family'] == 'Debian'
-    - inventory_hostname in groups['k8s_controllers']
+    - core
 
-- name: Infrastructure | pause to allow infrastructure-apps app to fully deploy
+- name: Infrastructure | pause to allow ArgoCD to create the infrastructure-apps app
   ansible.builtin.pause:
-    seconds: 150
+    seconds: 30
   listen: pause for infrastructure-apps app
   tags:
     - kubernetes
     - kubernetes-bootstrap
     - infrastructure
-  when:
-    - ansible_facts['os_family'] == 'Debian'
-    - inventory_hostname in groups['k8s_controllers']
 
-- name: Apps | pause to allow apps-apps app to fully deploy
+- name: Infrastructure | wait to allow traefik to fully deploy
+  ansible.builtin.command:
+    cmd: kubectl wait --namespace=traefik-infra --for=condition=Ready pods --selector app.kubernetes.io/name=traefik --timeout=15m
+  listen: wait for traefik
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - infrastructure
+
+- name: Infrastructure | wait to allow metallb to fully deploy
+  ansible.builtin.command:
+    cmd: kubectl wait --namespace=metallb-system --for=condition=Ready pods --selector app.kubernetes.io/name=metallb --timeout=15m
+  listen: wait for metallb
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - infrastructure
+
+- name: Apps | pause to allow ArgoCD to create the apps-apps app
   ansible.builtin.pause:
-    seconds: 150
+    seconds: 30
   listen: pause for apps-apps app
   tags:
     - kubernetes
     - kubernetes-bootstrap
     - apps
-  when:
-    - ansible_facts['os_family'] == 'Debian'
-    - inventory_hostname in groups['k8s_controllers']
+
+- name: Apps | wait to allow pihole to fully deploy
+  ansible.builtin.command:
+    cmd: kubectl wait --namespace=pihole --for=condition=Ready pods --selector app=pihole --timeout=15m
+  listen: wait for pihole
+  tags:
+    - kubernetes
+    - kubernetes-bootstrap
+    - apps

@@ -13,9 +13,10 @@
     - "{{ ansible_facts['os_family'] }}.yml"
     - default.yml
 
-- name: Kubernetes Bootstrap | pause to allow cluster to fully come online
-  ansible.builtin.pause:
-    seconds: 150
+- name: Kubernetes Bootstrap | wait to allow cluster to fully come online
+  ansible.builtin.command:
+    cmd: kubectl wait --namespace=calico-system --for=condition=Ready pods --selector k8s-app=calico-node --timeout=15m
+  run_once: true
   tags:
     - kubernetes
     - kubernetes-bootstrap
@@ -41,17 +42,6 @@
     - kubernetes
     - kubernetes-bootstrap
     - core
-  when:
-    - ansible_facts['os_family'] == 'Debian'
-    - inventory_hostname in groups['k8s_controllers']
-
-# OpenEBS
-- name: OpenEBS
-  ansible.builtin.import_tasks: openebs.yml
-  tags:
-    - kubernetes
-    - kubernetes-bootstrap
-    - openebs
   when:
     - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']

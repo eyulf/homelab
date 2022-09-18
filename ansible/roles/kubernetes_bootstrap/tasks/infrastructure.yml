@@ -17,6 +17,8 @@
   run_once: true
   notify:
     - pause for infrastructure-apps app
+    - wait for traefik
+    - wait for metallb
   tags:
     - kubernetes
     - kubernetes-bootstrap

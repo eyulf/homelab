@@ -17,6 +17,7 @@
   run_once: true
   notify:
     - pause for apps-apps app
+    - wait for pihole
   tags:
     - kubernetes
     - kubernetes-bootstrap
