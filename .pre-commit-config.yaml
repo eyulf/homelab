@@ -9,7 +9,7 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/ansible/ansible-lint
-    rev: v6.5.2
+    rev: v6.6.0
     hooks:
       - id: ansible-lint
         args: [
