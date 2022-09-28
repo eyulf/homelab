@@ -36,7 +36,7 @@ BACKUP_COUNT=0
 
 printf "%-${WIDTH}s" "- Checking for existing backups: "
 
-if /usr/bin/screen -ls >/dev/null; then
+if screen -ls >/dev/null; then
   printf "%s\n" "[Failed]"
   printf "\n%s\n" "Backup Already Running!"
   printf "%s\n" "$(cat "${RUNPATH}/backup-progress")"
@@ -62,19 +62,19 @@ printf "%s\n" "[OK]"
 
 printf "%-${WIDTH}s" "- Checking for Backup Disk: "
 
-DISK=$(hwinfo --disk --short | grep -v -E 'disk:|Seagate IronWolf|WDC WD30EFRX' | grep '/dev/' | awk '{print $1}')
+DISK=$(/usr/sbin/hwinfo --disk --short | grep -v -E 'disk:|Seagate IronWolf|WDC WD30EFRX' | grep '/dev/' | awk '{print $1}')
 
 if [ "$DISK" == "" ]; then
   printf "%s\n" "[FAILED]"
   printf "\n%s\n" "Backup Disk not found!"
-  hwinfo --disk --short
+  /usr/sbin/hwinfo --disk --short
   logger -it "BACKUP-SCRIPTS" "Tier ${1} backup failed!"
   logger -it "BACKUP-SCRIPTS" "Backup Disk not found"
   exit
 elif (( $(grep -c . <<<"$DISK") > 1 )); then
   printf "%s\n" "[FAILED]"
   printf "\n%s\n" "More then 1 Backup Disk present!"
-  hwinfo --disk --short
+  /usr/sbin/hwinfo --disk --short
   logger -it "BACKUP-SCRIPTS" "Tier ${1} backup failed!"
   logger -it "BACKUP-SCRIPTS" "More then 1 Backup Disk present"
   exit
@@ -87,14 +87,14 @@ fi
 
 printf "%-${WIDTH}s" "- Checking Encryption: "
 
-if ! cryptsetup isLuks "$DISK" >/dev/null ; then
+if ! /usr/sbin/cryptsetup isLuks "$DISK" >/dev/null ; then
   printf "%s\n" "[FAILED]"
   printf "\n%s\n" "Disk is not Encrypted!!!"
   logger -it "BACKUP-SCRIPTS" "Tier ${1} backup failed!"
   logger -it "BACKUP-SCRIPTS" "Disk (${DISK}) is not Encrypted"
   exit
 else
-  cryptsetup --key-file "${RUNPATH}/backup.pass" luksOpen "$DISK" "$BACKUP_CRYPT_NAME"
+  /usr/sbin/cryptsetup --key-file "${RUNPATH}/backup.pass" luksOpen "$DISK" "$BACKUP_CRYPT_NAME"
   printf "%s\n" "[OK]"
 fi
 
@@ -154,10 +154,10 @@ printf "%-${WIDTH}s" "- Starting Backup/s in Screen"
 echo "" > "${RUNPATH}/backup-progress"
 
 while IFS= read -r DIR; do
-  /usr/bin/screen -dm sh -c "rsync -ah --no-inc-recursive --info=progress2 ${DIR} ${BACKUP_PATH}/ >${RUNPATH}/backup-progress"
+  screen -dm sh -c "rsync -ah --no-inc-recursive --info=progress2 ${DIR} ${BACKUP_PATH}/ >${RUNPATH}/backup-progress"
 done < "$BACKUP_SOURCE_FILE"
 
-if /usr/bin/screen -ls >/dev/null; then
+if screen -ls >/dev/null; then
   echo "*/15 * * * * root ${SCRIPTPATH}/local-finished.sh ${1}" > /etc/cron.d/backup-task
   printf "%s\n" "[OK]"
 

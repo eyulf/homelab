@@ -36,7 +36,7 @@ BACKUP_COUNT=0
 
 printf "%-${WIDTH}s" "- Checking for existing backups: "
 
-if /usr/bin/screen -ls >/dev/null; then
+if screen -ls >/dev/null; then
   printf "%s\n" "[Failed]"
   printf "\n%s\n" "Backup Already Running!"
   printf "%s\n" "$(cat /root/backup-progress)"
@@ -62,19 +62,19 @@ printf "%s\n" "[OK]"
 
 printf "%-${WIDTH}s" "- Checking for Backup Disk: "
 
-DISK=$(hwinfo --disk --short | grep -v -E 'disk:|Seagate IronWolf|WDC WD30EFRX' | grep '/dev/' | awk '{print $1}')
+DISK=$(/usr/sbin/hwinfo --disk --short | grep -v -E 'disk:|Seagate IronWolf|WDC WD30EFRX' | grep '/dev/' | awk '{print $1}')
 
 if [ "$DISK" == "" ]; then
   printf "%s\n" "[FAILED]"
   printf "\n%s\n" "Backup Disk not found!"
-  hwinfo --disk --short
+  /usr/sbin/hwinfo --disk --short
   logger -it "BACKUP-SCRIPTS" "Tier ${1} backup failed!"
   logger -it "BACKUP-SCRIPTS" "Backup Disk not found"
   exit
 elif (( $(grep -c . <<<"$DISK") > 1 )); then
   printf "%s\n" "[FAILED]"
   printf "\n%s\n" "More then 1 Backup Disk present!"
-  hwinfo --disk --short
+  /usr/sbin/hwinfo --disk --short
   logger -it "BACKUP-SCRIPTS" "Tier ${1} backup failed!"
   logger -it "BACKUP-SCRIPTS" "More then 1 Backup Disk present"
   exit
@@ -87,7 +87,7 @@ fi
 
 printf "%-${WIDTH}s" "- Checking Encryption: "
 
-if ! cryptsetup isLuks "$DISK" >/dev/null ; then
+if ! /usr/sbin/cryptsetup isLuks "$DISK" >/dev/null ; then
   printf "%s\n" "[FAILED]"
   printf "\n%s\n" "Disk is not Encrypted!!!"
   logger -it "BACKUP-SCRIPTS" "Tier ${1} backup failed!"
@@ -117,16 +117,16 @@ fi
 
 printf "%-${WIDTH}s" "- Getting Disk Details: "
 
-if ! smartctl -a "$DISK" >/dev/null; then
+if ! /usr/sbin/smartctl -a "$DISK" >/dev/null; then
   printf "%s\n" "[FAILED]"
   printf "\n%s\n" "Cannot Find Disk!!!"
   logger -it "BACKUP-SCRIPTS" "Tier ${1} backup failed!"
   logger -it "BACKUP-SCRIPTS" "Cannot Find Disk (${DISK})"
   exit
 else
-  DISK_CAPACITY=$(smartctl -a "$DISK" | grep 'User Capacity' | awk '{print $5,$6}')
-  DISK_MODEL=$(smartctl -a "$DISK" | grep 'Device Model' | awk '{print $3}')
-  DISK_SERIAL=$(smartctl -a "$DISK" | grep 'Serial Number' | awk '{print $3}')
+  DISK_CAPACITY=$(/usr/sbin/smartctl -a "$DISK" | grep 'User Capacity' | awk '{print $5,$6}')
+  DISK_MODEL=$(/usr/sbin/smartctl -a "$DISK" | grep 'Device Model' | awk '{print $3}')
+  DISK_SERIAL=$(/usr/sbin/smartctl -a "$DISK" | grep 'Serial Number' | awk '{print $3}')
   printf "%s\n" "[OK]"
 fi
 
@@ -174,7 +174,7 @@ umount "$BACKUP_PATH"
 echo ""
 echo "- Closing Encrypted Disk"
 logger -it "BACKUP-SCRIPTS" "Closing Encrypted Disk"
-cryptsetup luksClose "$BACKUP_CRYPT_NAME"
+/usr/sbin/cryptsetup luksClose "$BACKUP_CRYPT_NAME"
 
 logger -it "BACKUP-SCRIPTS" "Cleaning up cron"
 rm -f /etc/cron.d/backup-task
