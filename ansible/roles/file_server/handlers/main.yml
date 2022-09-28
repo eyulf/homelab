@@ -1,0 +1,9 @@
+---
+- name: Syncthing | restart service
+  ansible.builtin.service:
+    name: syncthing@syncthing
+    state: restarted
+  listen: restart syncthing
+  tags:
+    - file_server
+    - syncthing

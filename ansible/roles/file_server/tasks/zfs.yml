@@ -1,0 +1,55 @@
+---
+- name: Zfs | setup backports source
+  ansible.builtin.lineinfile:
+    path: /etc/apt/sources.list
+    line: deb http://deb.debian.org/debian {{ ansible_facts['distribution_release'] }}-backports main contrib non-free
+  tags:
+    - file_server
+    - zfs
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['file_server']
+
+- name: Zfs | install required packages
+  ansible.builtin.apt:
+    name: '{{ item }}'
+    state: present
+    update_cache: true
+  loop:
+    - linux-headers-amd64
+  tags:
+    - file_server
+    - zfs
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['file_server']
+
+- name: Zfs | install zfs packages
+  ansible.builtin.apt:
+    name: zfsutils-linux
+    state: present
+    update_cache: true
+    fail_on_autoremove: true
+  tags:
+    - file_server
+    - zfs
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['file_server']
+
+- name: Zfs | configure zfs scripts
+  ansible.builtin.copy:
+    src: usr/sbin/{{ item }}
+    dest: /usr/sbin/{{ item }}
+    owner: root
+    group: root
+    mode: '0750'
+  loop:
+    - zfs-mount.sh
+    - zfs-umount.sh
+  tags:
+    - file_server
+    - zfs
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['file_server']

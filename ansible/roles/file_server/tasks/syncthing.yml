@@ -7,12 +7,24 @@
     - file_server
     - syncthing
   when:
-    - ansible_facts['os_family'] == 'FreeBSD'
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['file_server']
+
+- name: Syncthing | create syncthing user
+  ansible.builtin.user:
+    name: syncthing
+    shell: /bin/bash
+    system: true
+  tags:
+    - file_server
+    - syncthing
+  when:
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['file_server']
 
 - name: Syncthing | create syncthing config dir
   ansible.builtin.file:
-    path: /usr/local/etc/syncthing/
+    path: /home/syncthing/.config/syncthing/
     state: directory
     owner: syncthing
     group: syncthing
@@ -21,45 +33,46 @@
     - file_server
     - syncthing
   when:
-    - ansible_facts['os_family'] == 'FreeBSD'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['file_server']
 
 - name: Syncthing | configure syncthing
-  ansible.builtin.copy:
-    content: "{{ lookup('community.sops.sops', 'usr/local/etc/syncthing/config.xml', rstrip=false) }}"
-    dest: /usr/local/etc/syncthing/config.xml
+  ansible.builtin.copy: # noqa template-instead-of-copy
+    content: "{{ lookup('community.sops.sops', 'home/syncthing/.config/syncthing/config.xml', rstrip=false) }}"
+    dest: /home/syncthing/.config/syncthing/config.xml
     owner: syncthing
     group: syncthing
     mode: '0600'
+  notify:
+    - restart syncthing
   tags:
     - file_server
     - syncthing
   when:
-    - ansible_facts['os_family'] == 'FreeBSD'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['file_server']
 
 - name: Syncthing | start and enable syncthing service
   ansible.builtin.service:
-    name: syncthing
+    name: syncthing@syncthing
     state: started
     enabled: true
   tags:
     - file_server
     - syncthing
   when:
-    - ansible_facts['os_family'] == 'FreeBSD'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['file_server']
 
-- name: Syncthing | Set perms on syncthing logs file
-  ansible.builtin.file:
-    path: /var/log/syncthing.log
-    state: file
-    owner: syncthing
-    group: syncthing
-    mode: '0600'
+- name: Syncthing | allow syncthing inbound from clients
+  community.general.ufw:
+    rule: allow
+    name: syncthing
+    direction: in
+    src: '{{ firewall_clients_subnet }}'
   tags:
     - file_server
     - syncthing
   when:
-    - ansible_facts['os_family'] == 'FreeBSD'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['file_server']

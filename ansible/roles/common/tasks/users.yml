@@ -16,10 +16,10 @@
     - common
     - users
 
-- name: Users | configure {{ sudo_sudoers_path }}/20_admins_sudo
+- name: Users | configure e/tc/sudoers.d/20_admins_sudo
   ansible.builtin.template:
     src: etc/sudoers.d/20_admins_sudo.j2
-    dest: /{{ sudo_sudoers_path }}/20_admins_sudo
+    dest: /etc/sudoers.d/20_admins_sudo
     owner: root
     group: '{{ main_root_group }}'
     mode: '644'

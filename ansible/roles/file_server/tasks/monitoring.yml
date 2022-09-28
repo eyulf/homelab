@@ -1,18 +1,16 @@
 ---
-- name: Monitoring | configure /root/zfs_health.sh
+- name: Monitoring | configure /usr/sbin/zfs-health.sh
   ansible.builtin.copy:
-    src: root/zfs_health.sh
-    dest: /root/zfs_health.sh
+    src: usr/sbin/zfs-health.sh
+    dest: /usr/sbin/zfs-health.sh
     owner: root
-    group: wheel
-    mode: '0755'
-  loop:
-    - zfs_health.sh
+    group: root
+    mode: '0750'
   tags:
     - file_server
     - monitoring
   when:
-    - ansible_facts['os_family'] == 'FreeBSD'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['file_server']
 
 - name: Monitoring | configure cron - zfs-health
@@ -21,7 +19,7 @@
     minute: '0'
     hour: '0'
     user: root
-    job: '/root/zfs_health.sh'
+    job: '/usr/sbin/zfs_health.sh'
     cron_file: zfs_health
   tags:
     - file_server
@@ -37,11 +35,11 @@
     hour: '0'
     day: '1'
     user: root
-    job: '/sbin/zpool scrub storage'
+    job: '/usr/sbin/zpool scrub storage'
     cron_file: zfs_health
   tags:
     - file_server
     - monitoring
   when:
-    - ansible_facts['os_family'] == 'FreeBSD'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['file_server']

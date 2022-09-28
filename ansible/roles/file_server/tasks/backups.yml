@@ -1,33 +1,116 @@
 ---
-- name: Backups | configure backup files
-  ansible.builtin.copy:
-    src: root/{{ item }}
-    dest: /root/{{ item }}
-    owner: root
-    group: wheel
-    mode: '0755'
+- name: Backups | install backup packages
+  ansible.builtin.package:
+    pkg: '{{ item }}'
+    state: present
   loop:
-    - backup-initdisk.sh
-    - backup-start.sh
-    - backup-finished.sh
+    - hwinfo
+    - pv
+    - bc
+    - units
   tags:
     - file_server
     - backups
   when:
-    - ansible_facts['os_family'] == 'FreeBSD'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['file_server']
 
-- name: Backups | configure cron - backup-start
+- name: Backups | create backup dirs
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: directory
+    owner: root
+    group: root
+    mode: '0700'
+  loop:
+    - /root/backup-scripts/
+    - /backup/
+  tags:
+    - file_server
+    - backups
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['file_server']
+
+- name: Backups | configure backup files
+  ansible.builtin.copy: # noqa template-instead-of-copy
+    content: "{{ lookup('community.sops.sops', 'root/{{ item }}', rstrip=false) }}"
+    dest: /root/{{ item }}
+    owner: root
+    group: root
+    mode: '0660'
+  loop:
+    - backup-tier1.txt
+    - backup-tier2.txt
+    - backup-tier3.txt
+    - backup-tier4.txt
+    - backup-tier5.txt
+  tags:
+    - file_server
+    - backups
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['file_server']
+
+- name: Backups | configure backup scripts
+  ansible.builtin.copy:
+    src: root/backup-scripts/{{ item }}
+    dest: /root/backup-scripts/{{ item }}
+    owner: root
+    group: root
+    mode: '0750'
+  loop:
+    - local-finished.sh
+    - local-initdisk.sh
+    - local-start.sh
+    - stats.sh
+  tags:
+    - file_server
+    - backups
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['file_server']
+
+- name: Backups | configure /root/backup-scripts/notify.sh
+  ansible.builtin.copy: # noqa template-instead-of-copy
+    content: "{{ lookup('community.sops.sops', 'root/backup-scripts/notify.sh', rstrip=false) }}"
+    dest: /root/backup-scripts/notify.sh
+    owner: root
+    group: root
+    mode: '0750'
+  tags:
+    - file_server
+    - backups
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['file_server']
+
+- name: Backups | configure cron - backup-tier2-local
   ansible.builtin.cron:
-    name: backup-start
+    name: backup-tier2-local
+    minute: '5'
+    hour: '*/4'
+    user: root
+    job: '/root/backup-scripts/local-start.sh t2'
+    cron_file: backups
+  tags:
+    - file_server
+    - backups
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - inventory_hostname in groups['file_server']
+
+- name: Backups | configure cron - backup-tier5-local
+  ansible.builtin.cron:
+    name: backup-tier5-local
     minute: '0'
     hour: '*/4'
     user: root
-    job: '/root/backup-start.sh partial'
-    cron_file: backup_start
+    job: '/root/backup-scripts/local-start.sh t5'
+    cron_file: backups
   tags:
     - file_server
     - backups
   when:
-    - ansible_facts['os_family'] == 'FreeBSD'
+    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['file_server']

@@ -28,7 +28,7 @@
     - common
     - ntp
 
-- name: NTP | start and enable {{ ntp_service_name }} service
+- name: NTP | start and enable ntp service
   ansible.builtin.service:
     name: '{{ ntp_service_name }}'
     state: started

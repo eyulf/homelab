@@ -38,7 +38,7 @@
     - inventory_hostname in groups['k8s_controllers']
 
 - name: KubeSeal | configure /etc/kubernetes/secrets/sealed-secrets.yaml
-  ansible.builtin.copy:
+  ansible.builtin.copy: # noqa template-instead-of-copy
     content: "{{ lookup('community.sops.sops', 'etc/kubernetes/secrets/sealed-secrets.yaml', rstrip=false) }}"
     dest: /etc/kubernetes/secrets/sealed-secrets.yaml
     owner: root

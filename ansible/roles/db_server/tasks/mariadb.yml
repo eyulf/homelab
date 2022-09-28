@@ -73,7 +73,7 @@
     - mariadb
   when: ansible_facts.os_family == 'Debian'
 
-- name: Mariadb | start and enable {{ mariadb_service_name }} service
+- name: Mariadb | start and enable mariadb service
   ansible.builtin.service:
     name: '{{ mariadb_service_name }}'
     enabled: true

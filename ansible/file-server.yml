@@ -5,4 +5,5 @@
   become: true
   roles:
     - common
+    - hardware
     - file_server

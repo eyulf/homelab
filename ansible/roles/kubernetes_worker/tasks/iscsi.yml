@@ -9,7 +9,7 @@
     - iscsi
   when: ansible_facts['os_family'] == 'Debian'
 
-- name: ISCSI | start and enable {{ iscsi_service_name }} service
+- name: ISCSI | start and enable iscsid service
   ansible.builtin.service:
     name: '{{ iscsi_service_name }}'
     state: started

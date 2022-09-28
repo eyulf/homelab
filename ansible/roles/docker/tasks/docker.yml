@@ -54,7 +54,7 @@
     - docker
   when: ansible_facts['os_family'] == 'Debian'
 
-- name: Docker | start and enable {{ docker_service_name }} service
+- name: Docker | start and enable docker service
   ansible.builtin.service:
     name: '{{ docker_service_name }}'
     state: started
@@ -63,7 +63,7 @@
     - docker
   when: ansible_facts['os_family'] == 'Debian'
 
-- name: Docker | start and enable {{ containerd_service_name }} service
+- name: Docker | start and enable containerd service
   ansible.builtin.service:
     name: '{{ containerd_service_name }}'
     state: started

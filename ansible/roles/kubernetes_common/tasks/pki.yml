@@ -1,6 +1,6 @@
 ---
 - name: PKI | configure /etc/kubernetes/kubelet.conf
-  ansible.builtin.copy:
+  ansible.builtin.copy: # noqa template-instead-of-copy
     content: "{{ lookup('community.sops.sops', 'etc/kubernetes/kubelet-' + inventory_hostname + '.conf', rstrip=false) }}"
     dest: /etc/kubernetes/kubelet.conf
     owner: root
@@ -13,7 +13,7 @@
   when: ansible_facts['os_family'] == 'Debian'
 
 - name: PKI | configure /etc/kubernetes/pki/ca.crt
-  ansible.builtin.copy:
+  ansible.builtin.copy: # noqa template-instead-of-copy
     content: "{{ lookup('community.sops.sops', 'etc/kubernetes/pki/ca.crt', rstrip=false) }}"
     dest: /etc/kubernetes/pki/ca.crt
     owner: root

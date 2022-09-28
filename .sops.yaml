@@ -5,14 +5,8 @@ creation_rules:
   - path_regex: ansible/(host|group)_vars/.*\.ya?ml
     age: 'age1ety65vhtrhlevgmm899eyvdmv4avfm0replxg5tz6a2jyq84n4us7ryfc6'
 
-  # Match corosync authkey
-  - path_regex: ansible/roles/.*/files/etc/corosync/authkey
-    age: 'age1ety65vhtrhlevgmm899eyvdmv4avfm0replxg5tz6a2jyq84n4us7ryfc6'
-
-  # Match fileserver config
-  - path_regex: ansible/roles/.*/files/usr/local/etc/smb4.conf
-    age: 'age1ety65vhtrhlevgmm899eyvdmv4avfm0replxg5tz6a2jyq84n4us7ryfc6'
-  - path_regex: ansible/roles/.*/files/usr/local/etc/syncthing/config.xml
+  # Match ansible files
+  - path_regex: ansible/roles/.*/files/.*
     age: 'age1ety65vhtrhlevgmm899eyvdmv4avfm0replxg5tz6a2jyq84n4us7ryfc6'
 
   # Match terraform files
