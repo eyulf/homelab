@@ -12,7 +12,6 @@
     - kubernetes-worker
     - network
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_workers']
 
 - name: Network | allow nodeport services inbound from kubernetes servers
@@ -28,5 +27,4 @@
     - kubernetes-worker
     - network
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_workers']

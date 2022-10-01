@@ -1,22 +1,12 @@
 ---
 - name: NTP | restart ntp
   ansible.builtin.service:
-    name: '{{ ntp_service_name }}'
+    name: ntp
     state: restarted
   listen: restart ntp
   tags:
     - common
     - ntp
-
-- name: Auto-updates | restart yum-cron service
-  ansible.builtin.service:
-    name: yum-cron
-    state: restarted
-  listen: restart yum-cron
-  tags:
-    - common
-    - auto-updates
-  when: ansible_facts['os_family'] == 'RedHat'
 
 - name: Auto-updates | restart unattended-upgrades service
   ansible.builtin.service:
@@ -26,4 +16,3 @@
   tags:
     - common
     - auto-updates
-  when: ansible_facts['os_family'] == 'Debian'

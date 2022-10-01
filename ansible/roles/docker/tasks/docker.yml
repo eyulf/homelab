@@ -8,7 +8,6 @@
     mode: '0644'
   tags:
     - docker
-  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Docker | add docker repo
   ansible.builtin.apt_repository:
@@ -17,7 +16,6 @@
     filename: docker
   tags:
     - docker
-  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Docker | install docker engine packages
   ansible.builtin.package:
@@ -26,7 +24,6 @@
   loop: '{{ docker_engine_packages_list }}'
   tags:
     - docker
-  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Docker | configure /etc/docker/daemon.json
   ansible.builtin.copy:
@@ -39,7 +36,6 @@
     - restart docker
   tags:
     - docker
-  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Docker | configure /etc/containerd/config.toml
   ansible.builtin.copy:
@@ -52,22 +48,19 @@
     - restart containerd
   tags:
     - docker
-  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Docker | start and enable docker service
   ansible.builtin.service:
-    name: '{{ docker_service_name }}'
+    name: docker
     state: started
     enabled: true
   tags:
     - docker
-  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Docker | start and enable containerd service
   ansible.builtin.service:
-    name: '{{ containerd_service_name }}'
+    name: containerd
     state: started
     enabled: true
   tags:
     - docker
-  when: ansible_facts['os_family'] == 'Debian'

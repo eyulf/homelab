@@ -10,8 +10,6 @@
   tags:
     - pacemaker
     - network
-  when:
-    - ansible_facts['os_family'] == 'Debian'
 
 - name: Network | allow pacemaker udp inbound from pacemaker servers
   community.general.ufw:
@@ -24,5 +22,3 @@
   tags:
     - pacemaker
     - network
-  when:
-    - ansible_facts['os_family'] == 'Debian'

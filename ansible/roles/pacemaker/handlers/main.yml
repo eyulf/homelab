@@ -1,11 +1,9 @@
 ---
 - name: Corosync | restart corosync
   ansible.builtin.service:
-    name: '{{ corosync_service_name }}'
+    name: corosync
     state: restarted
   listen: restart corosync
   tags:
     - pacemaker
     - corosync
-  when:
-    - ansible_facts['os_family'] == 'Debian'

@@ -6,8 +6,6 @@
   tags:
     - database
     - mariadb
-  when:
-    - ansible_facts.os_family == 'Debian'
 
 - name: Mariadb | add mariadb repo
   ansible.builtin.apt_repository:
@@ -17,8 +15,6 @@
   tags:
     - database
     - mariadb
-  when:
-    - ansible_facts.os_family == 'Debian'
 
 - name: Mariadb | install mariadb packages
   ansible.builtin.package:
@@ -28,8 +24,6 @@
   tags:
     - database
     - mariadb
-  when:
-    - ansible_facts.os_family == 'Debian'
 
 - name: Mariadb | allow mariadb inbound from network
   community.general.ufw:
@@ -42,7 +36,6 @@
     - database
     - mariadb
   when:
-    - ansible_facts.os_family == 'Debian'
     - mariadb_visibility is defined
     - mariadb_visibility == 'network'
 
@@ -57,7 +50,6 @@
   tags:
     - database
     - mariadb
-  when: ansible_facts.os_family == 'Debian'
 
 - name: Mariadb | configure /etc/mysql/mariadb.conf.d/60-galera.cnf
   ansible.builtin.template:
@@ -71,21 +63,19 @@
   tags:
     - database
     - mariadb
-  when: ansible_facts.os_family == 'Debian'
 
 - name: Mariadb | start and enable mariadb service
   ansible.builtin.service:
-    name: '{{ mariadb_service_name }}'
+    name: mariadb
     enabled: true
     state: started
   tags:
     - database
     - mariadb
-  when: ansible_facts.os_family == 'Debian'
 
 - name: Mariadb | create replication user
   community.mysql.mysql_user:
-    login_unix_socket: '{{ mariadb_login_unix_socket }}'
+    login_unix_socket: /run/mysqld/mysqld.sock
     name: '{{ mariadb_galera_auth_user }}'
     host: localhost
     password: '{{ mariadb_galera_auth_password }}'
@@ -97,5 +87,4 @@
     - database
     - mariadb
   when:
-    - ansible_facts.os_family == 'Debian'
     - ansible_facts.hostname == mariadb_galera_bootstrap_host

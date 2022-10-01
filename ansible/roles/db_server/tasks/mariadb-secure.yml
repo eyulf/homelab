@@ -3,7 +3,7 @@
 
 - name: Database-secure | change the root password
   community.mysql.mysql_user:
-    login_unix_socket: '{{ mariadb_login_unix_socket }}'
+    login_unix_socket: /run/mysqld/mysqld.sock
     name: root
     host: localhost
     password: '{{ mariadb_root_password }}'
@@ -13,7 +13,6 @@
     - database
     - mariadb-secure
   when:
-    - ansible_facts.os_family == 'Debian'
     - ansible_facts.hostname == mariadb_galera_bootstrap_host
 
 - name: Database-secure | configure /root/.my.cnf
@@ -26,11 +25,10 @@
   tags:
     - database
     - mariadb-secure
-  when: ansible_facts.os_family == 'Debian'
 
 - name: Database-secure | remove anonymous users
   community.mysql.mysql_user:
-    login_unix_socket: '{{ mariadb_login_unix_socket }}'
+    login_unix_socket: /run/mysqld/mysqld.sock
     name: ''
     host_all: true
     state: absent
@@ -38,12 +36,11 @@
     - database
     - mariadb-secure
   when:
-    - ansible_facts.os_family == 'Debian'
     - ansible_facts.hostname == mariadb_galera_bootstrap_host
 
 - name: Database-secure | remove test database
   community.mysql.mysql_db:
-    login_unix_socket: '{{ mariadb_login_unix_socket }}'
+    login_unix_socket: /run/mysqld/mysqld.sock
     name:
       - test
     state: absent
@@ -51,5 +48,4 @@
     - database
     - mariadb-secure
   when:
-    - ansible_facts.os_family == 'Debian'
     - ansible_facts.hostname == mariadb_galera_bootstrap_host

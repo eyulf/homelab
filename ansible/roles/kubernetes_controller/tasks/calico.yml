@@ -16,6 +16,5 @@
     - kubernetes-controller
     - calico
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
     - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']

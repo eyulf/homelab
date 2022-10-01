@@ -13,7 +13,6 @@
     - kubernetes-controller
     - kubeseal
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - ansible_facts['architecture'] == 'x86_64'
     - inventory_hostname in groups['k8s_controllers']
 
@@ -33,7 +32,6 @@
     - kubernetes-controller
     - kubeseal
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - ansible_facts['architecture'] == 'x86_64'
     - inventory_hostname in groups['k8s_controllers']
 
@@ -49,7 +47,6 @@
     - kubernetes-controller
     - kubeseal
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
 - name: KubeSeal | apply /etc/kubernetes/secrets/sealed-secrets.yaml
@@ -65,6 +62,5 @@
     - kubernetes-controller
     - kubeseal
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
     - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']

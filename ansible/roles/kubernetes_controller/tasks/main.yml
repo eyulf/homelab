@@ -1,6 +1,8 @@
 ---
-- name: Kubernetes Controller | set variables
-  ansible.builtin.include_vars: '{{ item }}'
+- name: Kubernetes Controller | check OS version and family
+  ansible.builtin.fail:
+    msg: "This role can only be run against Debian. {{ ansible_distribution }} {{ ansible_distribution_major_version }} is not supported."
+  when: ansible_distribution != 'Debian'
   tags:
     - kubernetes
     - kubernetes-controller
@@ -14,127 +16,102 @@
     - kubeseal
     - git-repo
     - calico
-  with_first_found:
-    - "{{ ansible_facts['os_family'] }}.yml"
-    - default.yml
 
-# Network
-- name: Network
+- name: Kubernetes Controller | network
   ansible.builtin.import_tasks: network.yml
   tags:
     - kubernetes
     - kubernetes-controller
     - network
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-# Pacemaker
-- name: Pacemaker
+- name: Kubernetes Controller | pacemaker
   ansible.builtin.import_tasks: pacemaker.yml
   tags:
     - kubernetes
     - kubernetes-controller
     - pacemaker
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-# Directories
-- name: Directories
+- name: Kubernetes Controller | directories
   ansible.builtin.import_tasks: directories.yml
   tags:
     - kubernetes
     - kubernetes-controller
     - directories
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-# PKI
-- name: PKI
+- name: Kubernetes Controller | pki
   ansible.builtin.import_tasks: pki.yml
   tags:
     - kubernetes
     - kubernetes-controller
     - pki
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-# Kubeadm
-- name: Kubeadm
+- name: Kubernetes Controller | kubeadm
   ansible.builtin.import_tasks: kubeadm.yml
   tags:
     - kubernetes
     - kubernetes-controller
     - kubeadm
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-# Encryption
-- name: Encryption
+- name: Kubernetes Controller | encryption
   ansible.builtin.import_tasks: encryption.yml
   tags:
     - kubernetes
     - kubernetes-controller
     - encryption
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-# Helm
-- name: Helm
+- name: Kubernetes Controller | helm
   ansible.builtin.import_tasks: helm.yml
   tags:
     - kubernetes
     - kubernetes-controller
     - helm
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-# ArgoCD CLI
-- name: ArgoCD
+- name: Kubernetes Controller | argocd
   ansible.builtin.import_tasks: argocd.yml
   tags:
     - kubernetes
     - kubernetes-controller
     - argocd
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-# KubeSeal
-- name: KubeSeal
+- name: Kubernetes Controller | kubeseal
   ansible.builtin.import_tasks: kubeseal.yml
   tags:
     - kubernetes
     - kubernetes-controller
     - kubeseal
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-# Gitrepo
-- name: Gitrepo
+- name: Kubernetes Controller | gitrepo
   ansible.builtin.import_tasks: gitrepo.yml
   tags:
     - kubernetes
     - kubernetes-controller
     - git-repo
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-# Calico
-- name: Calico
+- name: Kubernetes Controller | calico
   ansible.builtin.import_tasks: calico.yml
   tags:
     - kubernetes
     - kubernetes-controller
     - calico
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']

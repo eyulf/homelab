@@ -6,6 +6,3 @@ kubernetes_kublet_port: '10250'
 kubernetes_nodeport_port_range: '30000:32767'
 
 kubernetes_kubeadm_ignore: 'FileAvailable--etc-kubernetes-kubelet.conf,FileAvailable--etc-kubernetes-pki-ca.crt'
-
-iscsi_package: open-iscsi
-iscsi_service_name: iscsid

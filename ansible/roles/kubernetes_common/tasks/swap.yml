@@ -7,7 +7,6 @@
     - kubernetes-common
     - swap
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - ansible_facts['swaptotal_mb'] > 0
 
 - name: Swap | disable swap on system start
@@ -22,4 +21,3 @@
     - kubernetes
     - kubernetes-common
     - swap
-  when: ansible_facts['os_family'] == 'Debian'

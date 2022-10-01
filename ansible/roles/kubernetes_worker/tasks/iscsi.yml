@@ -1,21 +1,19 @@
 ---
 - name: ISCSI | install iscsi package
   ansible.builtin.package:
-    pkg: '{{ iscsi_package }}'
+    pkg: open-iscsi
     state: present
   tags:
     - kubernetes
     - kubernetes-common
     - iscsi
-  when: ansible_facts['os_family'] == 'Debian'
 
 - name: ISCSI | start and enable iscsid service
   ansible.builtin.service:
-    name: '{{ iscsi_service_name }}'
+    name: iscsid
     state: started
     enabled: true
   tags:
     - kubernetes
     - kubernetes-common
     - iscsi
-  when: ansible_facts['os_family'] == 'Debian'

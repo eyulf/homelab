@@ -1,7 +1,7 @@
 ---
 - name: Users | install sudo package
   ansible.builtin.package:
-    name: '{{ sudo_package_name }}'
+    name: sudo
     state: present
   tags:
     - common
@@ -10,7 +10,7 @@
 - name: Users | create admin users
   ansible.builtin.user:
     name: '{{ item }}'
-    shell: '{{ user_shell }}'
+    shell: /bin/bash
   loop: '{{ admin_users }}'
   tags:
     - common
@@ -21,7 +21,7 @@
     src: etc/sudoers.d/20_admins_sudo.j2
     dest: /etc/sudoers.d/20_admins_sudo
     owner: root
-    group: '{{ main_root_group }}'
+    group: root
     mode: '644'
   tags:
     - common

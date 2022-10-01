@@ -1,6 +1,8 @@
 ---
-- name: Common | set variables
-  ansible.builtin.include_vars: '{{ item }}'
+- name: Common | Check OS version and family
+  ansible.builtin.fail:
+    msg: "This role can only be run against Debian. {{ ansible_distribution }} {{ ansible_distribution_major_version }} is not supported."
+  when: ansible_distribution != 'Debian'
   tags:
     - common
     - network
@@ -9,63 +11,61 @@
     - packages
     - auto-updates
     - users
-  with_first_found:
-    - "{{ ansible_facts['os_family'] }}.yml"
-    - default.yml
 
 - name: Common | populate service facts
   ansible.builtin.service_facts:
   tags:
     - common
+    - network
+    - firewall
+    - ntp
+    - packages
+    - auto-updates
+    - users
 
-# Network
-- name: Network
+- name: Common | Network
   ansible.builtin.import_tasks: network.yml
   tags:
     - common
     - network
 
-# Firewall
-- name: Firewall
-  ansible.builtin.include_tasks:
-    file: firewall-{{ ansible_facts['os_family'] }}.yml
-    apply:
-      tags:
-        - common
-        - firewall
+- name: Common | Firewall
+  ansible.builtin.import_tasks: firewall.yml
+  tags:
+    - common
+    - firewall
 
-# NTP
-- name: NTP
+- name: Common | NTP
   ansible.builtin.import_tasks: ntp.yml
   tags:
     - common
     - ntp
 
-# Packages
-- name: Packages
+- name: Common | Packages
   ansible.builtin.import_tasks: packages.yml
   tags:
     - common
     - packages
 
-# Auto Updates
-- name: Auto-updates
-  ansible.builtin.include_tasks:
-    file: auto-update-{{ ansible_facts['os_family'] }}.yml
-    apply:
-      tags:
-        - common
-        - auto-updates
+- name: Common | Auto-updates
+  ansible.builtin.import_tasks: auto-update.yml
+  tags:
+    - common
+    - auto-updates
 
-# Users
-- name: Users
+- name: Common | Users
   ansible.builtin.import_tasks: users.yml
   tags:
     - common
     - users
 
-# Flush Handlers
 - name: Common | flush handlers
   ansible.builtin.meta: flush_handlers
   tags:
     - common
+    - network
+    - firewall
+    - ntp
+    - packages
+    - auto-updates
+    - users

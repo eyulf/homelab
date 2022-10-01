@@ -7,5 +7,3 @@
   tags:
     - pacemaker
     - packages
-  when:
-    - ansible_facts['os_family'] == 'Debian'

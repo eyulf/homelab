@@ -1,18 +1,8 @@
 ---
-- name: Kubernetes Worker | set variables
-  ansible.builtin.include_vars: '{{ item }}'
-  tags:
-    - kubernetes
-    - kubernetes-worker
-    - network
-    - kubeadm
-    - iscsi
-  with_first_found:
-    - "{{ ansible_facts['os_family'] }}.yml"
-    - default.yml
-
-- name: Kubernetes Worker | populate service facts
-  ansible.builtin.service_facts:
+- name: Kubernetes Worker | check OS version and family
+  ansible.builtin.fail:
+    msg: "This role can only be run against Debian. {{ ansible_distribution }} {{ ansible_distribution_major_version }} is not supported."
+  when: ansible_distribution != 'Debian'
   tags:
     - kubernetes
     - kubernetes-worker
@@ -20,35 +10,29 @@
     - kubeadm
     - iscsi
 
-# Network
-- name: Network
+- name: Kubernetes Worker | network
   ansible.builtin.import_tasks: network.yml
   tags:
     - kubernetes
     - kubernetes-worker
     - network
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_workers']
 
-# Kubeadm
-- name: Kubeadm
+- name: Kubernetes Worker | kubeadm
   ansible.builtin.import_tasks: kubeadm.yml
   tags:
     - kubernetes
     - kubernetes-worker
     - kubeadm
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_workers']
 
-# iSCSI
-- name: ISCSI
+- name: Kubernetes Worker | iscsi
   ansible.builtin.import_tasks: iscsi.yml
   tags:
     - kubernetes
     - kubernetes-worker
     - iscsi
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_workers']

@@ -1,9 +1,0 @@
-$IPF 70 allow all from any to any out keep-state
-$IPF 80 allow icmp from any to any
-
-# 22 for ssh
-$IPF 130 allow tcp from any to any 22 in
-$IPF 140 allow tcp from any to any 22 out
-
-# deny and log everything
-$IPF 500 deny log all from any to any

@@ -9,7 +9,6 @@
   tags:
     - common
     - auto-updates
-  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Auto-updates | configure /etc/apt/apt.conf.d/20auto-upgrades
   ansible.builtin.copy:
@@ -22,7 +21,6 @@
   tags:
     - common
     - auto-updates
-  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Auto-updates | configure /etc/apt/apt.conf.d/50unattended-upgrades
   ansible.builtin.template:
@@ -35,7 +33,6 @@
   tags:
     - common
     - auto-updates
-  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Auto-updates | start and enable unattended-upgrades service
   ansible.builtin.service:
@@ -45,4 +42,3 @@
   tags:
     - common
     - auto-updates
-  when: ansible_facts['os_family'] == 'Debian'

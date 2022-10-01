@@ -1,0 +1,13 @@
+---
+pacemaker_packages:
+  - pacemaker
+  - corosync
+  - pcs
+  - crmsh
+
+pacemaker_tcp_ports:
+  - '2224'
+  - '3121'
+  - '21064'
+pacemaker_udp_ports:
+  - '5405'

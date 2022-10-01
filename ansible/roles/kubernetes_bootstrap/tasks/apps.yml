@@ -23,11 +23,9 @@
     - kubernetes-bootstrap
     - apps
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
     - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']
 
-# Flush Handlers
 - name: Apps | flush handlers
   ansible.builtin.meta: flush_handlers
   tags:

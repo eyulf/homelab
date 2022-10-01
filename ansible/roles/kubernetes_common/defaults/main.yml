@@ -47,8 +47,3 @@ kubernetes_controllers_etcd_pki_crt_host_files:
 kubernetes_controllers_etcd_pki_key_host_files:
   - 'peer'
   - 'server'
-
-corosync_cluster_name: kubernetes
-pacemaker_service_name: pacemaker
-corosync_service_name: corosync
-pcsd_service_name: pcsd

@@ -1,32 +1,28 @@
 ---
-- name: KVM Hypervisor | set variables
-  ansible.builtin.include_vars: '{{ item }}'
+- name: KVM Hypervisor | Check OS version and family
+  ansible.builtin.fail:
+    msg: "This role can only be run against Debian. {{ ansible_distribution }} {{ ansible_distribution_major_version }} is not supported."
+  when: ansible_distribution != 'Debian'
   tags:
     - kvm-hypervisor
     - network
     - kvm
-  with_first_found:
-    - "{{ ansible_facts['os_family'] }}.yml"
-    - default.yml
 
-# Network
-- name: Network
+- name: KVM Hypervisor | Network
   ansible.builtin.import_tasks: network.yml
   tags:
     - kvm-hypervisor
     - network
-  when: ansible_facts['os_family'] == 'Debian'
 
-# KVM
-- name: KVM
+- name: KVM Hypervisor | KVM
   ansible.builtin.import_tasks: kvm.yml
   tags:
     - kvm-hypervisor
     - kvm
-  when: ansible_facts['os_family'] == 'Debian'
 
-# Flush Handlers
 - name: KVM Hypervisor | flush handlers
   ansible.builtin.meta: flush_handlers
   tags:
     - kvm-hypervisor
+    - network
+    - kvm

@@ -10,7 +10,6 @@
     - kubernetes
     - kubernetes-common
     - pki
-  when: ansible_facts['os_family'] == 'Debian'
 
 - name: PKI | configure /etc/kubernetes/pki/ca.crt
   ansible.builtin.copy: # noqa template-instead-of-copy
@@ -23,4 +22,3 @@
     - kubernetes
     - kubernetes-common
     - pki
-  when: ansible_facts['os_family'] == 'Debian'

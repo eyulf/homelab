@@ -10,7 +10,6 @@
     - kubernetes
     - kubernetes-common
     - network
-  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Network | configure /etc/sysctl.d/k8s.conf
   ansible.builtin.copy:
@@ -23,7 +22,6 @@
     - kubernetes
     - kubernetes-common
     - network
-  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Network | allow kubernetes related tcp ports inbound from all kubernetes hosts
   community.general.ufw:
@@ -37,7 +35,6 @@
     - kubernetes
     - kubernetes-common
     - network
-  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Network | allow kubernetes related udp ports inbound from all kubernetes hosts
   community.general.ufw:
@@ -51,4 +48,3 @@
     - kubernetes
     - kubernetes-common
     - network
-  when: ansible_facts['os_family'] == 'Debian'

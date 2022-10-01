@@ -5,14 +5,15 @@
   tags:
     - common
     - network
-  when: ansible_facts.hostname != inventory_hostname
+  when:
+    - ansible_facts.hostname != inventory_hostname
 
 - name: Network | configure /etc/resolv.conf
   ansible.builtin.template:
     src: etc/resolv.conf.j2
     dest: /etc/resolv.conf
     owner: root
-    group: '{{ main_root_group }}'
+    group: root
     mode: '644'
   tags:
     - common
@@ -23,7 +24,7 @@
     src: etc/hosts.j2
     dest: /etc/hosts
     owner: root
-    group: '{{ main_root_group }}'
+    group: root
     mode: '644'
   tags:
     - common

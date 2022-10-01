@@ -15,5 +15,4 @@
     - kubernetes-controller
     - directories
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']

@@ -1,27 +1,14 @@
 ---
-- name: Hardware | set variables
-  ansible.builtin.include_vars: '{{ item }}'
+- name: Hardware | Check OS version and family
+  ansible.builtin.fail:
+    msg: "This role can only be run against Debian. {{ ansible_distribution }} {{ ansible_distribution_major_version }} is not supported."
+  when: ansible_distribution != 'Debian'
   tags:
     - hardware
     - packages
-  with_first_found:
-    - "{{ ansible_facts['os_family'] }}.yml"
-    - default.yml
 
-# Packages
 - name: Packages
   ansible.builtin.import_tasks: packages.yml
   tags:
     - hardware
     - packages
-
-# Coretemp
-- name: CoreTemp | enable coretemp
-  ansible.builtin.lineinfile:
-    path: /boot/loader.conf
-    regexp: '^coretemp_load='
-    line: coretemp_load="YES"
-  tags:
-    - hardware
-    - coretemp
-  when: ansible_facts['os_family'] == 'FreeBSD'

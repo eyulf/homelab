@@ -6,21 +6,12 @@
     - common
     - ntp
 
-- name: NTP | install ntp package
-  ansible.builtin.package:
-    name: ntp
-    state: present
-  tags:
-    - common
-    - ntp
-  when: ansible_facts['os_family'] != 'FreeBSD'
-
 - name: NTP | configure /etc/ntp.conf
   ansible.builtin.copy:
-    src: etc/ntp-{{ ansible_facts['os_family'] }}.conf
+    src: etc/ntp.conf
     dest: /etc/ntp.conf
     owner: root
-    group: '{{ main_root_group }}'
+    group: root
     mode: '644'
   notify:
     - restart ntp
@@ -30,7 +21,7 @@
 
 - name: NTP | start and enable ntp service
   ansible.builtin.service:
-    name: '{{ ntp_service_name }}'
+    name: ntp
     state: started
     enabled: true
   tags:

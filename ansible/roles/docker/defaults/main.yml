@@ -3,6 +3,3 @@ docker_engine_packages_list:
   - docker-ce
   - docker-ce-cli
   - containerd.io
-
-docker_service_name: docker
-containerd_service_name: containerd

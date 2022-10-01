@@ -2,44 +2,37 @@
 - name: Powerdns | import database schema
   community.mysql.mysql_db:
     state: import
-    name: '{{ powerdns_mysql_database_name }}'
+    name: powerdns
     encoding: latin1
-    target: '{{ powerdns_mysql_schema_path }}'
+    target: /usr/share/pdns-backend-mysql/schema/schema.mysql.sql
   listen: import database schema
   tags:
     - dns-server
     - powerdns
-  when:
-    - ansible_facts.os_family == 'Debian'
-    - ansible_facts.hostname == mariadb_galera_bootstrap_host
 
 - name: Powerdns | restart powerdns
   ansible.builtin.service:
-    name: '{{ powerdns_service_name }}'
+    name: pdns
     state: restarted
   listen: restart powerdns
   tags:
     - dns-server
     - powerdns
-  when: ansible_facts.os_family == 'Debian'
 
 - name: Powerdns | restart powerdns-recursor
   ansible.builtin.service:
-    name: '{{ powerdns_recursor_service_name }}'
+    name: pdns-recursor
     state: restarted
   listen: restart powerdns-recursor
   tags:
     - dns-server
     - powerdns
-  when: ansible_facts.os_family == 'Debian'
 
 - name: Powerdns | import zone sql
   ansible.builtin.shell:
-    cmd: mysql {{ powerdns_mysql_database_name }} < /etc/powerdns/zones.sql
+    cmd: mysql powerdns < /etc/powerdns/zones.sql
   run_once: true
   listen: import zone sql
   tags:
     - dns-server
     - powerdns
-  when:
-    - ansible_facts['os_family'] == 'Debian'

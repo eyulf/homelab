@@ -5,11 +5,9 @@
     state: started
     enabled: true
   loop:
-    - '{{ pacemaker_service_name }}'
-    - '{{ corosync_service_name }}'
-    - '{{ pcsd_service_name }}'
+    - pacemaker
+    - corosync
+    - pcsd
   tags:
     - pacemaker
     - services
-  when:
-    - ansible_facts['os_family'] == 'Debian'

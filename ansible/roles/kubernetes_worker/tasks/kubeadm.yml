@@ -16,7 +16,6 @@
     - kubernetes-worker
     - kubeadm
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_workers']
 
 - name: Kubeadm | store join token
@@ -28,7 +27,6 @@
     - kubernetes-worker
     - kubeadm
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_workers']
 
 - name: Kubeadm | join workers
@@ -39,6 +37,5 @@
     - kubernetes-worker
     - kubeadm
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_workers']
     - ansible_facts['services']['kubelet.service']['state'] == 'stopped'

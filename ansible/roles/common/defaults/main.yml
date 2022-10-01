@@ -1,6 +1,6 @@
 ---
-main_root_group: root
-ntp_service_name: ntp
+debian_version: buster
+
 main_packages_list:
   - htop
   - lsof
@@ -20,7 +20,3 @@ main_packages_list:
   - lsb-release
   - tree
   - bash-completion
-debian_version: buster
-sudo_package_name: sudo
-sudo_sudoers_path: etc/sudoers.d
-user_shell: /bin/bash

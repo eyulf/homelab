@@ -11,7 +11,6 @@
     - kubernetes-controller
     - pki
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
 - name: PKI | configure /etc/kubernetes/{{ item }}.conf # noqa name[template]
@@ -27,7 +26,6 @@
     - kubernetes-controller
     - pki
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
 - name: PKI | configure /etc/kubernetes/pki/{{ item }}.crt # noqa name[template]
@@ -43,7 +41,6 @@
     - kubernetes-controller
     - pki
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
 - name: PKI | configure /etc/kubernetes/pki/{{ item }}.key # noqa name[template]
@@ -59,7 +56,6 @@
     - kubernetes-controller
     - pki
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
 - name: PKI | configure /etc/kubernetes/pki/etcd/{{ item }}.crt # noqa name[template]
@@ -75,7 +71,6 @@
     - kubernetes-controller
     - pki
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
 - name: PKI | configure /etc/kubernetes/pki/etcd/{{ item }}.key # noqa name[template]
@@ -91,7 +86,6 @@
     - kubernetes-controller
     - pki
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
 - name: PKI | configure /etc/kubernetes/pki/etcd/{{ item }}.crt # noqa name[template]
@@ -107,7 +101,6 @@
     - kubernetes-controller
     - pki
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
 - name: PKI | configure /etc/kubernetes/pki/etcd/{{ item }}.key # noqa name[template]
@@ -123,7 +116,6 @@
     - kubernetes-controller
     - pki
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
 - name: PKI | configure /etc/kubernetes/pki/sa.{{ item }}
@@ -141,5 +133,4 @@
     - kubernetes-controller
     - pki
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']

@@ -10,7 +10,6 @@
     - kubernetes
     - kubernetes-common
     - packages
-  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Packages | add kubernetes repo
   ansible.builtin.apt_repository:
@@ -21,7 +20,6 @@
     - kubernetes
     - kubernetes-common
     - packages
-  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Packages | install kubernetes packages
   ansible.builtin.package:
@@ -32,7 +30,6 @@
     - kubernetes
     - kubernetes-common
     - packages
-  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Packages | prevent kubernetes from being upgraded
   ansible.builtin.dpkg_selections:
@@ -43,7 +40,6 @@
     - kubernetes
     - kubernetes-common
     - packages
-  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Packages | install bash auto-completion script
   ansible.builtin.shell:
@@ -54,4 +50,3 @@
     - kubernetes
     - kubernetes-common
     - packages
-  when: ansible_facts['os_family'] == 'Debian'

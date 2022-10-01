@@ -1,0 +1,16 @@
+---
+mariadb_version: mariadb-10.5
+
+mariadb_packages_list:
+  - python-pymysql
+  - python3-pymysql
+  - mariadb-server
+  - mariadb-client
+  - mariadb-backup
+  - galera-4
+  - socat
+
+mariadb_galera_ports_list:
+  - '4444'
+  - '4567'
+  - '4568'

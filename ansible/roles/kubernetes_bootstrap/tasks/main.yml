@@ -1,6 +1,8 @@
 ---
-- name: Kubernetes Bootstrap | set variables
-  ansible.builtin.include_vars: '{{ item }}'
+- name: Kubernetes Bootstrap | check OS version and family
+  ansible.builtin.fail:
+    msg: "This role can only be run against Debian. {{ ansible_distribution }} {{ ansible_distribution_major_version }} is not supported."
+  when: ansible_distribution != 'Debian'
   tags:
     - kubernetes
     - kubernetes-bootstrap
@@ -9,9 +11,6 @@
     - openebs
     - infrastructure
     - apps
-  with_first_found:
-    - "{{ ansible_facts['os_family'] }}.yml"
-    - default.yml
 
 - name: Kubernetes Bootstrap | wait to allow cluster to fully come online
   ansible.builtin.command:
@@ -21,49 +20,40 @@
     - kubernetes
     - kubernetes-bootstrap
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-# ArgoCD
-- name: ArgoCD
+- name: Kubernetes Bootstrap | argocd
   ansible.builtin.import_tasks: argocd.yml
   tags:
     - kubernetes
     - kubernetes-bootstrap
     - argocd
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-# Core Apps
-- name: Core
+- name: Kubernetes Bootstrap | core
   ansible.builtin.import_tasks: core.yml
   tags:
     - kubernetes
     - kubernetes-bootstrap
     - core
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-# Infrastructure Apps
-- name: Infrastructure
+- name: Kubernetes Bootstrap | infrastructure
   ansible.builtin.import_tasks: infrastructure.yml
   tags:
     - kubernetes
     - kubernetes-bootstrap
     - infrastructure
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']
 
-# Apps Apps
-- name: Apps
+- name: Kubernetes Bootstrap | apps
   ansible.builtin.import_tasks: apps.yml
   tags:
     - kubernetes
     - kubernetes-bootstrap
     - apps
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['k8s_controllers']

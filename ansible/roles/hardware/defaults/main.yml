@@ -1,6 +1,6 @@
 ---
 main_packages_list:
-  - intel-microcode
+  #- intel-microcode
   - lm-sensors
   - sg3-utils
   - smartmontools

@@ -1,6 +1,8 @@
 ---
-- name: Pacemaker | set variables
-  ansible.builtin.include_vars: '{{ item }}'
+- name: Pacemaker | check OS version and family
+  ansible.builtin.fail:
+    msg: "This role can only be run against Debian. {{ ansible_distribution }} {{ ansible_distribution_major_version }} is not supported."
+  when: ansible_distribution != 'Debian'
   tags:
     - pacemaker
     - network
@@ -8,50 +10,43 @@
     - services
     - corosync
     - settings
-  with_first_found:
-    - "{{ ansible_facts['os_family'] }}.yml"
-    - default.yml
 
-# Network
-- name: Network
+- name: Pacemaker | network
   ansible.builtin.import_tasks: network.yml
   tags:
     - pacemaker
     - network
-  when: ansible_facts['os_family'] == 'Debian'
 
-# Packages
-- name: Packages
+- name: Pacemaker | packages
   ansible.builtin.import_tasks: packages.yml
   tags:
     - pacemaker
     - packages
-  when:
-    - ansible_facts['os_family'] == 'Debian'
 
-# Services
-- name: Services
+- name: Pacemaker | services
   ansible.builtin.import_tasks: services.yml
   tags:
     - pacemaker
     - services
-  when:
-    - ansible_facts['os_family'] == 'Debian'
 
-# Corosync
-- name: Corosync
+- name: Pacemaker | corosync
   ansible.builtin.import_tasks: corosync.yml
   tags:
     - pacemaker
     - corosync
-  when:
-    - ansible_facts['os_family'] == 'Debian'
 
-# Settings
-- name: Settings
+- name: Pacemaker | settings
   ansible.builtin.import_tasks: settings.yml
   tags:
     - pacemaker
     - settings
-  when:
-    - ansible_facts['os_family'] == 'Debian'
+
+- name: Pacemaker | flush handlers
+  ansible.builtin.meta: flush_handlers
+  tags:
+    - pacemaker
+    - network
+    - packages
+    - services
+    - corosync
+    - settings

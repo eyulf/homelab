@@ -1,6 +1,8 @@
 ---
-- name: Kubernetes Common | set variables
-  ansible.builtin.include_vars: '{{ item }}'
+- name: Kubernetes Common | check OS version and family
+  ansible.builtin.fail:
+    msg: "This role can only be run against Debian. {{ ansible_distribution }} {{ ansible_distribution_major_version }} is not supported."
+  when: ansible_distribution != 'Debian'
   tags:
     - kubernetes
     - kubernetes-common
@@ -9,51 +11,38 @@
     - packages
     - directories
     - pki
-  with_first_found:
-    - "{{ ansible_facts['os_family'] }}.yml"
-    - default.yml
 
-# Swap
-- name: Swap
+- name: Kubernetes Common | swap
   ansible.builtin.import_tasks: swap.yml
   tags:
     - kubernetes
     - kubernetes-common
     - swap
-  when: ansible_facts['os_family'] == 'Debian'
 
-# Network
-- name: Network
+- name: Kubernetes Common | network
   ansible.builtin.import_tasks: network.yml
   tags:
     - kubernetes
     - kubernetes-common
     - network
-  when: ansible_facts['os_family'] == 'Debian'
 
-# Packages
-- name: Packages
+- name: Kubernetes Common | packages
   ansible.builtin.import_tasks: packages.yml
   tags:
     - kubernetes
     - kubernetes-common
     - packages
-  when: ansible_facts['os_family'] == 'Debian'
 
-# Directories
-- name: Directories
+- name: Kubernetes Common | directories
   ansible.builtin.import_tasks: directories.yml
   tags:
     - kubernetes
     - kubernetes-common
     - directories
-  when: ansible_facts['os_family'] == 'Debian'
 
-# PKI
-- name: PKI
+- name: Kubernetes Common | pki
   ansible.builtin.import_tasks: pki.yml
   tags:
     - kubernetes
     - kubernetes-common
     - pki
-  when: ansible_facts['os_family'] == 'Debian'

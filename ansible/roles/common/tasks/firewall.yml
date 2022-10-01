@@ -7,7 +7,6 @@
   tags:
     - common
     - firewall
-  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Firewall | allow ssh inbound from clients
   community.general.ufw:
@@ -19,7 +18,6 @@
   tags:
     - common
     - firewall
-  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Firewall | set outbound default
   community.general.ufw:
@@ -28,7 +26,6 @@
   tags:
     - common
     - firewall
-  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Firewall | set inbound default
   community.general.ufw:
@@ -37,7 +34,6 @@
   tags:
     - common
     - firewall
-  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Firewall | enable firewall
   community.general.ufw:
@@ -45,4 +41,3 @@
   tags:
     - common
     - firewall
-  when: ansible_facts['os_family'] == 'Debian'

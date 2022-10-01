@@ -7,7 +7,6 @@
   tags:
     - kvm-hypervisor
     - kvm
-  when: ansible_facts['os_family'] == 'Debian'
 
 - name: KVM | install libvirt packages
   ansible.builtin.package:
@@ -17,17 +16,15 @@
   tags:
     - kvm-hypervisor
     - kvm
-  when: ansible_facts['os_family'] == 'Debian'
 
 - name: KVM | start and enable libvirtd service
   ansible.builtin.service:
-    name: '{{ libvirt_service_name }}'
+    name: libvirtd
     enabled: true
     state: started
   tags:
     - kvm-hypervisor
     - kvm
-  when: ansible_facts['os_family'] == 'Debian'
 
 - name: KVM | configure /etc/apparmor.d/libvirt/TEMPLATE.qemu
   ansible.builtin.copy:
@@ -39,4 +36,3 @@
   tags:
     - kvm-hypervisor
     - kvm
-  when: ansible_facts['os_family'] == 'Debian'

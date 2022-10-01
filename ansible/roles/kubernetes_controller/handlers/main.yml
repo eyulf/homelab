@@ -7,9 +7,6 @@
     - kubernetes
     - kubernetes-controller
     - pacemaker
-  when:
-    - ansible_facts['os_family'] == 'Debian'
-    - inventory_hostname in groups['k8s_controllers']
 
 - name: Encryption | pause to allow kube-apiserver to redeploy
   ansible.builtin.pause:
@@ -19,9 +16,6 @@
     - kubernetes
     - kubernetes-controller
     - encryption
-  when:
-    - ansible_facts['os_family'] == 'Debian'
-    - inventory_hostname in groups['k8s_controllers']
 
 - name: Calico | pause to allow calico to fully deploy
   ansible.builtin.pause:
@@ -31,9 +25,6 @@
     - kubernetes
     - kubernetes-controller
     - calico
-  when:
-    - ansible_facts['os_family'] == 'Debian'
-    - inventory_hostname in groups['k8s_controllers']
 
 - name: KubeSeal | apply sealed-secrets label to custom-sealed-secrets-key secret
   ansible.builtin.command:
@@ -50,7 +41,3 @@
     - kubernetes
     - kubernetes-controller
     - kubeseal
-  when:
-    - ansible_facts['os_family'] == 'Debian'
-    - inventory_hostname in groups['k8s_controllers']
-    - pacemaker_cluster_ip in ansible_facts['all_ipv4_addresses']

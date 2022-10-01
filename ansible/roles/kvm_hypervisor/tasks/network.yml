@@ -7,7 +7,6 @@
   tags:
     - kvm-hypervisor
     - network
-  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Network | configure /etc/network/interfaces
   ansible.builtin.copy:
@@ -19,7 +18,6 @@
   tags:
     - kvm-hypervisor
     - network
-  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Network | configure /etc/interfaces.d/br0
   ansible.builtin.copy:
@@ -31,4 +29,3 @@
   tags:
     - kvm-hypervisor
     - network
-  when: ansible_facts['os_family'] == 'Debian'
