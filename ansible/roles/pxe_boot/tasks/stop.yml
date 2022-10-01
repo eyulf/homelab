@@ -1,0 +1,94 @@
+---
+- name: PXE | add dhcp options
+  community.routeros.api_find_and_modify:
+    hostname: '{{ gateway }}'
+    username: '{{ routeros_api_username }}'
+    password: '{{ routeros_api_password }}'
+    tls: true
+    path: ip dhcp-server network
+    find:
+      address: '{{ firewall_servers_subnet }}'
+    values:
+      next-server: '127.0.0.1' # Appears that this part of the api does not support unsetting values
+    require_matches_min: 1
+    require_matches_max: 1
+  when: ansible_facts['distribution'] == 'Fedora'
+
+# FIXME: Could not process rule: No such file or directory
+# - name: PXE | Block TFTP inbound
+#   ansible.posix.firewalld:
+#     zone: public
+#     service: tftp
+#     permanent: false
+#     state: disabled
+#   become: true
+#   vars:
+#     ansible_python_interpreter: /usr/bin/python3.10 # https://github.com/ansible-collections/ansible.posix/issues/283
+#   tags:
+#     - pxe_boot
+#     - stop
+#   when: ansible_facts['distribution'] == 'Fedora'
+
+# FIXME: Workaround for the above failing
+- name: PXE | block tftp inbound
+  ansible.builtin.service:
+    name: firewalld
+    state: restarted
+  become: true
+  tags:
+    - pxe_boot
+    - stop
+  when: ansible_facts['distribution'] == 'Fedora'
+
+- name: PXE | remove the pxe container
+  community.docker.docker_compose:
+    project_src: '{{ role_path }}/files'
+    project_name: pxe
+    state: absent
+  tags:
+    - pxe_boot
+    - stop
+  when: ansible_facts['distribution'] == 'Fedora'
+
+- name: PXE | remove preseed files
+  ansible.builtin.file:
+    path: "{{ role_path }}/files/data/preseed/{{ hostvars[item]['mac'] }}.cfg"
+    state: absent
+  loop: "{{ groups['metal_kvm'] }}"
+  tags:
+    - pxe_boot
+    - stop
+  when: ansible_facts['distribution'] == 'Fedora'
+
+- name: PXE | remove grub config
+  ansible.builtin.file:
+    path: '{{ role_path }}/files/data/pxe-config/grub.cfg'
+    state: absent
+  tags:
+    - pxe_boot
+    - stop
+  when: ansible_facts['distribution'] == 'Fedora'
+
+- name: PXE | remove os files
+  ansible.builtin.file:
+    path: '{{ role_path }}/files/data/os/{{ item }}'
+    state: absent
+  loop:
+    - debian-installer
+    - pxelinux.cfg
+    - ldlinux.c32
+    - pxelinux.0
+    - version.info
+  tags:
+    - pxe_boot
+    - stop
+  when: ansible_facts['distribution'] == 'Fedora'
+
+- name: PXE | remove installer image
+  ansible.builtin.file:
+    path: '{{ role_path }}/files/data/source/{{ installer_img_url | basename }}'
+    state: absent
+  tags:
+    - pxe_boot
+    - stop
+  when: ansible_facts['distribution'] == 'Fedora'

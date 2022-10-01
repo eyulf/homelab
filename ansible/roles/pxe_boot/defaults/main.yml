@@ -1,0 +1,7 @@
+installer_img_url: https://deb.debian.org/debian/dists/bullseye/main/installer-amd64/20210731+deb11u5/images/netboot/netboot.tar.gz
+installer_img_checksum: sha256:e8edf26ac9837d7dbbcfd96f47f51530260a6c68568938978e1b63ea698d5663
+
+subnet: "{{ firewall_servers_subnet | ansible.utils.ipaddr('network') }}"
+netmask: "{{ firewall_servers_subnet | ansible.utils.ipaddr('netmask') }}"
+gateway: '{{ firewall_servers_subnet | ansible.utils.nthhost(1) }}'
+nameserver: '{{ firewall_servers_subnet | ansible.utils.nthhost(1) }}'

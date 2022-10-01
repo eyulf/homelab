@@ -9,7 +9,7 @@
 version: '3'
 
 vars:
-  PYTHON_VERSION: '3.8.5'
+  PYTHON_VERSION: '3.10.7'
   PYTHON_VENV_NAME:
     sh: basename "{{.PWD}}"
   PYTHON_VENV_ROOT:

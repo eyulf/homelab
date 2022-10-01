@@ -1,0 +1,100 @@
+#_preseed_V1
+# For documentation see: https://www.debian.org/releases/stable/example-preseed.txt
+
+# Set default locale and keyboard layout
+d-i debian-installer/locale string {{ preseed_locale | default('en_AU.UTF-8') }}
+d-i keyboard-configuration/xkb-keymap select {{ preseed_keyboard_layout | default('us') }}
+
+# Set network interface used by default
+d-i netcfg/choose_interface select auto
+
+# Work around the problem that the network configuration is not applied, because the preseed file is loaded after it already completed. So we just run the network configuration again! :D
+d-i preseed/early_command string kill-all-dhcp; netcfg
+
+# Static network configuration
+d-i netcfg/disable_autoconfig boolean true
+d-i netcfg/dhcp_failed note
+d-i netcfg/dhcp_options select Configure network manually
+
+d-i netcfg/get_ipaddress string {{ hostvars[item]['ansible_host'] }}
+d-i netcfg/get_netmask string {{ netmask }}
+d-i netcfg/get_gateway string {{ gateway }}
+d-i netcfg/get_nameservers string {{ nameserver }}
+d-i netcfg/confirm_static boolean true
+
+# Setting the values prevents the questions from being shown, even if set by dhcp
+d-i netcfg/get_hostname string {{ hostvars[item]['inventory_hostname'] | default('unassigned-hostname') }}
+d-i netcfg/get_domain string {{ domain | default('unassigned-domain') }}
+
+# Force hostname regardless of value set by dhcp
+d-i netcfg/hostname string {{ hostvars[item]['inventory_hostname'] | default('unassigned-hostname') }}
+
+# Load non-free firmware for hardware by default
+d-i hw-detect/load_firmware boolean true
+
+# Setup package mirrror
+d-i mirror/protocol string {{ mirror_proto | default('http') }}
+d-i mirror/country string manual
+d-i mirror/http/hostname string {{ mirror | default('deb.debian.org') }}
+d-i mirror/http/directory string {{ mirror_dir | default('/debian') }}
+d-i mirror/http/proxy string {{ mirror_proxy | default('') }}
+
+# Disable root user - normal user (see below) will have sudo permissions
+d-i passwd/root-login boolean false
+
+# Create new user
+d-i passwd/user-fullname string {{ preseed_user_fullname | default('Debian User') }}
+d-i passwd/username string {{ ansible_user | default('debian') }}
+d-i passwd/user-password password {{ preseed_user_password | default('insecure') }}
+d-i passwd/user-password-again password {{ preseed_user_password | default('insecure') }}
+
+# Setup timezone and NTP server
+d-i clock-setup/utc boolean true
+d-i time/zone string {{ timezone | default('UTC') }}
+d-i clock-setup/ntp-server string {{ ntp_server | default('au.pool.ntp.org') }}
+
+# Autoformat disk
+d-i partman-auto/disk string {{ hostvars[item]['disk'] | default('/dev/sda') }}
+d-i partman-auto/method string crypto
+d-i partman-auto-lvm/guided_size string max
+d-i partman-lvm/confirm boolean true
+d-i partman-lvm/confirm_nooverwrite boolean true
+d-i partman-auto/choose_recipe select atomic
+d-i partman-partitioning/confirm_write_new_label boolean true
+d-i partman/choose_partition select finish
+d-i partman/confirm boolean true
+d-i partman/confirm_nooverwrite boolean true
+
+# Force UEFI booting
+d-i partman-efi/non_efi_system boolean true
+
+# Ensure the partition table is GPT
+d-i partman-partitioning/choose_label select gpt
+d-i partman-partitioning/default_label string gpt
+
+# Remove install cd sources from /etc/sources.list
+d-i apt-setup/cdrom/set-first boolean false
+d-i apt-setup/disable-cdrom-entries boolean true
+
+# Install openssh-server and basic system tools
+tasksel tasksel/first multiselect standard, ssh-server
+d-i pkgsel/upgrade select safe-upgrade
+
+# Disable package reporting
+popularity-contest popularity-contest/participate boolean false
+
+# Install grub to specified device
+d-i grub-installer/only_debian boolean true
+d-i grub-installer/bootdev string {{ hostvars[item]['disk'] | default('/dev/sda') }}
+
+# Configure openssh-server. Include public key, disable password based login, add user to sudoers.
+d-i preseed/late_command string in-target mkdir -p /home/{{ ansible_user | default('debian') }}/.ssh/ ; \
+                                in-target /bin/sh -c 'echo "{{ ssh_public_key }}" >> /home/{{ ansible_user | default('debian') }}/.ssh/authorized_keys' ; \
+                                in-target chmod -R 700 /home/{{ ansible_user | default('debian') }}/.ssh/ ; \
+                                in-target chown -R {{ ansible_user | default('debian') }}:{{ ansible_user | default('debian') }} /home/{{ ansible_user | default('debian') }}/.ssh/ ; \
+                                in-target grep -q '^PasswordAuthentication ' /etc/ssh/sshd_config || in-target sh -c 'echo "PasswordAuthentication no" >> /etc/ssh/sshd_config' ; \
+                                in-target sed 's/^PasswordAuthentication .*/PasswordAuthentication no/' -i /etc/ssh/sshd_config
+                                in-target /bin/sh -c 'echo "{{ ansible_user | default('debian') }} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/20_admins_sudo' ; \
+
+# Reboot to installed system without confirmation
+d-i finish-install/reboot_in_progress note

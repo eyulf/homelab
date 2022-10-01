@@ -39,3 +39,13 @@ tasks:
     desc: Run Ansible playbooks on file servers
     cmds:
       - '{{.ANSIBLE_PROD}} file-server.yml'
+
+  pxe-start:
+    desc: Start PXE Server
+    cmds:
+      - '{{.ANSIBLE_PROD}} pxe-boot.yml -K -t start'
+
+  pxe-stop:
+    desc: Stop PXE Server
+    cmds:
+      - '{{.ANSIBLE_PROD}} pxe-boot.yml -K -t stop'

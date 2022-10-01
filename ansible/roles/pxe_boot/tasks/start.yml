@@ -1,0 +1,84 @@
+---
+- name: PXE | download installer image
+  ansible.builtin.get_url:
+    url: '{{ installer_img_url }}'
+    dest: '{{ role_path }}/files/data/source/{{ installer_img_url | basename }}'
+    checksum: '{{ installer_img_checksum }}'
+    mode: 0644
+  register: installer_img
+  tags:
+    - pxe_boot
+    - start
+  when: ansible_facts['distribution'] == 'Fedora'
+
+- name: PXE | extract installer image
+  ansible.builtin.unarchive:
+    src: '{{ installer_img.dest }}'
+    dest: '{{ role_path }}/files/data/os'
+  tags:
+    - pxe_boot
+    - start
+  when: ansible_facts['distribution'] == 'Fedora'
+
+- name: PXE | generate grub config
+  ansible.builtin.template:
+    src: data/pxe-config/grub.cfg.j2
+    dest: '{{ role_path }}/files/data/pxe-config/grub.cfg'
+    mode: 0644
+  tags:
+    - pxe_boot
+    - start
+  when: ansible_facts['distribution'] == 'Fedora'
+
+- name: PXE | generate preseed file for each kvm machine
+  ansible.builtin.template:
+    src: data/preseed/preseed-kvm.cfg.j2
+    dest: "{{ role_path }}/files/data/preseed/{{ hostvars[item]['mac'] }}.cfg"
+    mode: 0644
+  loop: "{{ groups['metal_kvm'] }}"
+  tags:
+    - pxe_boot
+    - start
+  when: ansible_facts['distribution'] == 'Fedora'
+
+- name: PXE | start the pxe container
+  community.docker.docker_compose:
+    project_src: '{{ role_path }}/files'
+    project_name: pxe
+    state: present
+    restarted: true
+    build: true
+  tags:
+    - pxe_boot
+    - start
+  when: ansible_facts['distribution'] == 'Fedora'
+
+- name: PXE | allow tftp inbound
+  ansible.posix.firewalld:
+    zone: public
+    service: tftp
+    permanent: false
+    state: enabled
+  become: true
+  vars:
+    ansible_python_interpreter: /usr/bin/python3.10 # https://github.com/ansible-collections/ansible.posix/issues/283
+  tags:
+    - pxe_boot
+    - start
+  when: ansible_facts['distribution'] == 'Fedora'
+
+- name: PXE | add dhcp options
+  community.routeros.api_find_and_modify:
+    hostname: '{{ gateway }}'
+    username: '{{ routeros_api_username }}'
+    password: '{{ routeros_api_password }}'
+    tls: true
+    path: ip dhcp-server network
+    find:
+      address: '{{ firewall_servers_subnet }}'
+    values:
+      next-server: "{{ ansible_facts['default_ipv4']['address'] }}"
+      boot-file-name: grubx64.efi
+    require_matches_min: 1
+    require_matches_max: 1
+  when: ansible_facts['distribution'] == 'Fedora'

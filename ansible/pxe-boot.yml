@@ -1,0 +1,6 @@
+---
+- name: pxe_boot
+  hosts: localhost
+  gather_facts: true
+  roles:
+    - pxe_boot

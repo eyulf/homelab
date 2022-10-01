@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  tftp:
+    build: ./tftp
+    network_mode: host
+    volumes:
+      - ./data/os/debian-installer:/var/lib/tftpboot/debian-installer
+      - ./data/pxe-config/grub.cfg:/var/lib/tftpboot/debian-installer/amd64/grub/grub.cfg
+      - ./data/os/debian-installer/amd64/grubx64.efi:/var/lib/tftpboot/grubx64.efi
+      - ./data/preseed:/var/lib/tftpboot/preseed

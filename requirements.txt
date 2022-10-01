@@ -3,3 +3,5 @@ netaddr
 pre-commit
 checkov
 mkdocs-material
+docker-compose
+librouteros

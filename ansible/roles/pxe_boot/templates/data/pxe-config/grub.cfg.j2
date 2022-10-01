@@ -1,0 +1,14 @@
+set timeout=10
+
+menuentry 'Debian Bullseye (Preseed Installer)' {
+    set background_color=black
+    set
+    linux /debian-installer/amd64/linux \
+        vga=788 \
+        auto=true \
+        url=tftp://{{ ansible_default_ipv4.address }}/preseed/${net_default_mac}.cfg \
+        priority=critical \
+        ipv6.disable=1 \
+        --- quiet
+    initrd /debian-installer/amd64/initrd.gz
+}

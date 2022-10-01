@@ -22,5 +22,15 @@ k8s-worker-03
 k8s_controllers
 k8s_workers
 
-[file_server]
+[file_servers]
 storage
+
+[metal_storage:children]
+file_servers
+
+[metal_kvm:children]
+kvm_hypervisors
+
+[metal:children]
+metal_storage
+metal_kvm

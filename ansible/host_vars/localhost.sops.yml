@@ -1,0 +1,23 @@
+---
+routeros_api_username: ENC[AES256_GCM,data:AImZyJK5,iv:QcAWsh0W5s3Fs+QOX6tKSM+aHpSyvOxdM85SfnaFXqw=,tag:M3ZnQt1P1Jwu3g0XwLg0EA==,type:str]
+routeros_api_password: ENC[AES256_GCM,data:MR28SFoFD3Qdja+zPRBz5Y6xJ3JZATmAtT5t6p3C,iv:QxArLbdpoRx+y5v9822Onu7bTk4RXV2CNFxyMqO5n2U=,tag:5yGIjQyrTMADpZO1/brVkg==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1ety65vhtrhlevgmm899eyvdmv4avfm0replxg5tz6a2jyq84n4us7ryfc6
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB1K2FmbjBDSTB3Q2pCYjNJ
+            SGt1NUlUS24yRnJveFpBemtJOEFCQjZWaEFJCjNoRFFSU0xjQVJIZ204cWJIelRB
+            N1JBc1J0YXhBZVF5ekhYNTBEYUVXejAKLS0tIDJRakJRYmxXbHIzUXZVV3p6YTI4
+            bFNFWSsvTlRlZFFTcFNPTGhhc0pZbXMKwDuDzVkMWVq6eceFcAJACcN2IjBk3Hea
+            rhc/qAqXqOm32RZFKi9GD1RtKdx0EHYxQVzpTKYvnmp+ImPAyXf5Mw==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2022-10-01T13:11:04Z"
+    mac: ENC[AES256_GCM,data:RhrNfF7OUjOWHzc02L5fe4OuiJVn+a5xoK+Gftp5jx1vJttRjvXkgigDBoyhB0o9VVDjJoeIyuIRU+n4aV4MIsewXOYUiE9LvzdxMCdDsKl/d6mWmFp25xpSt6+4HuVxfbaXBCSkB5RABk16T2BMlh83Fq99YlcISUnVkC4CQ9c=,iv:FwIkuRAFYO24x8V4E0ZMI0r7uldja+BOfg3lFy4209E=,tag:frRN8e6gOSEK3IB9IbQyBA==,type:str]
+    pgp: []
+    unencrypted_suffix: _unencrypted
+    version: 3.7.1

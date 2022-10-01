@@ -6,3 +6,11 @@ collections:
     version: 1.4.1
   - name: community.mysql
     version: 3.5.1
+  - name: ansible.utils
+    version: 2.6.1
+  - name: community.docker
+    version: 2.7.1
+  - name: ansible.posix
+    version: 1.4.0
+  - name: community.routeros
+    version: 2.3.0
