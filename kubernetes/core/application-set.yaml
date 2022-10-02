@@ -54,3 +54,6 @@ spec:
         automated: {}
         syncOptions:
           - CreateNamespace=true
+
+#checkov:skip=CKV_ARGO_1:Skipping until this can be checked in detail
+#checkov:skip=CKV_ARGO_2:Skipping until this can be checked in detail

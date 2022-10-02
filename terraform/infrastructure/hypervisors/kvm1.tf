@@ -1,6 +1,6 @@
 provider "libvirt" {
   alias = "kvm1"
-  uri   = "qemu+ssh://${data.sops_file.hypervisors.data["kvm1.user"]}@${data.sops_file.hypervisors.data["kvm1.ip"]}/system"
+  uri   = "qemu+ssh://${data.sops_file.hypervisors.data["kvm1.user"]}@${data.sops_file.hypervisors.data["kvm1.address"]}/system"
 }
 
 resource "libvirt_pool" "kvm1" {

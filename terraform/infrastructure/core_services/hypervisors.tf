@@ -12,15 +12,15 @@ data "sops_file" "hypervisors" {
 
 provider "libvirt" {
   alias = "kvm1"
-  uri   = "qemu+ssh://${data.sops_file.hypervisors.data["kvm1.user"]}@${data.sops_file.hypervisors.data["kvm1.ip"]}/system"
+  uri   = "qemu+ssh://${data.sops_file.hypervisors.data["kvm1.user"]}@${data.sops_file.hypervisors.data["kvm1.address"]}/system"
 }
 
 provider "libvirt" {
   alias = "kvm2"
-  uri   = "qemu+ssh://${data.sops_file.hypervisors.data["kvm2.user"]}@${data.sops_file.hypervisors.data["kvm2.ip"]}/system"
+  uri   = "qemu+ssh://${data.sops_file.hypervisors.data["kvm2.user"]}@${data.sops_file.hypervisors.data["kvm2.address"]}/system"
 }
 
 provider "libvirt" {
   alias = "kvm3"
-  uri   = "qemu+ssh://${data.sops_file.hypervisors.data["kvm3.user"]}@${data.sops_file.hypervisors.data["kvm3.ip"]}/system"
+  uri   = "qemu+ssh://${data.sops_file.hypervisors.data["kvm3.user"]}@${data.sops_file.hypervisors.data["kvm3.address"]}/system"
 }
