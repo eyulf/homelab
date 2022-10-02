@@ -10,7 +10,6 @@
     - file_server
     - monitoring
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['file_server']
 
 - name: Monitoring | configure cron - zfs-health
@@ -25,7 +24,6 @@
     - file_server
     - monitoring
   when:
-    - ansible_facts['os_family'] == 'FreeBSD'
     - inventory_hostname in groups['file_server']
 
 - name: Monitoring | configure cron - zfs-scrub
@@ -41,5 +39,4 @@
     - file_server
     - monitoring
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['file_server']

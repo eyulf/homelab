@@ -1,6 +1,8 @@
 ---
-- name: File Server | set variables
-  ansible.builtin.include_vars: '{{ item }}'
+- name: File Server | check OS version and family
+  ansible.builtin.fail:
+    msg: "This role can only be run against Debian. {{ ansible_distribution }} {{ ansible_distribution_major_version }} is not supported."
+  when: ansible_distribution != 'Debian'
   tags:
     - file_server
     - zfs
@@ -8,53 +10,45 @@
     - samba
     - backups
     - monitoring
-  with_first_found:
-    - "{{ ansible_facts['os_family'] }}.yml"
-    - default.yml
 
-# Zfs
 - name: File Server | zfs
   ansible.builtin.import_tasks: zfs.yml
   tags:
     - file_server
     - zfs
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['file_server']
 
-# Syncthing
 - name: File Server | syncthing
   ansible.builtin.import_tasks: syncthing.yml
   tags:
     - file_server
     - syncthing
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['file_server']
 
-# Backups
 - name: File Server | backups
   ansible.builtin.import_tasks: backups.yml
   tags:
     - file_server
     - backups
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['file_server']
 
-# Monitoring
 - name: File Server | monitoring
   ansible.builtin.import_tasks: monitoring.yml
   tags:
     - file_server
     - monitoring
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['file_server']
 
-# Flush Handlers
 - name: File Server | flush handlers
   ansible.builtin.meta: flush_handlers
   tags:
     - file_server
+    - zfs
     - syncthing
+    - samba
+    - backups
+    - monitoring

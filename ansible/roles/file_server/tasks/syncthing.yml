@@ -7,7 +7,6 @@
     - file_server
     - syncthing
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['file_server']
 
 - name: Syncthing | create syncthing user
@@ -19,7 +18,6 @@
     - file_server
     - syncthing
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['file_server']
 
 - name: Syncthing | create syncthing config dir
@@ -33,7 +31,6 @@
     - file_server
     - syncthing
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['file_server']
 
 - name: Syncthing | configure syncthing
@@ -49,7 +46,6 @@
     - file_server
     - syncthing
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['file_server']
 
 - name: Syncthing | start and enable syncthing service
@@ -61,7 +57,6 @@
     - file_server
     - syncthing
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['file_server']
 
 - name: Syncthing | allow syncthing inbound from clients
@@ -74,5 +69,4 @@
     - file_server
     - syncthing
   when:
-    - ansible_facts['os_family'] == 'Debian'
     - inventory_hostname in groups['file_server']
