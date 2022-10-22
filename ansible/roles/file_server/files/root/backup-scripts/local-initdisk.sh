@@ -14,20 +14,6 @@ BACKUP_PATH='/backup'
 # SANITY CHECKS
 
 #######################################
-# Backup Running
-
-printf "%-${WIDTH}s" "- Checking for existing backups: "
-
-if /usr/bin/screen -ls >/dev/null; then
-  printf "%s\n" "[Failed]"
-  printf "\n%s\n" "Backup Already Running!"
-  printf "%s\n" "$(cat "${RUNPATH}/backup-progress")"
-  exit
-else
-  printf "%s\n" "[OK]"
-fi
-
-#######################################
 # Missing Files
 
 printf "%-${WIDTH}s" "- Checking for files needed: "

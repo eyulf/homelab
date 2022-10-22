@@ -118,6 +118,21 @@ else
 fi
 
 #######################################
+# Getting Disk Details
+
+printf "%-${WIDTH}s" "- Getting Disk Details: "
+
+if ! /usr/sbin/smartctl -a "$DISK" >/dev/null; then
+  printf "%s\n" "[FAILED]"
+  printf "\n%s\n" "Cannot Find Disk!!!"
+  logger -it "BACKUP-SCRIPTS" "Tier ${1} backup failed!"
+  logger -it "BACKUP-SCRIPTS" "Cannot Find Disk (${DISK})"
+  exit
+else
+  printf "%s\n" "[OK]"
+fi
+
+#######################################
 # Check Backup Size
 
 printf "%-${WIDTH}s" "- Calculating Backup Size: "
@@ -143,8 +158,8 @@ if [ "$BACKUP_SIZE" -gt "$DISK_SIZE" ]; then
   exit
 fi
 
-BACKUP_SIZE_TB=$(units -t -o "%.2f" "${BACKUP_SIZE} mebibytes" 'terabytes')
-DISK_SIZE_TB=$(units -t -o "%.2f" "${DISK_SIZE} mebibytes" 'terabytes')
+BACKUP_SIZE_GB=$(units -t -o "%.2f" "${BACKUP_SIZE} mebibytes" 'gigabytes')
+DISK_SIZE_GB=$(units -t -o "%.2f" "${DISK_SIZE} mebibytes" 'gigabytes')
 printf "%s\n" "[OK]"
 
 ################################################################################
@@ -161,13 +176,9 @@ if screen -ls >/dev/null; then
   echo "*/15 * * * * root ${SCRIPTPATH}/local-finished.sh ${1}" > /etc/cron.d/backup-task
   printf "%s\n" "[OK]"
 
-  logger -it "BACKUP-SCRIPTS" "Tier ${1} backup started"
-  logger -it "BACKUP-SCRIPTS" " Backup disk space: ${BACKUP_SIZE_TB} TB"
-  logger -it "BACKUP-SCRIPTS" " Physical disk space: ${DISK_SIZE_TB} TB"
-
-  echo "**Tier ${1} backup started!**" | "${SCRIPTPATH}/notify.sh"
-  echo "Backup disk space: ${BACKUP_SIZE_TB} TB" | "${SCRIPTPATH}/notify.sh"
-  echo "Physical disk space: ${DISK_SIZE_TB} TB" | "${SCRIPTPATH}/notify.sh"
+  logger -it "BACKUP-SCRIPTS" "Tier ${1} local backup started"
+  logger -it "BACKUP-SCRIPTS" " Backup disk space: ${BACKUP_SIZE_GB} GBytes"
+  logger -it "BACKUP-SCRIPTS" " Physical disk space: ${DISK_SIZE_GB} GBytes"
 
   exit
 else

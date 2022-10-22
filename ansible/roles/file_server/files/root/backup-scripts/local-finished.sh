@@ -28,6 +28,9 @@ BACKUP_SOURCE_FILE="${RUNPATH}/backup-tier${TIER}.txt"
 BACKUP_SIZE=0
 BACKUP_COUNT=0
 
+ROTATE_DISK=1
+DATE_ONEWEEKAGO=$(date --date "7 days ago" +"%s")
+
 ################################################################################
 # SANITY CHECKS
 
@@ -156,8 +159,10 @@ if [ "$BACKUP_SIZE" -gt "$DISK_SIZE" ]; then
   exit
 fi
 
-BACKUP_SIZE_TB=$(units -t -o "%.2f" "${BACKUP_SIZE} mebibytes" 'terabytes')
-DISK_SIZE_TB=$(units -t -o "%.2f" "${DISK_SIZE} mebibytes" 'terabytes')
+BACKUP_SIZE_GB=$(units -t -o "%.2f" "${BACKUP_SIZE} mebibytes" 'gigabytes')
+BACKUP_SIZE_B=$(units -t -o "%.2f" "${BACKUP_SIZE} mebibytes" 'bytes')
+DISK_SIZE_GB=$(units -t -o "%.2f" "${DISK_SIZE} mebibytes" 'gigabytes')
+DISK_SIZE_B=$(units -t -o "%.2f" "${DISK_SIZE} mebibytes" 'bytes')
 printf "%s\n" "[OK]"
 
 ################################################################################
@@ -179,23 +184,41 @@ logger -it "BACKUP-SCRIPTS" "Closing Encrypted Disk"
 logger -it "BACKUP-SCRIPTS" "Cleaning up cron"
 rm -f /etc/cron.d/backup-task
 
-logger -it "BACKUP-SCRIPTS" "Tier ${1} backup completed!"
+################################################################################
+# Check if disk should be rotated
+
+BACKUP_DISKS=$(ls -1 --ignore="disk-${DISK_SERIAL}" "${SCRIPTPATH}/disks/")
+
+for SERIAL in $BACKUP_DISKS; do
+  DATE_DISK=$(date -r "$SERIAL" +"%s")
+  if [ "$DATE_DISK" -ge "$DATE_ONEWEEKAGO" ]; then
+    ROTATE_DISK=0
+  fi
+done
+
+touch "${SCRIPTPATH}/disks/${DISK_SERIAL}"
+
+################################################################################
+# Notifications
+
+logger -it "BACKUP-SCRIPTS" "Tier ${1} local backup completed!"
 logger -it "BACKUP-SCRIPTS" "Files Backed up: ${BACKUP_COUNT}"
-logger -it "BACKUP-SCRIPTS" "Backup disk space: ${BACKUP_SIZE_TB} TB"
-logger -it "BACKUP-SCRIPTS" "Physical disk space: ${DISK_SIZE_TB} TB"
+logger -it "BACKUP-SCRIPTS" "Backup disk space: ${BACKUP_SIZE_GB} GBytes"
+logger -it "BACKUP-SCRIPTS" "Physical disk space: ${DISK_SIZE_GB} GBytes"
 logger -it "BACKUP-SCRIPTS" " - Used disk space: ${DISK_USED}"
 logger -it "BACKUP-SCRIPTS" " - Avaliable disk space: ${DISK_AVAIL}"
 logger -it "BACKUP-SCRIPTS" " - Disk capacity: ${DISK_CAPACITY}"
 logger -it "BACKUP-SCRIPTS" " - Disk model: ${DISK_MODEL}"
 logger -it "BACKUP-SCRIPTS" " - Disk serial: ${DISK_SERIAL}"
 
-echo "**Tier ${1} backup completed!**" | $SCRIPTPATH/notify.sh
-echo "Files Backed up: ${BACKUP_COUNT}" | $SCRIPTPATH/notify.sh
-echo "Backup disk space: ${BACKUP_SIZE_TB} TB" | $SCRIPTPATH/notify.sh
-echo "Physical disk space: ${DISK_SIZE_TB} TB" | $SCRIPTPATH/notify.sh
-echo "- Used disk space: ${DISK_SIZE_TB} TB" | $SCRIPTPATH/notify.sh
-echo "- Avaliable disk space: ${DISK_SIZE_TB} TB" | $SCRIPTPATH/notify.sh
-echo "- Disk capacity: ${DISK_CAPACITY}" | $SCRIPTPATH/notify.sh
-echo "- Disk model: ${DISK_MODEL}" | $SCRIPTPATH/notify.sh
-echo "- Disk serial: ${DISK_SERIAL}" | $SCRIPTPATH/notify.sh
+echo "**Tier ${1} local backup completed!**" | $SCRIPTPATH/notify.sh
+echo "Total objects: ${BACKUP_COUNT}" | $SCRIPTPATH/notify.sh
+echo "Total size: ${BACKUP_SIZE_GB} GBytes (${BACKUP_SIZE_B} Bytes)" | $SCRIPTPATH/notify.sh
+echo "Disk model: ${DISK_MODEL} (${DISK_SERIAL})" | $SCRIPTPATH/notify.sh
+echo "Disk capacity: ${DISK_SIZE_GB} GBytes (${DISK_SIZE_B} Bytes)" | $SCRIPTPATH/notify.sh
+
+if [ $ROTATE_DISK -eq 1 ]; then
+  echo "***NOTE:*** *You should rotate the backup disk!*" | $SCRIPTPATH/notify.sh
+fi
+
 exit
