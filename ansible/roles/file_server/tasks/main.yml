@@ -17,7 +17,7 @@
     - file_server
     - zfs
   when:
-    - inventory_hostname in groups['file_server']
+    - inventory_hostname in groups['file_servers']
 
 - name: File Server | syncthing
   ansible.builtin.import_tasks: syncthing.yml
@@ -25,7 +25,7 @@
     - file_server
     - syncthing
   when:
-    - inventory_hostname in groups['file_server']
+    - inventory_hostname in groups['file_servers']
 
 - name: File Server | backups
   ansible.builtin.import_tasks: backups.yml
@@ -33,7 +33,7 @@
     - file_server
     - backups
   when:
-    - inventory_hostname in groups['file_server']
+    - inventory_hostname in groups['file_servers']
 
 - name: File Server | monitoring
   ansible.builtin.import_tasks: monitoring.yml
@@ -41,7 +41,7 @@
     - file_server
     - monitoring
   when:
-    - inventory_hostname in groups['file_server']
+    - inventory_hostname in groups['file_servers']
 
 - name: File Server | flush handlers
   ansible.builtin.meta: flush_handlers

@@ -7,7 +7,7 @@
     - file_server
     - syncthing
   when:
-    - inventory_hostname in groups['file_server']
+    - inventory_hostname in groups['file_servers']
 
 - name: Syncthing | create syncthing user
   ansible.builtin.user:
@@ -18,7 +18,7 @@
     - file_server
     - syncthing
   when:
-    - inventory_hostname in groups['file_server']
+    - inventory_hostname in groups['file_servers']
 
 - name: Syncthing | create syncthing config dir
   ansible.builtin.file:
@@ -31,7 +31,7 @@
     - file_server
     - syncthing
   when:
-    - inventory_hostname in groups['file_server']
+    - inventory_hostname in groups['file_servers']
 
 - name: Syncthing | configure syncthing
   ansible.builtin.copy: # noqa template-instead-of-copy
@@ -46,7 +46,7 @@
     - file_server
     - syncthing
   when:
-    - inventory_hostname in groups['file_server']
+    - inventory_hostname in groups['file_servers']
 
 - name: Syncthing | start and enable syncthing service
   ansible.builtin.service:
@@ -57,7 +57,7 @@
     - file_server
     - syncthing
   when:
-    - inventory_hostname in groups['file_server']
+    - inventory_hostname in groups['file_servers']
 
 - name: Syncthing | allow syncthing inbound from clients
   community.general.ufw:
@@ -69,4 +69,4 @@
     - file_server
     - syncthing
   when:
-    - inventory_hostname in groups['file_server']
+    - inventory_hostname in groups['file_servers']

@@ -7,8 +7,7 @@
     - file_server
     - zfs
   when:
-    - ansible_facts['os_family'] == 'Debian'
-    - inventory_hostname in groups['file_server']
+    - inventory_hostname in groups['file_servers']
 
 - name: Zfs | install required packages
   ansible.builtin.apt:
@@ -21,8 +20,7 @@
     - file_server
     - zfs
   when:
-    - ansible_facts['os_family'] == 'Debian'
-    - inventory_hostname in groups['file_server']
+    - inventory_hostname in groups['file_servers']
 
 - name: Zfs | install zfs packages
   ansible.builtin.apt:
@@ -34,8 +32,7 @@
     - file_server
     - zfs
   when:
-    - ansible_facts['os_family'] == 'Debian'
-    - inventory_hostname in groups['file_server']
+    - inventory_hostname in groups['file_servers']
 
 - name: Zfs | configure zfs scripts
   ansible.builtin.copy:
@@ -51,5 +48,4 @@
     - file_server
     - zfs
   when:
-    - ansible_facts['os_family'] == 'Debian'
-    - inventory_hostname in groups['file_server']
+    - inventory_hostname in groups['file_servers']

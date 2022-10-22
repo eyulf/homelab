@@ -12,7 +12,7 @@
     - file_server
     - backups
   when:
-    - inventory_hostname in groups['file_server']
+    - inventory_hostname in groups['file_servers']
 
 - name: Backups | create backup dirs
   ansible.builtin.file:
@@ -28,7 +28,7 @@
     - file_server
     - backups
   when:
-    - inventory_hostname in groups['file_server']
+    - inventory_hostname in groups['file_servers']
 
 - name: Backups | configure backup files
   ansible.builtin.copy: # noqa template-instead-of-copy
@@ -47,7 +47,7 @@
     - file_server
     - backups
   when:
-    - inventory_hostname in groups['file_server']
+    - inventory_hostname in groups['file_servers']
 
 - name: Backups | configure backup scripts
   ansible.builtin.copy:
@@ -65,7 +65,7 @@
     - file_server
     - backups
   when:
-    - inventory_hostname in groups['file_server']
+    - inventory_hostname in groups['file_servers']
 
 - name: Backups | configure /root/backup-scripts/notify.sh
   ansible.builtin.copy: # noqa template-instead-of-copy
@@ -78,7 +78,8 @@
     - file_server
     - backups
   when:
-    - inventory_hostname in groups['file_server']
+    - inventory_hostname in groups['file_servers']
+
 
 - name: Backups | configure cron - backup-tier2-local
   ansible.builtin.cron:
@@ -92,7 +93,7 @@
     - file_server
     - backups
   when:
-    - inventory_hostname in groups['file_server']
+    - inventory_hostname in groups['file_servers']
 
 - name: Backups | configure cron - backup-tier5-local
   ansible.builtin.cron:
@@ -106,4 +107,4 @@
     - file_server
     - backups
   when:
-    - inventory_hostname in groups['file_server']
+    - inventory_hostname in groups['file_servers']

@@ -10,7 +10,7 @@
     - file_server
     - monitoring
   when:
-    - inventory_hostname in groups['file_server']
+    - inventory_hostname in groups['file_servers']
 
 - name: Monitoring | configure cron - zfs-health
   ansible.builtin.cron:
@@ -24,7 +24,7 @@
     - file_server
     - monitoring
   when:
-    - inventory_hostname in groups['file_server']
+    - inventory_hostname in groups['file_servers']
 
 - name: Monitoring | configure cron - zfs-scrub
   ansible.builtin.cron:
@@ -39,4 +39,4 @@
     - file_server
     - monitoring
   when:
-    - inventory_hostname in groups['file_server']
+    - inventory_hostname in groups['file_servers']
