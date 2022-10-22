@@ -1,4 +1,13 @@
 ---
+- name: NTP | install ntp package
+  ansible.builtin.apt:
+    name: ntp
+    state: present
+    update_cache: true
+  tags:
+    - common
+    - firewall
+
 - name: NTP | update timezone
   community.general.timezone:
     name: '{{ timezone }}'

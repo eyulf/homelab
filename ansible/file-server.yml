@@ -1,6 +1,6 @@
 ---
 - name: file_server
-  hosts: file_server
+  hosts: file_servers
   gather_facts: true
   become: true
   roles:

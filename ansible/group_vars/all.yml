@@ -19,5 +19,5 @@ ssh_public_key: "{{ lookup('file', (ansible_ssh_private_key_file + '.pub')) }}"
 
 timezone: Australia/Sydney
 
-ansible_python_interpreter: /usr/bin/python3.7
-debian_version: buster
+ansible_python_interpreter: /usr/bin/python3.9
+debian_version: bullseye

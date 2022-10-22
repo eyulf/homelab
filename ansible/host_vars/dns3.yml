@@ -1,2 +1,5 @@
 ---
 ansible_host: '10.1.1.33'
+
+ansible_python_interpreter: /usr/bin/python3.7
+debian_version: buster

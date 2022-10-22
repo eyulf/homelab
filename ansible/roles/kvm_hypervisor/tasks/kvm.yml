@@ -28,7 +28,7 @@
 
 - name: KVM | configure /etc/apparmor.d/libvirt/TEMPLATE.qemu
   ansible.builtin.copy:
-    src: files/etc/apparmor.d/libvirt/TEMPLATE.qemu
+    src: etc/apparmor.d/libvirt/TEMPLATE.qemu
     dest: /etc/apparmor.d/libvirt/TEMPLATE.qemu
     owner: root
     group: root
@@ -36,3 +36,14 @@
   tags:
     - kvm-hypervisor
     - kvm
+
+- name: Users | update admin user groups
+  ansible.builtin.user:
+    name: '{{ item }}'
+    append: true
+    groups:
+      - libvirt
+  loop: '{{ admin_users }}'
+  tags:
+    - common
+    - users
