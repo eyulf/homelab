@@ -4,6 +4,7 @@
     pkg: '{{ item }}'
     state: present
   loop:
+    - rclone
     - hwinfo
     - pv
     - bc
@@ -22,8 +23,22 @@
     group: root
     mode: '0700'
   loop:
+    - /root/.config/rclone/
     - /root/backup-scripts/
     - /backup/
+  tags:
+    - file_server
+    - backups
+  when:
+    - inventory_hostname in groups['file_servers']
+
+- name: Backups | configure /root/.config/rclone/rclone.conf
+  ansible.builtin.copy: # noqa template-instead-of-copy
+    content: "{{ lookup('community.sops.sops', 'root/.config/rclone/rclone.conf', rstrip=false) }}"
+    dest: /root/.config/rclone/rclone.conf
+    owner: root
+    group: root
+    mode: '0660'
   tags:
     - file_server
     - backups
@@ -61,6 +76,8 @@
     - local-initdisk.sh
     - local-start.sh
     - stats.sh
+    - tier1.sh
+    - tier2.sh
   tags:
     - file_server
     - backups
@@ -79,7 +96,6 @@
     - backups
   when:
     - inventory_hostname in groups['file_servers']
-
 
 - name: Backups | configure cron - backup-tier2-local
   ansible.builtin.cron:
