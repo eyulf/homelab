@@ -2,7 +2,7 @@
   "extends": [
     "config:base",
     ":enablePreCommit",
-    ":dependencyDashboard",
+    ":dependencyDashboard"
   ],
   "timezone": "Australia/Sydney",
   "branchPrefix": "renovate/",
@@ -52,6 +52,6 @@
       "matchUpdateTypes": ["patch"],
       "addLabels": ["dependency/patch"],
       "automerge": true
-    },
+    }
   ]
 }
