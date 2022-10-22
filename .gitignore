@@ -20,8 +20,17 @@
 **.tfstate
 **.tfstate.*
 
+# .plan files
+**.plan
+**.plan.*
+
+# .hcl files
+**.hcl
+!.tflint.hcl
+
 # Checkov
 **/.external_modules/
 
 ### Python
+
 .python-version

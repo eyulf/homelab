@@ -17,7 +17,7 @@ module "k8s-controller-02" {
   domain   = var.domain
 
   cloudinit_pool_name = data.terraform_remote_state.hypervisors.outputs.kvm2_pool_name
-  disk_base_volume_id = data.terraform_remote_state.hypervisors.outputs.kvm2_os_images["debian_10"]
+  disk_base_volume_id = data.terraform_remote_state.hypervisors.outputs.kvm2_os_images["debian_11"]
 
   network_ip_address     = "10.1.1.42"
   network_gateway_ip     = var.network_gateway_ip

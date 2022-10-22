@@ -18,7 +18,7 @@ module "k8s-worker-02" {
   domain   = var.domain
 
   cloudinit_pool_name = data.terraform_remote_state.hypervisors.outputs.kvm2_pool_name
-  disk_base_volume_id = data.terraform_remote_state.hypervisors.outputs.kvm2_os_images["debian_10"]
+  disk_base_volume_id = data.terraform_remote_state.hypervisors.outputs.kvm2_os_images["debian_11"]
 
   additional_disks = {
     "openebs" = 429496524800, # 400 GB
