@@ -2,7 +2,9 @@
   "extends": [
     "config:base",
     ":enablePreCommit",
-    ":dependencyDashboard"
+    ":dependencyDashboard",
+    ":prHourlyLimitNone",
+    ":prConcurrentLimit20"
   ],
   "timezone": "Australia/Sydney",
   "branchPrefix": "renovate/",
