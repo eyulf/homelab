@@ -16,9 +16,9 @@ pacemaker_cluster_ip: '10.1.1.40'
 helm_binary_checksum: sha256:c12d2cd638f2d066fec123d0bd7f010f32c643afdf288d39a4610b1f9cb32af3
 helm_version: 'v3.10.1'
 
-# Retrieved from https://github.com/argoproj/argo-cd/releases/download/v2.4.15/argocd-2.4.15-checksums.txt
-argocd_binary_checksum: sha256:6224b02b2428a9869a6d3f0224376ae9cb2cb48672cc01b72b117f4f9527d41f
-argocd_version: 'v2.4.15'
+# Retrieved from https://github.com/argoproj/argo-cd/releases/download/v2.5.2/argocd-2.5.2-checksums.txt
+argocd_binary_checksum: sha256:249a7409e8d602347668420ac4cb2c828565fe72d1b9bffb06bbf7c816ec38c6
+argocd_version: 'v2.5.2'
 
 # Retrieved from https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.19.2/sealed-secrets_0.19.2_checksums.txt
 kubeseal_binary_checksum: sha256:f259f7d4754a882031f1ccfc6c004fa4646734e48f0e68c1adce72309ae16f03
