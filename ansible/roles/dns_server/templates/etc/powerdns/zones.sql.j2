@@ -70,6 +70,12 @@ REPLACE INTO `records` VALUES (640,1,'k8s-controller.{{ domain }}','A','10.1.1.4
 DELETE FROM `records` WHERE `domain_id` = 2 AND `name` = '{{ "10.1.1.40" | ansible.netcommon.ipaddr('revdns') | trim('.') }}' AND `type` = 'PTR' AND `content` = '10.1.1.40.{{ domain }}';
 REPLACE INTO `records` VALUES (641,2,'{{ "10.1.1.40" | ansible.netcommon.ipaddr('revdns') | trim('.') }}','PTR','k8s-controller.{{ domain }}',3600,0,0,NULL,1);
 
+# FIXME: K8s external-dns does not support sourcing pdns api keys from k8s secrets
+
+REPLACE INTO `records` VALUES (640,1,'pihole.{{ domain }}','A','10.1.1.110',3600,0,0,NULL,1);
+DELETE FROM `records` WHERE `domain_id` = 2 AND `name` = '{{ "10.1.1.110" | ansible.netcommon.ipaddr('revdns') | trim('.') }}' AND `type` = 'PTR' AND `content` = '10.1.1.110.{{ domain }}';
+REPLACE INTO `records` VALUES (641,2,'{{ "10.1.1.110" | ansible.netcommon.ipaddr('revdns') | trim('.') }}','PTR','pihole.{{ domain }}',3600,0,0,NULL,1);
+
 /*!40000 ALTER TABLE `records` ENABLE KEYS */;
 
 # Ensure Auto Increment ID is higher then 1300
