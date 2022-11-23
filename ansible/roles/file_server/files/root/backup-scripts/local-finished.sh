@@ -16,7 +16,7 @@ case $1 in
     TIER=2
     ;;
   't5')
-    TIER=3
+    TIER=5
     ;;
   *)
     printf "%s\n" "Backup type not selected!" "Must be one of [t2, t5]"
@@ -187,12 +187,18 @@ rm -f /etc/cron.d/backup-task
 ################################################################################
 # Check if disk should be rotated
 
-BACKUP_DISKS=$(ls -1 --ignore="disk-${DISK_SERIAL}" "${SCRIPTPATH}/disks/")
+BACKUP_DISKS=$(ls -1 --ignore="${DISK_SERIAL}" "${SCRIPTPATH}/disks/")
+
+logger -it "BACKUP-SCRIPTS-DEBUG" "DISK_SERIAL: ${DISK_SERIAL}"
+logger -it "BACKUP-SCRIPTS-DEBUG" "DATE_ONEWEEKAGO: ${DATE_ONEWEEKAGO}"
 
 for SERIAL in $BACKUP_DISKS; do
-  DATE_DISK=$(date -r "$SERIAL" +"%s")
+  logger -it "BACKUP-SCRIPTS-DEBUG" "SERIAL: ${SERIAL}"
+  DATE_DISK=$(date -r "${SCRIPTPATH}/disks/${SERIAL}" +"%s")
+  logger -it "BACKUP-SCRIPTS-DEBUG" "DATE_DISK: ${DATE_DISK}"
   if [ "$DATE_DISK" -ge "$DATE_ONEWEEKAGO" ]; then
     ROTATE_DISK=0
+    logger -it "BACKUP-SCRIPTS-DEBUG" "ROTATE_DISK=0"
   fi
 done
 

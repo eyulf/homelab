@@ -4,6 +4,7 @@
 # SETTINGS
 
 RUNPATH='/root'
+SCRIPTPATH="$RUNPATH/backup-scripts"
 WIDTH='34'
 
 BACKUP_CRYPT_NAME='backup_crypt'
@@ -53,6 +54,13 @@ echo
 echo "Disk Found:"
 hwinfo --disk --short | grep "$DISK"
 fdisk -l | grep "$DISK"
+
+DISK_SERIAL=$(/usr/sbin/smartctl -a "$DISK" | grep 'Serial Number' | awk '{print $3}')
+
+if [ -f "${SCRIPTPATH}/disks/${DISK_SERIAL}" ]; then
+  echo "WARNING! Disk has previously been used for backups!"
+  ls -la "${SCRIPTPATH}/disks/${DISK_SERIAL}"
+fi
 
 echo
 read -p "Continue? (y) " -n 1 -r

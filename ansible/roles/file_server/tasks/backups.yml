@@ -97,27 +97,13 @@
   when:
     - inventory_hostname in groups['file_servers']
 
-- name: Backups | configure cron - backup-tier2-local
+- name: Backups | configure cron - backup-local
   ansible.builtin.cron:
-    name: backup-tier2-local
-    minute: '5'
-    hour: '*/4'
-    user: root
-    job: '/root/backup-scripts/local-start.sh t2'
-    cron_file: backups
-  tags:
-    - file_server
-    - backups
-  when:
-    - inventory_hostname in groups['file_servers']
-
-- name: Backups | configure cron - backup-tier5-local
-  ansible.builtin.cron:
-    name: backup-tier5-local
+    name: backup-local
     minute: '0'
     hour: '*/4'
     user: root
-    job: '/root/backup-scripts/local-start.sh t5'
+    job: '/root/backup-scripts/local-start.sh'
     cron_file: backups
   tags:
     - file_server
