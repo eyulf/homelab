@@ -1,6 +1,6 @@
-FROM alpine:3.16
+FROM alpine:3.17
 
-RUN apk add busybox tftp-hpa
+RUN apk add busybox=1.35.0-r29 tftp-hpa=5.2-r5
 
 ENTRYPOINT [ "/bin/sh", "-c" ]
 
