@@ -20,9 +20,9 @@ helm_version: 'v3.10.1'
 argocd_binary_checksum: sha256:6224b02b2428a9869a6d3f0224376ae9cb2cb48672cc01b72b117f4f9527d41f
 argocd_version: 'v2.4.15'
 
-# Retrieved from https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.19.1/sealed-secrets_0.19.1_checksums.txt
-kubeseal_binary_checksum: sha256:a78aa5c04b24bd3cbc72527a40bc13ae4d15f911e3053da510a68ddcd2cfd27a
-kubeseal_version: '0.19.1'
+# Retrieved from https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.19.2/sealed-secrets_0.19.2_checksums.txt
+kubeseal_binary_checksum: sha256:f259f7d4754a882031f1ccfc6c004fa4646734e48f0e68c1adce72309ae16f03
+kubeseal_version: '0.19.2'
 
 git_repo_url: https://github.com/eyulf/homelab.git
 git_branch: main
