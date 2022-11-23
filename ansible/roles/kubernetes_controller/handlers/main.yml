@@ -17,10 +17,19 @@
     - kubernetes-controller
     - encryption
 
-- name: Calico | pause to allow calico to fully deploy
+- name: Calico | pause to allow calico to start deploying
   ansible.builtin.pause:
-    seconds: 150
+    seconds: 30
   listen: pause for calico
+  tags:
+    - kubernetes
+    - kubernetes-controller
+    - calico
+
+- name: Calico | wait to allow calico to fully deploy
+  ansible.builtin.command:
+    cmd: kubectl wait --namespace=calico-system --for=condition=Ready pods --selector app.kubernetes.io/name=calico-node --timeout=15m
+  listen: wait for calico
   tags:
     - kubernetes
     - kubernetes-controller

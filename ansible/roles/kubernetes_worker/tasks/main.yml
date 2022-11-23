@@ -10,6 +10,17 @@
     - kubeadm
     - iscsi
 
+- name: Kubernetes Worker | get service facts
+  ansible.builtin.service_facts:
+  tags:
+    - kubernetes
+    - kubernetes-worker
+    - network
+    - kubeadm
+    - iscsi
+  when:
+    - inventory_hostname in groups['k8s_workers']
+
 - name: Kubernetes Worker | network
   ansible.builtin.import_tasks: network.yml
   tags:
