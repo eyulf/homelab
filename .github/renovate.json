@@ -11,7 +11,7 @@
   "commitBodyTable": true,
   "rebaseWhen": "conflicted",
   "labels": ["renovate"],
-  "automerge-type": "branch",
+  "automergeType": "branch",
   "regexManagers": [
     {
       "fileMatch": ["kubernetes/.+\\.ya?ml$"],
