@@ -9,7 +9,7 @@
   "timezone": "Australia/Sydney",
   "branchPrefix": "renovate/",
   "commitBodyTable": true,
-  "rebaseWhen": "conflicted",
+  "rebaseWhen": "auto",
   "labels": ["renovate"],
   "automergeType": "branch",
   "regexManagers": [
