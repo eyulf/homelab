@@ -8,12 +8,13 @@ ANSIBLE_DOMAIN=$(cd ${ANSIBLE_DIR} && grep 'domain:' group_vars/all.yml | awk '{
 
 cd terraform/infrastructure/kubernetes || exit
 
-terraform1.1 destroy -auto-approve
+terraform1.3 init -upgrade
+terraform1.3 destroy -auto-approve
 
 echo "Waiting 30s"
 sleep 30
 
-terraform1.1 apply -auto-approve
+terraform1.3 apply -auto-approve
 
 cd "${SCRIPT_DIR}" || exit
 
