@@ -7,7 +7,7 @@ collections:
   - name: community.mysql
     version: 3.5.1
   - name: ansible.utils
-    version: 2.8.0
+    version: 2.9.0
   - name: community.docker
     version: 3.4.0
   - name: ansible.posix
