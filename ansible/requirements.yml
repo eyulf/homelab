@@ -5,7 +5,7 @@ collections:
   - name: community.sops
     version: 1.6.0
   - name: community.mysql
-    version: 3.5.1
+    version: 3.6.0
   - name: ansible.utils
     version: 2.9.0
   - name: community.docker
