@@ -1,4 +1,4 @@
-FROM alpine:3.17
+FROM alpine:3.18
 
 RUN apk add busybox=1.35.0-r29 tftp-hpa=5.2-r5
 
