@@ -3,7 +3,7 @@ collections:
   - name: community.general
     version: 9.1.0
   - name: community.sops
-    version: 1.6.7
+    version: 1.7.0
   - name: community.mysql
     version: 3.9.0
   - name: ansible.utils
