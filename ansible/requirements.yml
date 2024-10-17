@@ -13,4 +13,4 @@ collections:
   - name: ansible.posix
     version: 1.6.1
   - name: community.routeros
-    version: 2.19.0
+    version: 2.20.0
