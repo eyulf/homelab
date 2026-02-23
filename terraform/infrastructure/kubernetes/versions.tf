@@ -4,7 +4,7 @@ terraform {
   required_providers {
     libvirt = {
       source  = "dmacvicar/libvirt"
-      version = "0.9.2"
+      version = "0.9.3"
     }
     sops = {
       source  = "carlpett/sops"
