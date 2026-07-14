@@ -11,6 +11,6 @@ collections:
   - name: community.docker
     version: 5.2.1
   - name: ansible.posix
-    version: 2.2.1
+    version: 2.2.2
   - name: community.routeros
     version: 3.21.0
