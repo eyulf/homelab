@@ -25,7 +25,7 @@ repos:
       - id: terraform_docs
 
   - repo: https://github.com/bridgecrewio/checkov
-    rev: '3.3.11'
+    rev: '3.3.13'
     hooks:
       - id: checkov
         args: [
